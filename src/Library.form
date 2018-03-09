@@ -250,6 +250,9 @@
           <Properties>
             <Property name="columns" type="int" value="20"/>
           </Properties>
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="TextField_searchKeyReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="Label_searchIcon">
           <Properties>

@@ -6,6 +6,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -105,7 +106,6 @@ public class Library extends javax.swing.JFrame {
             row[3] = List.get(i).getAuthor();
             row[4] = List.get(i).getTitle();
             row[5] = List.get(i).getID();
-            
             model.addRow(row);
         }
     }
@@ -115,6 +115,14 @@ public class Library extends javax.swing.JFrame {
           DefaultTableModel model = (DefaultTableModel) DocsList.getModel();
           TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel>(model);
           DocsList.setRowSorter(sorter);
+      }
+    
+     private void Search(String key)
+      {
+          DefaultTableModel model = (DefaultTableModel) DocsList.getModel();
+          TableRowSorter<DefaultTableModel> filter = new TableRowSorter<DefaultTableModel>(model);
+          DocsList.setRowSorter(filter);
+          filter.setRowFilter(RowFilter.regexFilter(key));
       }
     
     /**
@@ -202,6 +210,11 @@ public class Library extends javax.swing.JFrame {
         }
 
         TextField_search.setColumns(20);
+        TextField_search.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TextField_searchKeyReleased(evt);
+            }
+        });
 
         Label_searchIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/search.png"))); // NOI18N
 
@@ -401,6 +414,12 @@ public class Library extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void TextField_searchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_searchKeyReleased
+        // TODO add your handling code here:
+        String key = TextField_search.getText();
+        Search(key);
+    }//GEN-LAST:event_TextField_searchKeyReleased
 
     /**
      * @param args the command line arguments
