@@ -1,8 +1,14 @@
 
 import com.mysql.jdbc.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -21,8 +27,17 @@ public class Library extends javax.swing.JFrame {
      */
     public Library() {
         initComponents();
-        
         setIconImage(new ImageIcon(getClass().getResource("/Icons/Logo.jpg")).getImage());
+        ShowDocuments();
+        JTableHeader header = DocsList.getTableHeader();
+        ((DefaultTableCellRenderer) header.getDefaultRenderer()).setHorizontalAlignment(JLabel.RIGHT);
+        for (int i=0 ; i<=5 ; i++) 
+        {
+            DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+            rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
+            DocsList.getColumnModel().getColumn(i).setCellRenderer(rightRenderer);
+        }
+        
     }
      
     public Connection DBConnection()
@@ -34,13 +49,63 @@ public class Library extends javax.swing.JFrame {
             String host = "jdbc:mysql://localhost:3306/mg-marjieidb";
             String unicode= "?useUnicode=yes&characterEncoding=UTF-8";
             con = (Connection) DriverManager.getConnection( host+unicode, "root", "" );
-            Statement stmt = con.createStatement();
             return con;
         } catch (Exception ex)
         {
-            ex.getMessage();
+            System.out.print(ex.getMessage());
         }
         return con;
+    }
+    
+    public ArrayList<ReferenceDocument> getDocumentList()
+    {
+        ArrayList<ReferenceDocument> documentList = new ArrayList<ReferenceDocument>();
+        Connection connection = DBConnection();
+        
+        String query = "SELECT * FROM referencedocument";
+        Statement stmt;
+        ResultSet rs;
+        
+        try 
+        {
+            stmt = connection.createStatement();
+            rs = stmt.executeQuery(query);
+            ReferenceDocument rf;
+            while (rs.next())
+            {
+                int id = rs.getInt("documentID");
+                String title = rs.getString("title");
+                String author = rs.getString("author");
+                String publisher = rs.getString("publisher");
+                int publishYear = rs.getInt("publishYear");
+                 String dateAdded = rs.getString("DateAdded");
+                rf = new ReferenceDocument (id, title, author, publisher, publishYear, dateAdded);
+                documentList.add(rf);
+            }
+            
+        } catch (Exception ex)
+        {
+            System.out.print(ex.getMessage());
+        }
+        return documentList;
+    } 
+    
+    public void ShowDocuments()
+    {
+        ArrayList<ReferenceDocument> List = getDocumentList();
+        DefaultTableModel model = (DefaultTableModel) DocsList.getModel();
+        Object[] row = new Object[6];
+        for (int i=0 ; i<List.size() ; i++)
+        {
+            row[0] = List.get(i).getDateAdded(); 
+            row[1] = List.get(i).getPublishYear(); 
+            row[2] = List.get(i).getPublisher();
+            row[3] = List.get(i).getAuthor();
+            row[4] = List.get(i).getTitle();
+            row[5] = List.get(i).getID();
+            
+            model.addRow(row);
+        }
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -108,10 +173,23 @@ public class Library extends javax.swing.JFrame {
 
             },
             new String [] {
-                "تاريخ الإضافة", "سنة النشر", "الناشر", "المؤلف", "العنوان", "id"
+                "تاريخ الإضافة", "سنة النشر", "الناشر", "المؤلف", "العنوان", "id", ""
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, true, true, true, true, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(DocsList);
+        if (DocsList.getColumnModel().getColumnCount() > 0) {
+            DocsList.getColumnModel().getColumn(5).setMinWidth(0);
+            DocsList.getColumnModel().getColumn(5).setMaxWidth(0);
+            DocsList.getColumnModel().getColumn(6).setResizable(false);
+        }
 
         TextField_search.setColumns(20);
 

@@ -8,7 +8,7 @@
  *
  * @author Shatha Suliman
  */
-public abstract class ReferenceDocument {
+public class ReferenceDocument {
     
     private int ID;
     protected String Title;
