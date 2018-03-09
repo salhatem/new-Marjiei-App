@@ -10,12 +10,22 @@
  */
 public abstract class ReferenceDocument {
     
+    private int ID;
     protected String Title;
     protected String Author;
     protected String Publisher;
-    protected String PublishYear;
-    protected String Pages;
+    protected int PublishYear;
+    private String DateAdded;
 
+    public ReferenceDocument (int ID, String Title, String Author, String Publisher, int PublishYear, String DateAdded)
+    {
+        this.ID = ID;
+        this.Title = Title; 
+        this.Author = Author; 
+        this.Publisher = Publisher;
+        this.PublishYear = PublishYear;
+        this.DateAdded = DateAdded;
+    }
     /**
      * @return the Title
      */
@@ -61,29 +71,29 @@ public abstract class ReferenceDocument {
     /**
      * @return the PublishYear
      */
-    public String getPublishYear() {
+    public int getPublishYear() {
         return PublishYear;
     }
 
     /**
      * @param PublishYear the PublishYear to set
      */
-    public void setPublishYear(String PublishYear) {
+    public void setPublishYear(int PublishYear) {
         this.PublishYear = PublishYear;
     }
 
     /**
-     * @return the PagesNo
+     * @return the ID
      */
-    public String getPages() {
-        return Pages;
+    public int getID() {
+        return ID;
     }
 
     /**
-     * @param Pages the PagesNo to set
+     * @return the DateAdded
      */
-    public void setPages(String Pages) {
-        this.Pages = Pages;
+    public String getDateAdded() {
+        return DateAdded;
     }
-    
+
 }
