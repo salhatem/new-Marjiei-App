@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableRowSorter;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -37,6 +38,7 @@ public class Library extends javax.swing.JFrame {
             rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
             DocsList.getColumnModel().getColumn(i).setCellRenderer(rightRenderer);
         }
+        Sort();
         
     }
      
@@ -107,6 +109,14 @@ public class Library extends javax.swing.JFrame {
             model.addRow(row);
         }
     }
+    
+    private void Sort()
+      {
+          DefaultTableModel model = (DefaultTableModel) DocsList.getModel();
+          TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel>(model);
+          DocsList.setRowSorter(sorter);
+      }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
