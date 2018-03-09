@@ -168,6 +168,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="&#x625;&#x62f;&#x62e;&#x627;&#x644; &#x64a;&#x62f;&#x648;&#x64a;"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Button_manuallyActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="Button_delete">
           <Properties>

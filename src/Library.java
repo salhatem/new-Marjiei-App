@@ -181,6 +181,11 @@ public class Library extends javax.swing.JFrame {
 
         Button_manually.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/manuallyIcon.png"))); // NOI18N
         Button_manually.setText("إدخال يدوي");
+        Button_manually.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button_manuallyActionPerformed(evt);
+            }
+        });
 
         Button_delete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/deleteIcon.png"))); // NOI18N
         Button_delete.setText("حذف مرجع");
@@ -420,6 +425,12 @@ public class Library extends javax.swing.JFrame {
         String key = TextField_search.getText();
         Search(key);
     }//GEN-LAST:event_TextField_searchKeyReleased
+
+    private void Button_manuallyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_manuallyActionPerformed
+        // TODO add your handling code here:
+        addManuallyform frame = new addManuallyform();
+        frame.setVisible(true);
+    }//GEN-LAST:event_Button_manuallyActionPerformed
 
     /**
      * @param args the command line arguments
