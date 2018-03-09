@@ -10,6 +10,7 @@ import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 /*
@@ -40,7 +41,11 @@ public class Library extends javax.swing.JFrame {
             DocsList.getColumnModel().getColumn(i).setCellRenderer(rightRenderer);
         }
         Sort();
-        
+        ComboBox_type.setVisible(false);
+        Label_extra.setVisible(false);
+        TextField_extra.setVisible(false);
+        Label_extra1.setVisible(false);
+        TextField_extra1.setVisible(false);
     }
      
     public Connection DBConnection()
@@ -207,6 +212,11 @@ public class Library extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        DocsList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                DocsListMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(DocsList);
         if (DocsList.getColumnModel().getColumnCount() > 0) {
             DocsList.getColumnModel().getColumn(5).setMinWidth(0);
@@ -239,7 +249,7 @@ public class Library extends javax.swing.JFrame {
 
         Label_extra1.setText("jLabel1");
 
-        ComboBox_type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        ComboBox_type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "كتاب", "مقال صحفي", "مقال مجلة", "صفحة ويب", "ورقة مؤتمر", "أخرى" }));
 
         TextField_title.setColumns(15);
 
@@ -431,6 +441,159 @@ public class Library extends javax.swing.JFrame {
         addManuallyform frame = new addManuallyform();
         frame.setVisible(true);
     }//GEN-LAST:event_Button_manuallyActionPerformed
+
+    private void DocsListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DocsListMouseClicked
+        // TODO add your handling code here:
+        ComboBox_type.setVisible(true);
+        int i = DocsList.getSelectedRow();
+      TableModel model = DocsList.getModel();  
+        
+       try 
+        {
+            Connection con = DBConnection();
+            Statement stmt = con.createStatement();
+            int ID = (int) model.getValueAt(i, 5);
+            ResultSet rs = stmt.executeQuery("SELECT documentType FROM referencedocument WHERE documentID = "+ID);
+            rs.next();
+            String type = rs.getString("documentType");
+         
+            switch (type) {
+                case "book":
+                    ComboBox_type.setSelectedIndex(0);
+                    TextField_year.setText(model.getValueAt(i,1).toString());
+                    TextField_publisher.setText(model.getValueAt(i,2).toString());
+                    TextField_author.setText(model.getValueAt(i,3).toString());
+                    TextField_title.setText(model.getValueAt(i,4).toString());
+                    int bookID = (int) model.getValueAt(i, 5);
+                    rs = stmt.executeQuery("SELECT pages FROM referencedocument WHERE documentID = "+bookID);
+                    rs.next();
+                    TextField_pages.setText(rs.getInt("pages")+"");
+       
+                    Label_extra.setVisible(true);
+                    TextField_extra.setVisible(true);
+                    Label_extra.setText("الطبعة");
+                    Label_extra1.setVisible(false);
+                    TextField_extra1.setVisible(false);  
+                    rs = stmt.executeQuery("SELECT * FROM book WHERE documentID = "+bookID);
+                    rs.next();
+                    TextField_extra.setText(rs.getInt("edition")+"");
+                    break;
+                    
+                case "journalarticle":
+                    ComboBox_type.setSelectedIndex(1);
+                    TextField_year.setText(model.getValueAt(i,1).toString());
+                    TextField_publisher.setText(model.getValueAt(i,2).toString());
+                    TextField_author.setText(model.getValueAt(i,3).toString());
+                    TextField_title.setText(model.getValueAt(i,4).toString());
+                    int jarticleID = (int) model.getValueAt(i, 5);
+                    rs = stmt.executeQuery("SELECT pages FROM referencedocument WHERE documentID = "+jarticleID);
+                    rs.next();
+                    TextField_pages.setText(rs.getInt("pages")+"");
+       
+                    Label_extra.setVisible(true);
+                    TextField_extra.setVisible(true);
+                    Label_extra1.setVisible(true);
+                    TextField_extra1.setVisible(true);
+                    Label_extra.setText("الصحيفة");
+                    Label_extra1.setText("الحجم");
+                    rs = stmt.executeQuery("SELECT * FROM journalarticle WHERE documentID = "+jarticleID);
+                    rs.next();
+                    TextField_extra.setText(rs.getString("journalName"));
+                    TextField_extra1.setText(rs.getString("volume")); 
+                    break;
+                    
+                case "magazinearticle":
+                    ComboBox_type.setSelectedIndex(2);
+                    TextField_year.setText(model.getValueAt(i,1).toString());
+                    TextField_publisher.setText(model.getValueAt(i,2).toString());
+                    TextField_author.setText(model.getValueAt(i,3).toString());
+                    TextField_title.setText(model.getValueAt(i,4).toString());
+                    int marticleID = (int) model.getValueAt(i, 5);
+                    rs = stmt.executeQuery("SELECT pages FROM referencedocument WHERE documentID = "+marticleID);
+                    rs.next();
+                    TextField_pages.setText(rs.getInt("pages")+"");
+       
+                    Label_extra.setVisible(true);
+                    TextField_extra.setVisible(true);
+                    Label_extra1.setVisible(true);
+                    TextField_extra1.setVisible(true);
+                    Label_extra.setText("المجلة");
+                    Label_extra1.setText("الشهر");
+                    rs = stmt.executeQuery("SELECT * FROM magazinearticle WHERE documentID = "+marticleID);
+                    rs.next();
+                    TextField_extra.setText(rs.getString("magazineName"));
+                    TextField_extra1.setText(rs.getString("month")); 
+                    break;
+                    
+                case "webpage":
+                    ComboBox_type.setSelectedIndex(3);
+                    TextField_year.setText(model.getValueAt(i,1).toString());
+                    TextField_publisher.setText(model.getValueAt(i,2).toString());
+                    TextField_author.setText(model.getValueAt(i,3).toString());
+                    TextField_title.setText(model.getValueAt(i,4).toString());
+                    int webID = (int) model.getValueAt(i, 5);
+                    rs = stmt.executeQuery("SELECT pages FROM referencedocument WHERE documentID = "+webID);
+                    rs.next();
+                    TextField_pages.setText(rs.getInt("pages")+"");
+       
+                    Label_extra.setVisible(true);
+                    TextField_extra.setVisible(true);
+                    Label_extra1.setVisible(true);
+                    TextField_extra1.setVisible(true);
+                    Label_extra.setText("الرابط");
+                    Label_extra1.setText("تاريخ الوصول");
+                    rs = stmt.executeQuery("SELECT * FROM webpage WHERE documentID = "+webID);
+                    rs.next();
+                    TextField_extra.setText(rs.getString("url"));
+                    TextField_extra1.setText(rs.getString("AccessDate")); 
+                    break;
+                    
+                    case "conferenceproceeding":
+                    ComboBox_type.setSelectedIndex(4);
+                    TextField_year.setText(model.getValueAt(i,1).toString());
+                    TextField_publisher.setText(model.getValueAt(i,2).toString());
+                    TextField_author.setText(model.getValueAt(i,3).toString());
+                    TextField_title.setText(model.getValueAt(i,4).toString());
+                    int cpID = (int) model.getValueAt(i, 5);
+                    rs = stmt.executeQuery("SELECT pages FROM referencedocument WHERE documentID = "+cpID);
+                    rs.next();
+                    TextField_pages.setText(rs.getInt("pages")+"");
+       
+                    Label_extra.setVisible(true);
+                    TextField_extra.setVisible(true);
+                    Label_extra1.setVisible(true);
+                    TextField_extra1.setVisible(true);
+                    Label_extra.setText("المؤتمر");
+                    Label_extra1.setText("المكان");
+                    rs = stmt.executeQuery("SELECT * FROM conferenceproceeding WHERE documentID = "+cpID);
+                    rs.next();
+                    TextField_extra.setText(rs.getString("conferenceName"));
+                    TextField_extra1.setText(rs.getString("place")); 
+                    break;
+                    
+                case "other":
+                    ComboBox_type.setSelectedIndex(5);
+                    Label_extra.setVisible(false);
+                    TextField_extra.setVisible(false);
+                    Label_extra1.setVisible(false);
+                    TextField_extra1.setVisible(false);
+                    TextField_year.setText(model.getValueAt(i,1).toString());
+                    TextField_publisher.setText(model.getValueAt(i,2).toString());
+                    TextField_author.setText(model.getValueAt(i,3).toString());
+                    TextField_title.setText(model.getValueAt(i,4).toString());
+                    int otherID = (int) model.getValueAt(i, 5);
+                    rs = stmt.executeQuery("SELECT pages FROM referencedocument WHERE documentID = "+otherID);
+                    rs.next();
+                    TextField_pages.setText(rs.getInt("pages")+"");
+                    break;
+            }
+                
+        
+        } catch (Exception ex)
+        {
+            System.out.print(ex.getMessage());
+        }
+    }//GEN-LAST:event_DocsListMouseClicked
 
     /**
      * @param args the command line arguments

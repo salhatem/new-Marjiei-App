@@ -246,6 +246,9 @@
                   <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="DocsListMouseClicked"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -402,11 +405,13 @@
             <Component class="javax.swing.JComboBox" name="ComboBox_type">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="4">
-                    <StringItem index="0" value="Item 1"/>
-                    <StringItem index="1" value="Item 2"/>
-                    <StringItem index="2" value="Item 3"/>
-                    <StringItem index="3" value="Item 4"/>
+                  <StringArray count="6">
+                    <StringItem index="0" value="&#x643;&#x62a;&#x627;&#x628;"/>
+                    <StringItem index="1" value="&#x645;&#x642;&#x627;&#x644; &#x635;&#x62d;&#x641;&#x64a;"/>
+                    <StringItem index="2" value="&#x645;&#x642;&#x627;&#x644; &#x645;&#x62c;&#x644;&#x629;"/>
+                    <StringItem index="3" value="&#x635;&#x641;&#x62d;&#x629; &#x648;&#x64a;&#x628;"/>
+                    <StringItem index="4" value="&#x648;&#x631;&#x642;&#x629; &#x645;&#x624;&#x62a;&#x645;&#x631;"/>
+                    <StringItem index="5" value="&#x623;&#x62e;&#x631;&#x649;"/>
                   </StringArray>
                 </Property>
               </Properties>
