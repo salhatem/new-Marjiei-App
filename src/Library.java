@@ -1,4 +1,7 @@
 
+import com.mysql.jdbc.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import javax.swing.ImageIcon;
 
 /*
@@ -21,7 +24,24 @@ public class Library extends javax.swing.JFrame {
         
         setIconImage(new ImageIcon(getClass().getResource("/Icons/Logo.jpg")).getImage());
     }
-
+     
+    public Connection DBConnection()
+    {
+        Connection con = null;
+        try 
+        {
+            Class.forName("com.mysql.jdbc.Driver");
+            String host = "jdbc:mysql://localhost:3306/mg-marjieidb";
+            String unicode= "?useUnicode=yes&characterEncoding=UTF-8";
+            con = (Connection) DriverManager.getConnection( host+unicode, "root", "" );
+            Statement stmt = con.createStatement();
+            return con;
+        } catch (Exception ex)
+        {
+            ex.getMessage();
+        }
+        return con;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
