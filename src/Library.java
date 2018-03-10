@@ -459,6 +459,8 @@ public class Library extends javax.swing.JFrame {
         // TODO add your handling code here:
         addManuallyform frame = new addManuallyform();
         frame.setVisible(true);
+        
+       // RefereshTable();
        // addNewDoc();
     }//GEN-LAST:event_Button_manuallyActionPerformed
 
@@ -468,17 +470,19 @@ public class Library extends javax.swing.JFrame {
         int i = DocsList.getSelectedRow();
       TableModel model = DocsList.getModel();  
         
-       try 
-        {
                     TextField_year.setText(" ");
                     TextField_publisher.setText(" ");
                     TextField_author.setText(" ");
                     TextField_title.setText(" ");
                     TextField_pages.setText(" ");
+                    TextField_extra.setText(" ");
+                    TextField_extra1.setText(" ");
                     Label_extra.setVisible(false);
                     TextField_extra.setVisible(false);
                     Label_extra1.setVisible(false);
                     TextField_extra1.setVisible(false);
+       try 
+        {
                     
             Connection con = DBConnection();
             Statement stmt = con.createStatement();
@@ -490,20 +494,26 @@ public class Library extends javax.swing.JFrame {
             switch (type) {
                 case "book":
                     ComboBox_type.setSelectedIndex(0);
-                    TextField_year.setText(model.getValueAt(i,1).toString());
-                    TextField_publisher.setText(model.getValueAt(i,2).toString());
-                    TextField_author.setText(model.getValueAt(i,3).toString());
-                    TextField_title.setText(model.getValueAt(i,4).toString());
+                    
+                    Label_extra.setVisible(true);
+                    TextField_extra.setVisible(true);
+                    Label_extra.setText("الطبعة");
+                    
+                    if ( model.getValueAt(i,4) != null )
+                    { TextField_title.setText(model.getValueAt(i,4).toString()); }
+                    if ( model.getValueAt(i,3) != null )
+                    { TextField_author.setText(model.getValueAt(i,3).toString()); }
+                    if ( model.getValueAt(i,2) != null )
+                    { TextField_publisher.setText(model.getValueAt(i,2).toString()); }
+                     TextField_year.setText(model.getValueAt(i,1).toString()); 
+                    
                     int bookID = (int) model.getValueAt(i, 5);
                     rs = stmt.executeQuery("SELECT pages FROM referencedocument WHERE documentID = "+bookID);
                     rs.next();
                     TextField_pages.setText(rs.getInt("pages")+"");
        
-                    Label_extra.setVisible(true);
-                    TextField_extra.setVisible(true);
-                    Label_extra.setText("الطبعة");
-                    Label_extra1.setVisible(false);
-                    TextField_extra1.setVisible(false);  
+                   // Label_extra1.setVisible(false);
+                  //  TextField_extra1.setVisible(false);  
                     rs = stmt.executeQuery("SELECT * FROM book WHERE documentID = "+bookID);
                     rs.next();
                     TextField_extra.setText(rs.getInt("edition")+"");
@@ -511,21 +521,27 @@ public class Library extends javax.swing.JFrame {
                     
                 case "journalarticle":
                     ComboBox_type.setSelectedIndex(1);
-                    TextField_year.setText(model.getValueAt(i,1).toString());
-                    TextField_publisher.setText(model.getValueAt(i,2).toString());
-                    TextField_author.setText(model.getValueAt(i,3).toString());
-                    TextField_title.setText(model.getValueAt(i,4).toString());
-                    int jarticleID = (int) model.getValueAt(i, 5);
-                    rs = stmt.executeQuery("SELECT pages FROM referencedocument WHERE documentID = "+jarticleID);
-                    rs.next();
-                    TextField_pages.setText(rs.getInt("pages")+"");
-       
+                    
                     Label_extra.setVisible(true);
                     TextField_extra.setVisible(true);
                     Label_extra1.setVisible(true);
                     TextField_extra1.setVisible(true);
                     Label_extra.setText("الصحيفة");
                     Label_extra1.setText("الحجم");
+                    
+                    if ( model.getValueAt(i,4) != null )
+                    { TextField_title.setText(model.getValueAt(i,4).toString()); }
+                    if ( model.getValueAt(i,3) != null )
+                    { TextField_author.setText(model.getValueAt(i,3).toString()); }
+                    if ( model.getValueAt(i,2) != null )
+                    { TextField_publisher.setText(model.getValueAt(i,2).toString()); }
+                     TextField_year.setText(model.getValueAt(i,1).toString());
+                    
+                    int jarticleID = (int) model.getValueAt(i, 5);
+                    rs = stmt.executeQuery("SELECT pages FROM referencedocument WHERE documentID = "+jarticleID);
+                    rs.next();
+                    TextField_pages.setText(rs.getInt("pages")+"");
+       
                     rs = stmt.executeQuery("SELECT * FROM journalarticle WHERE documentID = "+jarticleID);
                     rs.next();
                     TextField_extra.setText(rs.getString("journalName"));
@@ -534,21 +550,27 @@ public class Library extends javax.swing.JFrame {
                     
                 case "magazinearticle":
                     ComboBox_type.setSelectedIndex(2);
-                    TextField_year.setText(model.getValueAt(i,1).toString());
-                    TextField_publisher.setText(model.getValueAt(i,2).toString());
-                    TextField_author.setText(model.getValueAt(i,3).toString());
-                    TextField_title.setText(model.getValueAt(i,4).toString());
-                    int marticleID = (int) model.getValueAt(i, 5);
-                    rs = stmt.executeQuery("SELECT pages FROM referencedocument WHERE documentID = "+marticleID);
-                    rs.next();
-                    TextField_pages.setText(rs.getInt("pages")+"");
-       
+                    
                     Label_extra.setVisible(true);
                     TextField_extra.setVisible(true);
                     Label_extra1.setVisible(true);
                     TextField_extra1.setVisible(true);
                     Label_extra.setText("المجلة");
                     Label_extra1.setText("الشهر");
+                    
+                    if ( model.getValueAt(i,4) != null )
+                    { TextField_title.setText(model.getValueAt(i,4).toString()); }
+                    if ( model.getValueAt(i,3) != null )
+                    { TextField_author.setText(model.getValueAt(i,3).toString()); }
+                    if ( model.getValueAt(i,2) != null )
+                    { TextField_publisher.setText(model.getValueAt(i,2).toString()); }
+                     TextField_year.setText(model.getValueAt(i,1).toString());
+                    
+                    int marticleID = (int) model.getValueAt(i, 5);
+                    rs = stmt.executeQuery("SELECT pages FROM referencedocument WHERE documentID = "+marticleID);
+                    rs.next();
+                    TextField_pages.setText(rs.getInt("pages")+"");
+       
                     rs = stmt.executeQuery("SELECT * FROM magazinearticle WHERE documentID = "+marticleID);
                     rs.next();
                     TextField_extra.setText(rs.getString("magazineName"));
@@ -557,21 +579,27 @@ public class Library extends javax.swing.JFrame {
                     
                 case "webpage":
                     ComboBox_type.setSelectedIndex(3);
-                    TextField_year.setText(model.getValueAt(i,1).toString());
-                    TextField_publisher.setText(model.getValueAt(i,2).toString());
-                    TextField_author.setText(model.getValueAt(i,3).toString());
-                    TextField_title.setText(model.getValueAt(i,4).toString());
-                    int webID = (int) model.getValueAt(i, 5);
-                    rs = stmt.executeQuery("SELECT pages FROM referencedocument WHERE documentID = "+webID);
-                    rs.next();
-                    TextField_pages.setText(rs.getInt("pages")+"");
-       
+                    
                     Label_extra.setVisible(true);
                     TextField_extra.setVisible(true);
                     Label_extra1.setVisible(true);
                     TextField_extra1.setVisible(true);
                     Label_extra.setText("الرابط");
                     Label_extra1.setText("تاريخ الوصول");
+                    
+                    if ( model.getValueAt(i,4) != null )
+                    { TextField_title.setText(model.getValueAt(i,4).toString()); }
+                    if ( model.getValueAt(i,3) != null )
+                    { TextField_author.setText(model.getValueAt(i,3).toString()); }
+                    if ( model.getValueAt(i,2) != null )
+                    { TextField_publisher.setText(model.getValueAt(i,2).toString()); }
+                     TextField_year.setText(model.getValueAt(i,1).toString());
+                    
+                    int webID = (int) model.getValueAt(i, 5);
+                    rs = stmt.executeQuery("SELECT pages FROM referencedocument WHERE documentID = "+webID);
+                    rs.next();
+                    TextField_pages.setText(rs.getInt("pages")+"");
+       
                     rs = stmt.executeQuery("SELECT * FROM webpage WHERE documentID = "+webID);
                     rs.next();
                     TextField_extra.setText(rs.getString("url"));
@@ -580,21 +608,27 @@ public class Library extends javax.swing.JFrame {
                     
                     case "conferenceproceeding":
                     ComboBox_type.setSelectedIndex(4);
-                    TextField_year.setText(model.getValueAt(i,1).toString());
-                    TextField_publisher.setText(model.getValueAt(i,2).toString());
-                    TextField_author.setText(model.getValueAt(i,3).toString());
-                    TextField_title.setText(model.getValueAt(i,4).toString());
-                    int cpID = (int) model.getValueAt(i, 5);
-                    rs = stmt.executeQuery("SELECT pages FROM referencedocument WHERE documentID = "+cpID);
-                    rs.next();
-                    TextField_pages.setText(rs.getInt("pages")+"");
-       
+                    
                     Label_extra.setVisible(true);
                     TextField_extra.setVisible(true);
                     Label_extra1.setVisible(true);
                     TextField_extra1.setVisible(true);
                     Label_extra.setText("المؤتمر");
                     Label_extra1.setText("المكان");
+                    
+                    if ( model.getValueAt(i,4) != null )
+                    { TextField_title.setText(model.getValueAt(i,4).toString()); }
+                    if ( model.getValueAt(i,3) != null )
+                    { TextField_author.setText(model.getValueAt(i,3).toString()); }
+                    if ( model.getValueAt(i,2) != null )
+                    { TextField_publisher.setText(model.getValueAt(i,2).toString()); }
+                     TextField_year.setText(model.getValueAt(i,1).toString());
+                    
+                    int cpID = (int) model.getValueAt(i, 5);
+                    rs = stmt.executeQuery("SELECT pages FROM referencedocument WHERE documentID = "+cpID);
+                    rs.next();
+                    TextField_pages.setText(rs.getInt("pages")+"");
+       
                     rs = stmt.executeQuery("SELECT * FROM conferenceproceeding WHERE documentID = "+cpID);
                     rs.next();
                     TextField_extra.setText(rs.getString("conferenceName"));
@@ -603,14 +637,20 @@ public class Library extends javax.swing.JFrame {
                     
                 case "other":
                     ComboBox_type.setSelectedIndex(5);
+                    
                     Label_extra.setVisible(false);
                     TextField_extra.setVisible(false);
                     Label_extra1.setVisible(false);
                     TextField_extra1.setVisible(false);
-                    TextField_year.setText(model.getValueAt(i,1).toString());
-                    TextField_publisher.setText(model.getValueAt(i,2).toString());
-                    TextField_author.setText(model.getValueAt(i,3).toString());
-                    TextField_title.setText(model.getValueAt(i,4).toString());
+                    
+                    if ( model.getValueAt(i,4) != null )
+                    { TextField_title.setText(model.getValueAt(i,4).toString()); }
+                    if ( model.getValueAt(i,3) != null )
+                    { TextField_author.setText(model.getValueAt(i,3).toString()); }
+                    if ( model.getValueAt(i,2) != null )
+                    { TextField_publisher.setText(model.getValueAt(i,2).toString()); }
+                     TextField_year.setText(model.getValueAt(i,1).toString());
+                    
                     int otherID = (int) model.getValueAt(i, 5);
                     rs = stmt.executeQuery("SELECT pages FROM referencedocument WHERE documentID = "+otherID);
                     rs.next();
@@ -625,6 +665,30 @@ public class Library extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_DocsListMouseClicked
 
+   /* public void ExecuteMyQuery(String query)
+    {
+        Connection con = DBConnection();
+        Statement stmt;
+        
+        try
+        {
+            stmt = con.createStatement();
+            stmt.executeUpdate(query);
+            
+        } catch (Exception ex)
+        {
+            System.out.print(ex.getMessage());
+        }
+        
+        RefereshTable();
+    } */
+    
+    public void RefereshTable()
+    {
+         DefaultTableModel defModel = (DefaultTableModel) DocsList.getModel();
+         defModel.setRowCount(0);
+         ShowDocuments();
+    }
     private void Button_editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_editActionPerformed
         // TODO add your handling code here:
         //
@@ -650,36 +714,48 @@ public class Library extends javax.swing.JFrame {
          PreparedStatement pst = con.prepareStatement(query);
          pst.execute();
          
+         RefereshTable();
+         
          switch (type)
          {
              case "book":
                   query = "update book set edition='"+value6+"' where documentID='"+ID+"' ";
                   pst = con.prepareStatement(query);
                   pst.execute();
+                  
+                   RefereshTable();
                  break;
                  
              case "journalarticle":
                   query = "update journalarticle set journalName='"+value6+"' , volume='"+value7+"' where documentID='"+ID+"' ";
                   pst = con.prepareStatement(query);
                   pst.execute();
+                  
+                  RefereshTable();
                  break;
                  
              case "magazinearticle":
                  query = "update magazinearticle set magazineName='"+value6+"' , month='"+value7+"' where documentID='"+ID+"' ";
                  pst = con.prepareStatement(query);
                  pst.execute();
+                 
+                 RefereshTable();
                  break;
                  
              case "webpage":
                  query = "update webpage set url='"+value6+"' , AccessDate='"+value7+"' where documentID='"+ID+"' ";
                  pst = con.prepareStatement(query);
                  pst.execute();
+                 
+                 RefereshTable();
                  break;
                  
              case "conferenceproceeding":
                  query = "update conferenceproceeding set conferenceName='"+value6+"' , place='"+value7+"' where documentID='"+ID+"' ";
                  pst = con.prepareStatement(query);
                  pst.execute();
+                 
+                 RefereshTable();
                  break;
          }
 
@@ -754,7 +830,7 @@ public class Library extends javax.swing.JFrame {
                   if(rs.next()){
                  String title = rs.getString("title");
                  String author = rs.getString("author");
-                 int pages = rs.getInt("pages");
+             //  int pages = rs.getInt("pages");
                  String publisher = rs.getString("publisher");
                  int publishYear = rs.getInt("publishYear");
                  String dateAdded = rs.getString("DateAdded"); 

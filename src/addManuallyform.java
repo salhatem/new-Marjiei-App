@@ -132,7 +132,7 @@ public class addManuallyform extends javax.swing.JFrame {
             }
         });
 
-        addButton.setText("إضافة");
+        addButton.setText("إدخال");
         addButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 addButtonMouseClicked(evt);
@@ -259,7 +259,7 @@ public class addManuallyform extends javax.swing.JFrame {
                  rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '"+ titleTextField.getText() +"' AND author = '"+ authorTextField.getText() +"'");
                  rs.next();
                  int id = rs.getInt("documentID");
-                 stmt.executeUpdate("INSERT INTO book (documentID, edition)"+" VALUES ( '"+ id +"', '"+Integer.parseInt(extraInfo1TextField.getText())+"')");
+                 stmt.executeUpdate("INSERT INTO book (documentID, edition)"+" VALUES ( '"+ id +"', '"+Integer.parseInt(extraInfo1TextField.getText())+"')");                
               } catch (Exception ex)
                   {
                     System.out.println(ex.getMessage());
@@ -357,6 +357,7 @@ public class addManuallyform extends javax.swing.JFrame {
         } // End of switch
         
         this.setVisible(false);
+        
        /*  Library lib;
          lib = new Library();
          lib.setVisible(false);
