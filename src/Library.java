@@ -1,14 +1,19 @@
 
 import com.mysql.jdbc.Connection;
+import java.awt.HeadlessException;
+import java.io.IOException;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -185,6 +190,11 @@ public class Library extends javax.swing.JFrame {
 
         Button_add.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/addIcon.png"))); // NOI18N
         Button_add.setText("إضافة مرجع");
+        Button_add.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button_addActionPerformed(evt);
+            }
+        });
 
         Button_manually.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/manuallyIcon.png"))); // NOI18N
         Button_manually.setText("إدخال يدوي");
@@ -444,6 +454,7 @@ public class Library extends javax.swing.JFrame {
         // TODO add your handling code here:
         addManuallyform frame = new addManuallyform();
         frame.setVisible(true);
+       // addNewDoc();
     }//GEN-LAST:event_Button_manuallyActionPerformed
 
     private void DocsListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DocsListMouseClicked
@@ -454,6 +465,16 @@ public class Library extends javax.swing.JFrame {
         
        try 
         {
+                    TextField_year.setText(" ");
+                    TextField_publisher.setText(" ");
+                    TextField_author.setText(" ");
+                    TextField_title.setText(" ");
+                    TextField_pages.setText(" ");
+                    Label_extra.setVisible(false);
+                    TextField_extra.setVisible(false);
+                    Label_extra1.setVisible(false);
+                    TextField_extra1.setVisible(false);
+                    
             Connection con = DBConnection();
             Statement stmt = con.createStatement();
             int ID = (int) model.getValueAt(i, 5);
@@ -664,6 +685,59 @@ public class Library extends javax.swing.JFrame {
           }
     }//GEN-LAST:event_Button_editActionPerformed
 
+    private void Button_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_addActionPerformed
+        // TODO add your handling code here:
+        try 
+            {
+            JFileChooser chooser = new JFileChooser();
+            String fName = "";
+            //*****************filter***********************
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("Pdf file(.pdf)", "pdf");
+            chooser.setFileFilter(filter);
+            
+            //*****************JFileChooser*****************
+            int returnValue = chooser.showOpenDialog(null);
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+            fName = chooser.getSelectedFile().getPath();
+            }
+            
+            //**************get PDF file info***************
+            PDFManager pdfManager = new PDFManager();
+            pdfManager.setFilePath(fName);
+            pdfManager.ToText();  
+            addNewDoc();
+
+            } catch (HeadlessException | IOException ex)
+                  {
+                    System.out.println(ex.getMessage());
+                  }
+    }//GEN-LAST:event_Button_addActionPerformed
+
+        public void addNewDoc(){
+            String Query;
+            Connection con = DBConnection();
+            ResultSet rs;
+            
+              try{
+                Statement stmt = con.createStatement();
+                Query = "SELECT * FROM referencedocument WHERE documentID = (SELECT MAX(documentID) FROM referencedocument)";
+                rs = stmt.executeQuery(Query);
+                DefaultTableModel model = (DefaultTableModel) DocsList.getModel();
+                  if(rs.next()){
+                 String title = rs.getString("title");
+                 String author = rs.getString("author");
+                 int pages = rs.getInt("pages");
+                 String publisher = rs.getString("publisher");
+                 int publishYear = rs.getInt("publishYear");
+                 String dateAdded = rs.getString("DateAdded"); 
+                 String[] docs = {dateAdded, publishYear+"", publisher , author, title};
+                 model.addRow(docs); }
+                  
+                }catch(SQLException ex)
+                  {
+                    System.out.println(ex.getMessage());
+                  }
+}
     /**
      * @param args the command line arguments
      */
