@@ -206,6 +206,11 @@ public class Library extends javax.swing.JFrame {
 
         Button_delete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/deleteIcon.png"))); // NOI18N
         Button_delete.setText("حذف مرجع");
+        Button_delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button_deleteActionPerformed(evt);
+            }
+        });
 
         DocsList.setBackground(new java.awt.Color(249, 249, 249));
         DocsList.setModel(new javax.swing.table.DefaultTableModel(
@@ -712,6 +717,29 @@ public class Library extends javax.swing.JFrame {
                     System.out.println(ex.getMessage());
                   }
     }//GEN-LAST:event_Button_addActionPerformed
+
+    private void Button_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_deleteActionPerformed
+        // TODO add your handling code here:
+        
+        try {
+            int i = DocsList.getSelectedRow();
+            DefaultTableModel model = (DefaultTableModel)DocsList.getModel();
+            Connection con = DBConnection();
+            Statement stmt = con.createStatement();
+            int row = DocsList.getSelectedRow();
+            int ID = (int) model.getValueAt(i, 5);
+   
+                stmt.execute("DELETE FROM referencedocument WHERE documentID ="+ID+"");  
+                int  modelRow = DocsList.convertRowIndexToModel( row );
+                   JOptionPane.showConfirmDialog(null, "سيتم حذف المرجع", "Confirm",
+        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                  model.removeRow( modelRow );
+        }
+             catch(Exception e) {
+                e.printStackTrace();
+  System.out.println( e.getMessage( ) ); }
+    
+    }//GEN-LAST:event_Button_deleteActionPerformed
 
         public void addNewDoc(){
             String Query;

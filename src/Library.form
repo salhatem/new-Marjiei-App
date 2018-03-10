@@ -182,6 +182,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="&#x62d;&#x630;&#x641; &#x645;&#x631;&#x62c;&#x639;"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Button_deleteActionPerformed"/>
+          </Events>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane1">
           <AuxValues>
