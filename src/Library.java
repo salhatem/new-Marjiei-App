@@ -1,11 +1,13 @@
 
 import com.mysql.jdbc.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -267,6 +269,11 @@ public class Library extends javax.swing.JFrame {
 
         Button_edit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/editIcon.png"))); // NOI18N
         Button_edit.setText("تعديل مرجع");
+        Button_edit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button_editActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout Panel_editLayout = new javax.swing.GroupLayout(Panel_edit);
         Panel_edit.setLayout(Panel_editLayout);
@@ -294,13 +301,10 @@ public class Library extends javax.swing.JFrame {
                             .addComponent(Label_year)
                             .addComponent(Label_title)))
                     .addGroup(Panel_editLayout.createSequentialGroup()
+                        .addGap(24, 24, 24)
                         .addGroup(Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(Panel_editLayout.createSequentialGroup()
-                                .addGap(24, 24, 24)
-                                .addComponent(ComboBox_type, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(Panel_editLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(Button_edit)))
+                            .addComponent(Button_edit)
+                            .addComponent(ComboBox_type, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -337,9 +341,9 @@ public class Library extends javax.swing.JFrame {
                 .addGroup(Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Label_extra1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(TextField_extra1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(54, 54, 54)
+                .addGap(32, 32, 32)
                 .addComponent(Button_edit)
-                .addGap(41, 41, 41))
+                .addGap(63, 63, 63))
         );
 
         javax.swing.GroupLayout PanelLayout = new javax.swing.GroupLayout(Panel);
@@ -594,6 +598,71 @@ public class Library extends javax.swing.JFrame {
             System.out.print(ex.getMessage());
         }
     }//GEN-LAST:event_DocsListMouseClicked
+
+    private void Button_editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_editActionPerformed
+        // TODO add your handling code here:
+        
+        try{ 
+            int i = DocsList.getSelectedRow();
+            TableModel model = DocsList.getModel();
+            Connection con = DBConnection();
+            Statement stmt = con.createStatement();
+            int ID = (int) model.getValueAt(i, 5);
+            ResultSet rs = stmt.executeQuery("SELECT documentType FROM referencedocument WHERE documentID = "+ID);
+            rs.next();
+            String type = rs.getString("documentType");
+       
+         String value1= TextField_title.getText();
+         String value2= TextField_author.getText();
+         String value3= TextField_publisher.getText();
+         String value4= TextField_year.getText();  
+         String value5= TextField_pages.getText();
+         String value6= TextField_extra.getText();  
+         String value7= TextField_extra1.getText();
+         
+         String query = "update referencedocument set title='"+value1+"' , author='"+value2+"', publisher='"+value3+"', publishYear='"+value4+"', pages='"+value5+"' where documentID='"+ID+"' ";
+         PreparedStatement pst = con.prepareStatement(query);
+         pst.execute();
+         
+         switch (type)
+         {
+             case "book":
+                  query = "update book set edition='"+value6+"' where documentID='"+ID+"' ";
+                  pst = con.prepareStatement(query);
+                  pst.execute();
+                 break;
+                 
+             case "journalarticle":
+                  query = "update journalarticle set journalName='"+value6+"' , volume='"+value7+"' where documentID='"+ID+"' ";
+                  pst = con.prepareStatement(query);
+                  pst.execute();
+                 break;
+                 
+             case "magazinearticle":
+                 query = "update magazinearticle set magazineName='"+value6+"' , month='"+value7+"' where documentID='"+ID+"' ";
+                 pst = con.prepareStatement(query);
+                 pst.execute();
+                 break;
+                 
+             case "webpage":
+                 query = "update webpage set url='"+value6+"' , AccessDate='"+value7+"' where documentID='"+ID+"' ";
+                 pst = con.prepareStatement(query);
+                 pst.execute();
+                 break;
+                 
+             case "conferenceproceeding":
+                 query = "update conferenceproceeding set conferenceName='"+value6+"' , place='"+value7+"' where documentID='"+ID+"' ";
+                 pst = con.prepareStatement(query);
+                 pst.execute();
+                 break;
+         }
+
+         JOptionPane.showMessageDialog(null, "تم التحديث بنجاح");
+         }catch (Exception ex)
+          {
+              JOptionPane.showMessageDialog(null, ex.getMessage());
+          }
+    }//GEN-LAST:event_Button_editActionPerformed
 
     /**
      * @param args the command line arguments
