@@ -601,7 +601,7 @@ public class Library extends javax.swing.JFrame {
 
     private void Button_editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_editActionPerformed
         // TODO add your handling code here:
-        
+        //
         try{ 
             int i = DocsList.getSelectedRow();
             TableModel model = DocsList.getModel();
