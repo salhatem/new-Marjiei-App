@@ -802,11 +802,23 @@ public class Library extends javax.swing.JFrame {
                  break;
          }
 
+                    TextField_year.setText(" ");
+                    TextField_publisher.setText(" ");
+                    TextField_author.setText(" ");
+                    TextField_title.setText(" ");
+                    TextField_pages.setText(" ");
+                    TextField_extra.setText(" ");
+                    TextField_extra1.setText(" ");
+                    Label_extra.setVisible(false);
+                    TextField_extra.setVisible(false);
+                    Label_extra1.setVisible(false);
+                    TextField_extra1.setVisible(false);
+                    
          JOptionPane.showMessageDialog(null, "تم التحديث بنجاح");
          }catch (Exception ex)
           {
               JOptionPane.showMessageDialog(null, ex.getMessage());
-          }
+          }         
     }//GEN-LAST:event_Button_editActionPerformed
 
     private void Button_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_addActionPerformed
@@ -841,6 +853,12 @@ public class Library extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         try {
+            
+           int confirmed = JOptionPane.showConfirmDialog(null, "سيتم حذف المرجع", "تأكيد",
+        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                   // Check the user option
+                   if (confirmed == 0)
+                   {
             int i = DocsList.getSelectedRow();
             DefaultTableModel model = (DefaultTableModel)DocsList.getModel();
             Connection con = DBConnection();
@@ -850,9 +868,22 @@ public class Library extends javax.swing.JFrame {
    
                 stmt.execute("DELETE FROM referencedocument WHERE documentID ="+ID+"");  
                 int  modelRow = DocsList.convertRowIndexToModel( row );
-                   JOptionPane.showConfirmDialog(null, "سيتم حذف المرجع", "Confirm",
-        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                   
+                   
                   model.removeRow( modelRow );
+                  
+                    TextField_year.setText(" ");
+                    TextField_publisher.setText(" ");
+                    TextField_author.setText(" ");
+                    TextField_title.setText(" ");
+                    TextField_pages.setText(" ");
+                    TextField_extra.setText(" ");
+                    TextField_extra1.setText(" ");
+                    Label_extra.setVisible(false);
+                    TextField_extra.setVisible(false);
+                    Label_extra1.setVisible(false);
+                    TextField_extra1.setVisible(false);
+                   }
         }
              catch(Exception e) {
                 e.printStackTrace();
