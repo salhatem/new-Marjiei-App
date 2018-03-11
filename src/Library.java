@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import javafx.application.Platform;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -175,6 +176,7 @@ public class Library extends javax.swing.JFrame {
         Menu_file = new javax.swing.JMenu();
         MenuItem_add = new javax.swing.JMenuItem();
         MenuItem_manually = new javax.swing.JMenuItem();
+        MenuItem_edit = new javax.swing.JMenuItem();
         MenuItem_delete = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         MenuItem_folder = new javax.swing.JMenuItem();
@@ -236,9 +238,15 @@ public class Library extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(DocsList);
         if (DocsList.getColumnModel().getColumnCount() > 0) {
+            DocsList.getColumnModel().getColumn(0).setPreferredWidth(130);
+            DocsList.getColumnModel().getColumn(1).setPreferredWidth(30);
+            DocsList.getColumnModel().getColumn(2).setPreferredWidth(50);
+            DocsList.getColumnModel().getColumn(4).setPreferredWidth(150);
             DocsList.getColumnModel().getColumn(5).setMinWidth(0);
+            DocsList.getColumnModel().getColumn(5).setPreferredWidth(0);
             DocsList.getColumnModel().getColumn(5).setMaxWidth(0);
             DocsList.getColumnModel().getColumn(6).setResizable(false);
+            DocsList.getColumnModel().getColumn(6).setPreferredWidth(4);
         }
 
         TextField_search.setColumns(20);
@@ -386,7 +394,7 @@ public class Library extends javax.swing.JFrame {
         PanelLayout.setVerticalGroup(
             PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelLayout.createSequentialGroup()
-                .addGap(36, 36, 36)
+                .addContainerGap()
                 .addGroup(PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Panel_edit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(PanelLayout.createSequentialGroup()
@@ -404,27 +412,62 @@ public class Library extends javax.swing.JFrame {
 
         Menu_file.setText("ملف");
 
+        MenuItem_add.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
         MenuItem_add.setText("إضافة مرجع");
+        MenuItem_add.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuItem_addActionPerformed(evt);
+            }
+        });
         Menu_file.add(MenuItem_add);
 
+        MenuItem_manually.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
         MenuItem_manually.setText("إدخال يدوي");
+        MenuItem_manually.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuItem_manuallyActionPerformed(evt);
+            }
+        });
         Menu_file.add(MenuItem_manually);
 
+        MenuItem_edit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_MASK));
+        MenuItem_edit.setText("تعديل مرجع");
+        MenuItem_edit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuItem_editActionPerformed(evt);
+            }
+        });
+        Menu_file.add(MenuItem_edit);
+
+        MenuItem_delete.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
         MenuItem_delete.setText("حذف مرجع");
+        MenuItem_delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuItem_deleteActionPerformed(evt);
+            }
+        });
         Menu_file.add(MenuItem_delete);
         Menu_file.add(jSeparator1);
 
+        MenuItem_folder.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
         MenuItem_folder.setText("إنشاء مجلد");
         Menu_file.add(MenuItem_folder);
         Menu_file.add(jSeparator2);
 
+        MenuItem_exit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.SHIFT_MASK));
         MenuItem_exit.setText("خروج");
+        MenuItem_exit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuItem_exitActionPerformed(evt);
+            }
+        });
         Menu_file.add(MenuItem_exit);
 
         MenuBar.add(Menu_file);
 
         Menu_help.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/helpIcon.png"))); // NOI18N
 
+        MenuItem_help.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, java.awt.event.InputEvent.CTRL_MASK));
         MenuItem_help.setText("مساعدة");
         Menu_help.add(MenuItem_help);
 
@@ -817,6 +860,143 @@ public class Library extends javax.swing.JFrame {
     
     }//GEN-LAST:event_Button_deleteActionPerformed
 
+    private void MenuItem_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItem_addActionPerformed
+        // TODO add your handling code here:
+         try 
+            {
+            JFileChooser chooser = new JFileChooser();
+            String fName = "";
+            //*****************filter***********************
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("Pdf file(.pdf)", "pdf");
+            chooser.setFileFilter(filter);
+            
+            //*****************JFileChooser*****************
+            int returnValue = chooser.showOpenDialog(null);
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+            fName = chooser.getSelectedFile().getPath();
+            }
+            
+            //**************get PDF file info***************
+            PDFManager pdfManager = new PDFManager();
+            pdfManager.setFilePath(fName);
+            pdfManager.ToText();  
+            addNewDoc();
+
+            } catch (HeadlessException | IOException ex)
+                  {
+                    System.out.println(ex.getMessage());
+                  }
+    }//GEN-LAST:event_MenuItem_addActionPerformed
+
+    private void MenuItem_manuallyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItem_manuallyActionPerformed
+        // TODO add your handling code here:
+        addManuallyform frame = new addManuallyform();
+        frame.setVisible(true);
+    }//GEN-LAST:event_MenuItem_manuallyActionPerformed
+
+    private void MenuItem_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItem_deleteActionPerformed
+        // TODO add your handling code here:
+        try {
+            int i = DocsList.getSelectedRow();
+            DefaultTableModel model = (DefaultTableModel)DocsList.getModel();
+            Connection con = DBConnection();
+            Statement stmt = con.createStatement();
+            int row = DocsList.getSelectedRow();
+            int ID = (int) model.getValueAt(i, 5);
+   
+                stmt.execute("DELETE FROM referencedocument WHERE documentID ="+ID+"");  
+                int  modelRow = DocsList.convertRowIndexToModel( row );
+                   JOptionPane.showConfirmDialog(null, "سيتم حذف المرجع", "Confirm",
+        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                  model.removeRow( modelRow );
+        }
+             catch(Exception e) {
+                e.printStackTrace();
+  System.out.println( e.getMessage( ) ); }
+    }//GEN-LAST:event_MenuItem_deleteActionPerformed
+
+    private void MenuItem_exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItem_exitActionPerformed
+        // TODO add your handling code here:
+        Platform.exit();
+        System.exit(0);
+    }//GEN-LAST:event_MenuItem_exitActionPerformed
+
+    private void MenuItem_editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItem_editActionPerformed
+        // TODO add your handling code here:
+        try{ 
+            int i = DocsList.getSelectedRow();
+            TableModel model = DocsList.getModel();
+            Connection con = DBConnection();
+            Statement stmt = con.createStatement();
+            int ID = (int) model.getValueAt(i, 5);
+            ResultSet rs = stmt.executeQuery("SELECT documentType FROM referencedocument WHERE documentID = "+ID);
+            rs.next();
+            String type = rs.getString("documentType");
+       
+         String value1= TextField_title.getText();
+         String value2= TextField_author.getText();
+         String value3= TextField_publisher.getText();
+         String value4= TextField_year.getText();  
+         String value5= TextField_pages.getText();
+         String value6= TextField_extra.getText();  
+         String value7= TextField_extra1.getText();
+         
+         String query = "update referencedocument set title='"+value1+"' , author='"+value2+"', publisher='"+value3+"', publishYear='"+value4+"', pages='"+value5+"' where documentID='"+ID+"' ";
+         PreparedStatement pst = con.prepareStatement(query);
+         pst.execute();
+         
+         RefereshTable();
+         
+         switch (type)
+         {
+             case "book":
+                  query = "update book set edition='"+value6+"' where documentID='"+ID+"' ";
+                  pst = con.prepareStatement(query);
+                  pst.execute();
+                  
+                   RefereshTable();
+                 break;
+                 
+             case "journalarticle":
+                  query = "update journalarticle set journalName='"+value6+"' , volume='"+value7+"' where documentID='"+ID+"' ";
+                  pst = con.prepareStatement(query);
+                  pst.execute();
+                  
+                  RefereshTable();
+                 break;
+                 
+             case "magazinearticle":
+                 query = "update magazinearticle set magazineName='"+value6+"' , month='"+value7+"' where documentID='"+ID+"' ";
+                 pst = con.prepareStatement(query);
+                 pst.execute();
+                 
+                 RefereshTable();
+                 break;
+                 
+             case "webpage":
+                 query = "update webpage set url='"+value6+"' , AccessDate='"+value7+"' where documentID='"+ID+"' ";
+                 pst = con.prepareStatement(query);
+                 pst.execute();
+                 
+                 RefereshTable();
+                 break;
+                 
+             case "conferenceproceeding":
+                 query = "update conferenceproceeding set conferenceName='"+value6+"' , place='"+value7+"' where documentID='"+ID+"' ";
+                 pst = con.prepareStatement(query);
+                 pst.execute();
+                 
+                 RefereshTable();
+                 break;
+         }
+
+         JOptionPane.showMessageDialog(null, "تم التحديث بنجاح");
+         }catch (Exception ex)
+          {
+              JOptionPane.showMessageDialog(null, ex.getMessage());
+          }
+    }//GEN-LAST:event_MenuItem_editActionPerformed
+
         public void addNewDoc(){
             String Query;
             Connection con = DBConnection();
@@ -895,6 +1075,7 @@ public class Library extends javax.swing.JFrame {
     private javax.swing.JMenuBar MenuBar;
     private javax.swing.JMenuItem MenuItem_add;
     private javax.swing.JMenuItem MenuItem_delete;
+    private javax.swing.JMenuItem MenuItem_edit;
     private javax.swing.JMenuItem MenuItem_exit;
     private javax.swing.JMenuItem MenuItem_folder;
     private javax.swing.JMenuItem MenuItem_help;
