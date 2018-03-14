@@ -92,7 +92,7 @@ public class PDFManager {
                  FileInputStream fis = new FileInputStream(file);
                  int len = (int)file.length();
                  // insert pdf file to db
-                 Query = ("INSERT INTO referencedocument (documentType, title, author, pages, referenceFile)"+" VALUES(?, ?, ? ,? ,?)");
+                 Query = ("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, referenceFile)"+" VALUES(?, ?, ? ,? ,?)");
                  pstmt = con.prepareStatement(Query);
                  pstmt.setString(1, "book");
                  pstmt.setString(2, title);

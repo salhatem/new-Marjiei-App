@@ -49,11 +49,15 @@ public class Library extends javax.swing.JFrame {
             DocsList.getColumnModel().getColumn(i).setCellRenderer(rightRenderer);
         }
         Sort();
-        ComboBox_type.setVisible(false);
         Label_extra.setVisible(false);
         TextField_extra.setVisible(false);
         Label_extra1.setVisible(false);
         TextField_extra1.setVisible(false);
+        
+        extraInfo1Label.setVisible(true);
+        extraInfo1TextField.setVisible(true);
+        extraInfo2Label.setVisible(false);
+        extraInfo2TextField.setVisible(false);
     }
      
     public Connection DBConnection()
@@ -149,12 +153,12 @@ public class Library extends javax.swing.JFrame {
 
         Panel = new javax.swing.JPanel();
         Button_add = new javax.swing.JButton();
-        Button_manually = new javax.swing.JButton();
         Button_delete = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         DocsList = new javax.swing.JTable();
         TextField_search = new javax.swing.JTextField();
         Label_searchIcon = new javax.swing.JLabel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
         Panel_edit = new javax.swing.JPanel();
         Label_title = new javax.swing.JLabel();
         Label_author = new javax.swing.JLabel();
@@ -172,6 +176,24 @@ public class Library extends javax.swing.JFrame {
         TextField_pages = new javax.swing.JTextField();
         TextField_extra1 = new javax.swing.JTextField();
         Button_edit = new javax.swing.JButton();
+        Panel_manually = new javax.swing.JPanel();
+        typeCombobox = new javax.swing.JComboBox<>();
+        titleLabel = new javax.swing.JLabel();
+        titleTextField = new javax.swing.JTextField();
+        publisherLabel = new javax.swing.JLabel();
+        publisherTextField = new javax.swing.JTextField();
+        pagesLabel = new javax.swing.JLabel();
+        pagesTextField = new javax.swing.JTextField();
+        extraInfo2Label = new javax.swing.JLabel();
+        extraInfo2TextField = new javax.swing.JTextField();
+        authorLabel = new javax.swing.JLabel();
+        authorTextField = new javax.swing.JTextField();
+        yearLabel = new javax.swing.JLabel();
+        yearTextField = new javax.swing.JTextField();
+        extraInfo1Label = new javax.swing.JLabel();
+        extraInfo1TextField = new javax.swing.JTextField();
+        addButton = new javax.swing.JButton();
+        Panel_folders = new javax.swing.JPanel();
         MenuBar = new javax.swing.JMenuBar();
         Menu_file = new javax.swing.JMenu();
         MenuItem_add = new javax.swing.JMenuItem();
@@ -195,14 +217,6 @@ public class Library extends javax.swing.JFrame {
         Button_add.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Button_addActionPerformed(evt);
-            }
-        });
-
-        Button_manually.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/manuallyIcon.png"))); // NOI18N
-        Button_manually.setText("إدخال يدوي");
-        Button_manually.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Button_manuallyActionPerformed(evt);
             }
         });
 
@@ -258,6 +272,8 @@ public class Library extends javax.swing.JFrame {
 
         Label_searchIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/search.png"))); // NOI18N
 
+        jTabbedPane1.setBackground(new java.awt.Color(249, 249, 249));
+
         Panel_edit.setBackground(new java.awt.Color(249, 249, 249));
 
         Label_title.setText("العنوان");
@@ -275,6 +291,12 @@ public class Library extends javax.swing.JFrame {
         Label_extra1.setText("jLabel1");
 
         ComboBox_type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "كتاب", "مقال صحفي", "مقال مجلة", "صفحة ويب", "ورقة مؤتمر", "أخرى" }));
+        ComboBox_type.setSelectedIndex(5);
+        ComboBox_type.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ComboBox_typeActionPerformed(evt);
+            }
+        });
 
         TextField_title.setColumns(15);
 
@@ -291,7 +313,7 @@ public class Library extends javax.swing.JFrame {
         TextField_extra1.setColumns(15);
 
         Button_edit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/editIcon.png"))); // NOI18N
-        Button_edit.setText("تعديل مرجع");
+        Button_edit.setText("تعديل ");
         Button_edit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Button_editActionPerformed(evt);
@@ -305,7 +327,7 @@ public class Library extends javax.swing.JFrame {
             .addGroup(Panel_editLayout.createSequentialGroup()
                 .addGroup(Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_editLayout.createSequentialGroup()
-                        .addContainerGap(42, Short.MAX_VALUE)
+                        .addContainerGap(71, Short.MAX_VALUE)
                         .addGroup(Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(TextField_title, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(TextField_author, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -334,7 +356,7 @@ public class Library extends javax.swing.JFrame {
         Panel_editLayout.setVerticalGroup(
             Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_editLayout.createSequentialGroup()
-                .addContainerGap(51, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(ComboBox_type, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
                 .addGroup(Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -369,45 +391,204 @@ public class Library extends javax.swing.JFrame {
                 .addGap(63, 63, 63))
         );
 
+        jTabbedPane1.addTab("تعديل مرجع ", Panel_edit);
+
+        Panel_manually.setBackground(new java.awt.Color(249, 249, 249));
+
+        typeCombobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "كتاب", "مقال صحفي", "مقال مجلة", "صفحة ويب", "ورقة مؤتمر", "أخرى" }));
+        typeCombobox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                typeComboboxActionPerformed(evt);
+            }
+        });
+
+        titleLabel.setText("العنوان");
+
+        titleTextField.setColumns(10);
+        titleTextField.setToolTipText("");
+
+        publisherLabel.setText("الناشر");
+
+        publisherTextField.setColumns(10);
+
+        pagesLabel.setText("الصفحات");
+
+        pagesTextField.setColumns(10);
+
+        extraInfo2Label.setText("jLabel1");
+
+        extraInfo2TextField.setColumns(10);
+
+        authorLabel.setText("المؤلف");
+
+        authorTextField.setColumns(10);
+        authorTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                authorTextFieldActionPerformed(evt);
+            }
+        });
+
+        yearLabel.setText("سنة النشر");
+
+        yearTextField.setColumns(10);
+
+        extraInfo1Label.setText("الطبعة");
+
+        extraInfo1TextField.setColumns(10);
+
+        addButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/manuallyIcon.png"))); // NOI18N
+        addButton.setText("إدخال ");
+        addButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addButtonMouseClicked(evt);
+            }
+        });
+        addButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout Panel_manuallyLayout = new javax.swing.GroupLayout(Panel_manually);
+        Panel_manually.setLayout(Panel_manuallyLayout);
+        Panel_manuallyLayout.setHorizontalGroup(
+            Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Panel_manuallyLayout.createSequentialGroup()
+                .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(Panel_manuallyLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(typeCombobox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(Panel_manuallyLayout.createSequentialGroup()
+                        .addGap(61, 61, 61)
+                        .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(Panel_manuallyLayout.createSequentialGroup()
+                                .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(authorTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(titleTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(publisherTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(yearTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(32, 32, 32)
+                                .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(yearLabel)
+                                    .addComponent(publisherLabel)
+                                    .addComponent(titleLabel)
+                                    .addComponent(authorLabel)))
+                            .addGroup(Panel_manuallyLayout.createSequentialGroup()
+                                .addComponent(pagesTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(32, 32, 32)
+                                .addComponent(pagesLabel))
+                            .addGroup(Panel_manuallyLayout.createSequentialGroup()
+                                .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(extraInfo1TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(extraInfo2TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(32, 32, 32)
+                                .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(extraInfo2Label)
+                                    .addComponent(extraInfo1Label)))))
+                    .addGroup(Panel_manuallyLayout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(addButton)))
+                .addContainerGap(46, Short.MAX_VALUE))
+        );
+        Panel_manuallyLayout.setVerticalGroup(
+            Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Panel_manuallyLayout.createSequentialGroup()
+                .addGap(64, 64, 64)
+                .addComponent(typeCombobox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(titleLabel)
+                    .addComponent(titleTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(authorTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(authorLabel))
+                .addGap(18, 18, 18)
+                .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(publisherLabel)
+                    .addComponent(publisherTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(yearLabel)
+                    .addComponent(yearTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(pagesTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pagesLabel))
+                .addGap(18, 18, 18)
+                .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(extraInfo1Label)
+                    .addComponent(extraInfo1TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(extraInfo2Label)
+                    .addComponent(extraInfo2TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(53, 53, 53)
+                .addComponent(addButton)
+                .addContainerGap(99, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("إدخال يدوي", Panel_manually);
+
+        Panel_folders.setBackground(new java.awt.Color(249, 249, 249));
+
+        javax.swing.GroupLayout Panel_foldersLayout = new javax.swing.GroupLayout(Panel_folders);
+        Panel_folders.setLayout(Panel_foldersLayout);
+        Panel_foldersLayout.setHorizontalGroup(
+            Panel_foldersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 276, Short.MAX_VALUE)
+        );
+        Panel_foldersLayout.setVerticalGroup(
+            Panel_foldersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 543, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("الملفات", Panel_folders);
+
         javax.swing.GroupLayout PanelLayout = new javax.swing.GroupLayout(Panel);
         Panel.setLayout(PanelLayout);
         PanelLayout.setHorizontalGroup(
             PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(Panel_edit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 625, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PanelLayout.createSequentialGroup()
+                        .addGap(0, 135, Short.MAX_VALUE)
+                        .addComponent(Button_delete)
+                        .addGap(18, 18, 18)
+                        .addComponent(Button_add)
+                        .addGap(41, 41, 41)
                         .addComponent(TextField_search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Label_searchIcon)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(Button_delete)
-                        .addGap(18, 18, 18)
-                        .addComponent(Button_manually)
-                        .addGap(18, 18, 18)
-                        .addComponent(Button_add)))
+                        .addGap(16, 16, 16))
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
         );
         PanelLayout.setVerticalGroup(
             PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Panel_edit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(PanelLayout.createSequentialGroup()
                         .addGroup(PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(PanelLayout.createSequentialGroup()
+                                .addGap(22, 22, 22)
                                 .addGroup(PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(Button_manually)
-                                    .addComponent(Button_delete))
-                                .addComponent(Button_add))
-                            .addComponent(TextField_search, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Label_searchIcon, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE))))
+                                    .addComponent(Button_add)
+                                    .addComponent(Button_delete)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(TextField_search, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(Label_searchIcon, javax.swing.GroupLayout.Alignment.TRAILING))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 570, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(PanelLayout.createSequentialGroup()
+                        .addGap(47, 47, 47)
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 571, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 8, Short.MAX_VALUE))
         );
 
         Menu_file.setText("ملف");
@@ -483,9 +664,7 @@ public class Library extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .addComponent(Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -498,18 +677,9 @@ public class Library extends javax.swing.JFrame {
         Search(key);
     }//GEN-LAST:event_TextField_searchKeyReleased
 
-    private void Button_manuallyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_manuallyActionPerformed
-        // TODO add your handling code here:
-        addManuallyform frame = new addManuallyform();
-        frame.setVisible(true);
-        
-       // RefereshTable();
-       // addNewDoc();
-    }//GEN-LAST:event_Button_manuallyActionPerformed
-
     private void DocsListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DocsListMouseClicked
         // TODO add your handling code here:
-        ComboBox_type.setVisible(true);
+        jTabbedPane1.setSelectedComponent(Panel_edit);
         int i = DocsList.getSelectedRow();
       TableModel model = DocsList.getModel();  
         
@@ -708,23 +878,29 @@ public class Library extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_DocsListMouseClicked
 
-   /* public void ExecuteMyQuery(String query)
+  /*  public void ExecuteMyQuery(String type, String title, String author, String publisher, int year, int pages, String extra, String extra1)
     {
         Connection con = DBConnection();
+        ResultSet rs;
         Statement stmt;
         
         try
         {
             stmt = con.createStatement();
+            String query;
+            query = "INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear)"+" VALUES ('"+type+"', '"+title+"', '"+author+"', '"+pages+"', '"+publisher+"', '"+year+"')";
             stmt.executeUpdate(query);
-            
+            RefereshTable();
+            rs = stmt.executeQuery("SELECT documentID FROM referencedocumentWHERE title = '"+title+"' AND author = '"+author+"'");
+            rs.next();
+            int id = rs.getInt("documentID");
+            stmt.executeUpdate("INSERT INTO book (documentID, edition)"+" VALUES ( '"+ id +"', '"+Integer.parseInt(extra)+"')");
         } catch (Exception ex)
         {
             System.out.print(ex.getMessage());
         }
         
-        RefereshTable();
-    } */
+    } */ 
     
     public void RefereshTable()
     {
@@ -841,8 +1017,9 @@ public class Library extends javax.swing.JFrame {
             PDFManager pdfManager = new PDFManager();
             pdfManager.setFilePath(fName);
             pdfManager.ToText();  
-            addNewDoc();
-
+            
+          //  addNewDoc();
+            RefereshTable();
             } catch (HeadlessException | IOException ex)
                   {
                     System.out.println(ex.getMessage());
@@ -911,7 +1088,8 @@ public class Library extends javax.swing.JFrame {
             PDFManager pdfManager = new PDFManager();
             pdfManager.setFilePath(fName);
             pdfManager.ToText();  
-            addNewDoc();
+           // addNewDoc();
+            RefereshTable();
 
             } catch (HeadlessException | IOException ex)
                   {
@@ -921,8 +1099,140 @@ public class Library extends javax.swing.JFrame {
 
     private void MenuItem_manuallyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItem_manuallyActionPerformed
         // TODO add your handling code here:
-        addManuallyform frame = new addManuallyform();
-        frame.setVisible(true);
+        
+        // document information insertion
+        int index = typeCombobox.getSelectedIndex();
+      //  Library lib = new Library();
+      Connection con = DBConnection();
+      Statement stmt; 
+      ResultSet rs;
+        switch ( index )
+        {
+            case 0:
+            // Code to insert book information here.
+              try
+            {
+             //   DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00:00");
+                //   LocalDate localDate = LocalDate.now();
+                stmt = con.createStatement();
+                stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear)"+" VALUES ('book', '"+titleTextField.getText()+"', '"+authorTextField.getText()+"', '"+Integer.parseInt(pagesTextField.getText())+"', '"+publisherTextField.getText()+"', '"+Integer.parseInt(yearTextField.getText())+"')");
+                rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '"+ titleTextField.getText() +"' AND author = '"+ authorTextField.getText() +"'");
+                rs.next();
+                int id = rs.getInt("documentID");
+                stmt.executeUpdate("INSERT INTO book (documentID, edition)"+" VALUES ( '"+ id +"', '"+Integer.parseInt(extraInfo1TextField.getText())+"')");
+                RefereshTable();
+            } catch (Exception ex)
+            {
+                System.out.println(ex.getMessage());
+            } 
+
+         /*   String type = "book";
+            String title = titleTextField.getText();
+            String author = authorTextField.getText();
+            int pages = Integer.parseInt(pagesTextField.getText());
+            String publisher = publisherTextField.getText();
+            int year = Integer.parseInt(yearTextField.getText());
+            String extra = extraInfo1TextField.getText();
+
+            lib.ExecuteMyQuery(type, title, author, publisher, year, pages, extra, null); */
+
+            break;
+            case 1:
+            // Code to insert journal article information here.
+            try
+            {
+               // DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00:00");
+                //    LocalDate localDate = LocalDate.now();
+                stmt = con.createStatement();
+                stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear)"+" VALUES ('journalarticle', '"+titleTextField.getText()+"', '"+authorTextField.getText()+"', '"+Integer.parseInt(pagesTextField.getText())+"', '"+publisherTextField.getText()+"', '"+Integer.parseInt(yearTextField.getText())+"')");
+                rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '"+ titleTextField.getText() +"' AND author = '"+ authorTextField.getText() +"'");
+                rs.next();
+                int id = rs.getInt("documentID");
+                stmt.executeUpdate("INSERT INTO journalarticle (documentID, journalName, volume)"+" VALUES ( '"+ id +"', '"+extraInfo1TextField.getText()+"', '"+extraInfo2TextField.getText()+"')");
+                RefereshTable();
+            } catch (Exception ex)
+            {
+                System.out.println(ex.getMessage());
+            }
+            break;
+
+            case 2:
+            // Code to insert magazine article information here.
+            try
+            {
+              //  DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00:00");
+                //     LocalDate localDate = LocalDate.now();
+                stmt = con.createStatement();
+                stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear)"+" VALUES ('magazinearticle', '"+titleTextField.getText()+"', '"+authorTextField.getText()+"', '"+Integer.parseInt(pagesTextField.getText())+"', '"+publisherTextField.getText()+"', '"+Integer.parseInt(yearTextField.getText())+"')");
+                rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '"+ titleTextField.getText() +"' AND author = '"+ authorTextField.getText() +"'");
+                rs.next();
+                int id = rs.getInt("documentID");
+                stmt.executeUpdate("INSERT INTO magazinearticle (documentID, magazineName, month) VALUES ( '"+ id +"', '"+extraInfo1TextField.getText()+"', '"+extraInfo2TextField.getText()+"')");
+                RefereshTable();
+            } catch (Exception ex)
+            {
+                System.out.println(ex.getMessage());
+            }
+
+            break;
+
+            case 3:
+            // Code to insert web page information here.
+            try
+            {
+             //   DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00:00");
+                //     LocalDate localDate = LocalDate.now();
+                stmt = con.createStatement();
+                stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear)"+" VALUES ('webpage', '"+titleTextField.getText()+"', '"+authorTextField.getText()+"', '"+Integer.parseInt(pagesTextField.getText())+"', '"+publisherTextField.getText()+"', '"+Integer.parseInt(yearTextField.getText())+"')");
+                rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '"+ titleTextField.getText() +"' AND author = '"+ authorTextField.getText() +"'");
+                rs.next();
+                int id = rs.getInt("documentID");
+                stmt.executeUpdate("INSERT INTO webpage (documentID, url, AccessDate) VALUES ( '"+ id +"', '"+extraInfo1TextField.getText()+"', '"+extraInfo2TextField.getText()+"')");
+                RefereshTable();
+            } catch (Exception ex)
+            {
+                System.out.println(ex.getMessage());
+            }
+
+            break;
+
+            case 4:
+            // Code to insert conference proceeding information here.
+            try
+            {
+             //   DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00:00");
+                //    LocalDate localDate = LocalDate.now();
+                stmt = con.createStatement();
+                stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear)"+" VALUES ('conferenceproceeding', '"+titleTextField.getText()+"', '"+authorTextField.getText()+"', '"+Integer.parseInt(pagesTextField.getText())+"', '"+publisherTextField.getText()+"', '"+Integer.parseInt(yearTextField.getText())+"')");
+                rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '"+ titleTextField.getText() +"' AND author = '"+ authorTextField.getText() +"'");
+                rs.next();
+                int id = rs.getInt("documentID");
+                stmt.executeUpdate("INSERT INTO conferenceproceeding (documentID, conferenceName, place) VALUES ( '"+ id +"', '"+extraInfo1TextField.getText()+"', '"+extraInfo2TextField.getText()+"')");
+                RefereshTable();
+            } catch (Exception ex)
+            {
+                System.out.println(ex.getMessage());
+            }
+
+            break;
+
+            case 5:
+            // Code to insert other document information here.
+            try
+            {
+            //    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00:00");
+                //   LocalDate localDate = LocalDate.now();
+                stmt = con.createStatement();
+                stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear)"+" VALUES ('other', '"+titleTextField.getText()+"', '"+authorTextField.getText()+"', '"+Integer.parseInt(pagesTextField.getText())+"', '"+publisherTextField.getText()+"', '"+Integer.parseInt(yearTextField.getText())+"')");
+                RefereshTable();
+            } catch (Exception ex)
+            {
+                System.out.println(ex.getMessage());
+            }
+
+            break;
+        } // End of switch
+        
     }//GEN-LAST:event_MenuItem_manuallyActionPerformed
 
     private void MenuItem_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItem_deleteActionPerformed
@@ -1028,7 +1338,290 @@ public class Library extends javax.swing.JFrame {
           }
     }//GEN-LAST:event_MenuItem_editActionPerformed
 
-        public void addNewDoc(){
+    private void typeComboboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeComboboxActionPerformed
+        // TODO add your handling code here:
+
+        // 'Type' Combobox Selection
+        int index = typeCombobox.getSelectedIndex();
+        switch ( index )
+        {
+            case 0:
+            // Code for show Book form
+            extraInfo1Label.setText("الطبعة");
+            extraInfo1Label.setVisible(true);
+            extraInfo1TextField.setVisible(true);
+            extraInfo2Label.setVisible(false);
+            extraInfo2TextField.setVisible(false);
+
+            break;
+            case 1:
+            // Code for show Journal Article form
+            extraInfo1Label.setText("الصحيفة");
+            extraInfo1Label.setVisible(true);
+            extraInfo1TextField.setVisible(true);
+            extraInfo2Label.setText("الحجم");
+            extraInfo2Label.setVisible(true);
+            extraInfo2TextField.setVisible(true);
+
+            break;
+            case 2:
+            // Code for show Magazine Article form
+            extraInfo1Label.setText("المجلة");
+            extraInfo1Label.setVisible(true);
+            extraInfo1TextField.setVisible(true);
+            extraInfo2Label.setText("الشهر");
+            extraInfo2Label.setVisible(true);
+            extraInfo2TextField.setVisible(true);
+
+            break;
+            case 3:
+            // Code for show Web Page form
+            extraInfo1Label.setText("الرابط");
+            extraInfo1Label.setVisible(true);
+            extraInfo1TextField.setVisible(true);
+            extraInfo2Label.setText("تاريخ الوصول");
+            extraInfo2Label.setVisible(true);
+            extraInfo2TextField.setVisible(true);
+
+            break;
+            case 4:
+            // Code for show Conference Proceeding form
+            extraInfo1Label.setText("المؤتمر");
+            extraInfo1Label.setVisible(true);
+            extraInfo1TextField.setVisible(true);
+            extraInfo2Label.setText("المكان");
+            extraInfo2Label.setVisible(true);
+            extraInfo2TextField.setVisible(true);
+
+            break;
+            case 5:
+            // Code for show Other Document form
+            extraInfo1Label.setVisible(false);
+            extraInfo1TextField.setVisible(false);
+            extraInfo2Label.setVisible(false);
+            extraInfo2TextField.setVisible(false);
+
+        } // End Switch Statment.
+
+    }//GEN-LAST:event_typeComboboxActionPerformed
+
+    private void authorTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_authorTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_authorTextFieldActionPerformed
+
+    private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addButtonMouseClicked
+
+    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
+        // TODO add your handling code here:
+
+        // document information insertion
+        int index = typeCombobox.getSelectedIndex();
+      //  Library lib = new Library();
+      Connection con = DBConnection();
+      Statement stmt; 
+      ResultSet rs;
+        switch ( index )
+        {
+            case 0:
+            // Code to insert book information here.
+              try
+            {
+             //   DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00:00");
+                //   LocalDate localDate = LocalDate.now();
+                stmt = con.createStatement();
+                stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear)"+" VALUES ('book', '"+titleTextField.getText()+"', '"+authorTextField.getText()+"', '"+Integer.parseInt(pagesTextField.getText())+"', '"+publisherTextField.getText()+"', '"+Integer.parseInt(yearTextField.getText())+"')");
+                rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '"+ titleTextField.getText() +"' AND author = '"+ authorTextField.getText() +"'");
+                rs.next();
+                int id = rs.getInt("documentID");
+                stmt.executeUpdate("INSERT INTO book (documentID, edition)"+" VALUES ( '"+ id +"', '"+Integer.parseInt(extraInfo1TextField.getText())+"')");
+                RefereshTable();
+            } catch (Exception ex)
+            {
+                System.out.println(ex.getMessage());
+            } 
+
+         /*   String type = "book";
+            String title = titleTextField.getText();
+            String author = authorTextField.getText();
+            int pages = Integer.parseInt(pagesTextField.getText());
+            String publisher = publisherTextField.getText();
+            int year = Integer.parseInt(yearTextField.getText());
+            String extra = extraInfo1TextField.getText();
+
+            lib.ExecuteMyQuery(type, title, author, publisher, year, pages, extra, null); */
+
+            break;
+            case 1:
+            // Code to insert journal article information here.
+            try
+            {
+               // DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00:00");
+                //    LocalDate localDate = LocalDate.now();
+                stmt = con.createStatement();
+                stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear)"+" VALUES ('journalarticle', '"+titleTextField.getText()+"', '"+authorTextField.getText()+"', '"+Integer.parseInt(pagesTextField.getText())+"', '"+publisherTextField.getText()+"', '"+Integer.parseInt(yearTextField.getText())+"')");
+                rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '"+ titleTextField.getText() +"' AND author = '"+ authorTextField.getText() +"'");
+                rs.next();
+                int id = rs.getInt("documentID");
+                stmt.executeUpdate("INSERT INTO journalarticle (documentID, journalName, volume)"+" VALUES ( '"+ id +"', '"+extraInfo1TextField.getText()+"', '"+extraInfo2TextField.getText()+"')");
+                RefereshTable();
+            } catch (Exception ex)
+            {
+                System.out.println(ex.getMessage());
+            }
+            break;
+
+            case 2:
+            // Code to insert magazine article information here.
+            try
+            {
+              //  DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00:00");
+                //     LocalDate localDate = LocalDate.now();
+                stmt = con.createStatement();
+                stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear)"+" VALUES ('magazinearticle', '"+titleTextField.getText()+"', '"+authorTextField.getText()+"', '"+Integer.parseInt(pagesTextField.getText())+"', '"+publisherTextField.getText()+"', '"+Integer.parseInt(yearTextField.getText())+"')");
+                rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '"+ titleTextField.getText() +"' AND author = '"+ authorTextField.getText() +"'");
+                rs.next();
+                int id = rs.getInt("documentID");
+                stmt.executeUpdate("INSERT INTO magazinearticle (documentID, magazineName, month) VALUES ( '"+ id +"', '"+extraInfo1TextField.getText()+"', '"+extraInfo2TextField.getText()+"')");
+                RefereshTable();
+            } catch (Exception ex)
+            {
+                System.out.println(ex.getMessage());
+            }
+
+            break;
+
+            case 3:
+            // Code to insert web page information here.
+            try
+            {
+             //   DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00:00");
+                //     LocalDate localDate = LocalDate.now();
+                stmt = con.createStatement();
+                stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear)"+" VALUES ('webpage', '"+titleTextField.getText()+"', '"+authorTextField.getText()+"', '"+Integer.parseInt(pagesTextField.getText())+"', '"+publisherTextField.getText()+"', '"+Integer.parseInt(yearTextField.getText())+"')");
+                rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '"+ titleTextField.getText() +"' AND author = '"+ authorTextField.getText() +"'");
+                rs.next();
+                int id = rs.getInt("documentID");
+                stmt.executeUpdate("INSERT INTO webpage (documentID, url, AccessDate) VALUES ( '"+ id +"', '"+extraInfo1TextField.getText()+"', '"+extraInfo2TextField.getText()+"')");
+                RefereshTable();
+            } catch (Exception ex)
+            {
+                System.out.println(ex.getMessage());
+            }
+
+            break;
+
+            case 4:
+            // Code to insert conference proceeding information here.
+            try
+            {
+             //   DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00:00");
+                //    LocalDate localDate = LocalDate.now();
+                stmt = con.createStatement();
+                stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear)"+" VALUES ('conferenceproceeding', '"+titleTextField.getText()+"', '"+authorTextField.getText()+"', '"+Integer.parseInt(pagesTextField.getText())+"', '"+publisherTextField.getText()+"', '"+Integer.parseInt(yearTextField.getText())+"')");
+                rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '"+ titleTextField.getText() +"' AND author = '"+ authorTextField.getText() +"'");
+                rs.next();
+                int id = rs.getInt("documentID");
+                stmt.executeUpdate("INSERT INTO conferenceproceeding (documentID, conferenceName, place) VALUES ( '"+ id +"', '"+extraInfo1TextField.getText()+"', '"+extraInfo2TextField.getText()+"')");
+                RefereshTable();
+            } catch (Exception ex)
+            {
+                System.out.println(ex.getMessage());
+            }
+
+            break;
+
+            case 5:
+            // Code to insert other document information here.
+            try
+            {
+            //    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00:00");
+                //   LocalDate localDate = LocalDate.now();
+                stmt = con.createStatement();
+                stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear)"+" VALUES ('other', '"+titleTextField.getText()+"', '"+authorTextField.getText()+"', '"+Integer.parseInt(pagesTextField.getText())+"', '"+publisherTextField.getText()+"', '"+Integer.parseInt(yearTextField.getText())+"')");
+                RefereshTable();
+            } catch (Exception ex)
+            {
+                System.out.println(ex.getMessage());
+            }
+
+            break;
+        } // End of switch
+
+       // this.setVisible(false);
+
+        /*  Library lib;
+        lib = new Library();
+        lib.setVisible(false);
+        lib.setVisible(true); */
+    }//GEN-LAST:event_addButtonActionPerformed
+
+    private void ComboBox_typeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboBox_typeActionPerformed
+        // TODO add your handling code here:
+        int index = typeCombobox.getSelectedIndex();
+        switch ( index )
+        {
+            case 0:
+            // Code for show Book form
+            Label_extra.setText("الطبعة");
+            Label_extra.setVisible(true);
+            TextField_extra.setVisible(true);
+            Label_extra1.setVisible(false);
+            TextField_extra1.setVisible(false);
+
+            break;
+            case 1:
+            // Code for show Journal Article form
+            Label_extra.setText("الصحيفة");
+            Label_extra.setVisible(true);
+            TextField_extra.setVisible(true);
+            Label_extra1.setText("الحجم");
+            Label_extra1.setVisible(true);
+            TextField_extra1.setVisible(true);
+
+            break;
+            case 2:
+            // Code for show Magazine Article form
+            Label_extra.setText("المجلة");
+            Label_extra.setVisible(true);
+            TextField_extra.setVisible(true);
+            Label_extra1.setText("الشهر");
+            Label_extra1.setVisible(true);
+            TextField_extra1.setVisible(true);
+
+            break;
+            case 3:
+            // Code for show Web Page form
+            Label_extra.setText("الرابط");
+            Label_extra.setVisible(true);
+            TextField_extra.setVisible(true);
+            Label_extra1.setText("تاريخ الوصول");
+            Label_extra1.setVisible(true);
+            TextField_extra1.setVisible(true);
+
+            break;
+            case 4:
+            // Code for show Conference Proceeding form
+            Label_extra.setText("المؤتمر");
+            Label_extra.setVisible(true);
+            TextField_extra.setVisible(true);
+            Label_extra1.setText("المكان");
+            Label_extra1.setVisible(true);
+            TextField_extra1.setVisible(true);
+
+            break;
+            case 5:
+            // Code for show Other Document form
+            Label_extra.setVisible(false);
+            TextField_extra.setVisible(false);
+            Label_extra1.setVisible(false);
+            TextField_extra1.setVisible(false);
+
+        } // End Switch Statment.
+    }//GEN-LAST:event_ComboBox_typeActionPerformed
+
+    /*    public void addNewDoc(){
             String Query;
             Connection con = DBConnection();
             ResultSet rs;
@@ -1039,20 +1632,30 @@ public class Library extends javax.swing.JFrame {
                 rs = stmt.executeQuery(Query);
                 DefaultTableModel model = (DefaultTableModel) DocsList.getModel();
                   if(rs.next()){
+                 int id = rs.getInt("documentID");
                  String title = rs.getString("title");
                  String author = rs.getString("author");
-             //  int pages = rs.getInt("pages");
+                // int pages = rs.getInt("pages");
                  String publisher = rs.getString("publisher");
                  int publishYear = rs.getInt("publishYear");
                  String dateAdded = rs.getString("DateAdded"); 
-                 String[] docs = {dateAdded, publishYear+"", publisher , author, title};
+             //    String[] docs = {dateAdded, publishYear+"", publisher, author, title, id+""};
+                 
+                 String[] docs = new String[6];
+                 docs[0] = rs.getString("DateAdded"); 
+                 docs[1] = rs.getInt("publishYear")+"";
+                 docs[2] = rs.getString("publisher");
+                 docs[3] = rs.getString("author");
+                 docs[4] = rs.getString("title");
+                 docs[5] = rs.getInt("documetID")+""; 
+                 
                  model.addRow(docs); }
                   
                 }catch(SQLException ex)
                   {
                     System.out.println(ex.getMessage());
                   }
-}
+} */
     /**
      * @param args the command line arguments
      */
@@ -1092,7 +1695,6 @@ public class Library extends javax.swing.JFrame {
     private javax.swing.JButton Button_add;
     private javax.swing.JButton Button_delete;
     private javax.swing.JButton Button_edit;
-    private javax.swing.JButton Button_manually;
     private javax.swing.JComboBox<String> ComboBox_type;
     private javax.swing.JTable DocsList;
     private javax.swing.JLabel Label_author;
@@ -1115,6 +1717,8 @@ public class Library extends javax.swing.JFrame {
     private javax.swing.JMenu Menu_help;
     private javax.swing.JPanel Panel;
     private javax.swing.JPanel Panel_edit;
+    private javax.swing.JPanel Panel_folders;
+    private javax.swing.JPanel Panel_manually;
     private javax.swing.JTextField TextField_author;
     private javax.swing.JTextField TextField_extra;
     private javax.swing.JTextField TextField_extra1;
@@ -1123,8 +1727,25 @@ public class Library extends javax.swing.JFrame {
     private javax.swing.JTextField TextField_search;
     private javax.swing.JTextField TextField_title;
     private javax.swing.JTextField TextField_year;
+    private javax.swing.JButton addButton;
+    private javax.swing.JLabel authorLabel;
+    private javax.swing.JTextField authorTextField;
+    private javax.swing.JLabel extraInfo1Label;
+    private javax.swing.JTextField extraInfo1TextField;
+    private javax.swing.JLabel extraInfo2Label;
+    private javax.swing.JTextField extraInfo2TextField;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JLabel pagesLabel;
+    private javax.swing.JTextField pagesTextField;
+    private javax.swing.JLabel publisherLabel;
+    private javax.swing.JTextField publisherTextField;
+    private javax.swing.JLabel titleLabel;
+    private javax.swing.JTextField titleTextField;
+    private javax.swing.JComboBox<String> typeCombobox;
+    private javax.swing.JLabel yearLabel;
+    private javax.swing.JTextField yearTextField;
     // End of variables declaration//GEN-END:variables
 }
