@@ -194,6 +194,8 @@ public class Library extends javax.swing.JFrame {
         extraInfo1TextField = new javax.swing.JTextField();
         addButton = new javax.swing.JButton();
         Panel_folders = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTree1 = new javax.swing.JTree();
         MenuBar = new javax.swing.JMenuBar();
         Menu_file = new javax.swing.JMenu();
         MenuItem_add = new javax.swing.JMenuItem();
@@ -238,7 +240,7 @@ public class Library extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, true, true, true, true, false, true
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -532,15 +534,24 @@ public class Library extends javax.swing.JFrame {
 
         Panel_folders.setBackground(new java.awt.Color(249, 249, 249));
 
+        jTree1.setBackground(new java.awt.Color(249, 249, 249));
+        jScrollPane2.setViewportView(jTree1);
+
         javax.swing.GroupLayout Panel_foldersLayout = new javax.swing.GroupLayout(Panel_folders);
         Panel_folders.setLayout(Panel_foldersLayout);
         Panel_foldersLayout.setHorizontalGroup(
             Panel_foldersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 276, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_foldersLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+                .addContainerGap())
         );
         Panel_foldersLayout.setVerticalGroup(
             Panel_foldersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 543, Short.MAX_VALUE)
+            .addGroup(Panel_foldersLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 521, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("الملفات", Panel_folders);
@@ -919,8 +930,36 @@ public class Library extends javax.swing.JFrame {
             int ID = (int) model.getValueAt(i, 5);
             ResultSet rs = stmt.executeQuery("SELECT documentType FROM referencedocument WHERE documentID = "+ID);
             rs.next();
-            String type = rs.getString("documentType");
-       
+            String oldType = rs.getString("documentType");
+            String newType = null;
+            int newTypeInt = ComboBox_type.getSelectedIndex();
+             switch (newTypeInt) 
+             {
+                 case 0: 
+                     newType = "book";
+                     break; 
+                 
+                 case 1: 
+                     newType = "journalarticle";
+                     break;
+                 
+                 case 2:
+                     newType = "magazinearticle";
+                     break;
+                     
+                 case 3: 
+                     newType = "webpage";
+                     break;
+                     
+                 case 4:
+                     newType = "conferenceproceeding";
+                     break;
+                     
+                 case 5:
+                     newType = "other";
+                     break;
+             } // End newTypeInt switch
+             
          String value1= TextField_title.getText();
          String value2= TextField_author.getText();
          String value3= TextField_publisher.getText();
@@ -935,48 +974,71 @@ public class Library extends javax.swing.JFrame {
          
          RefereshTable();
          
-         switch (type)
+         switch (oldType)
          {
              case "book":
-                  query = "update book set edition='"+value6+"' where documentID='"+ID+"' ";
-                  pst = con.prepareStatement(query);
-                  pst.execute();
-                  
-                   RefereshTable();
+                 stmt.execute("DELETE FROM book WHERE documentID ="+ID+"");
                  break;
                  
              case "journalarticle":
-                  query = "update journalarticle set journalName='"+value6+"' , volume='"+value7+"' where documentID='"+ID+"' ";
-                  pst = con.prepareStatement(query);
-                  pst.execute();
-                  
-                  RefereshTable();
+                 stmt.execute("DELETE FROM journalarticle WHERE documentID ="+ID+"");
                  break;
                  
              case "magazinearticle":
-                 query = "update magazinearticle set magazineName='"+value6+"' , month='"+value7+"' where documentID='"+ID+"' ";
-                 pst = con.prepareStatement(query);
-                 pst.execute();
-                 
-                 RefereshTable();
+                 stmt.execute("DELETE FROM magazinearticle WHERE documentID ="+ID+"");
                  break;
                  
              case "webpage":
-                 query = "update webpage set url='"+value6+"' , AccessDate='"+value7+"' where documentID='"+ID+"' ";
-                 pst = con.prepareStatement(query);
-                 pst.execute();
-                 
-                 RefereshTable();
+                 stmt.execute("DELETE FROM webpage WHERE documentID ="+ID+"");
                  break;
                  
              case "conferenceproceeding":
-                 query = "update conferenceproceeding set conferenceName='"+value6+"' , place='"+value7+"' where documentID='"+ID+"' ";
-                 pst = con.prepareStatement(query);
-                 pst.execute();
-                 
-                 RefereshTable();
+                 stmt.execute("DELETE FROM conferenceproceeding WHERE documentID ="+ID+"");
                  break;
+                 
          }
+         switch (newType)
+         {
+             case "book":
+                 stmt.executeUpdate("update referencedocument set documentType='book' where documentID='"+ID+"' ");
+                  if( stmt.executeUpdate("update book set edition='"+value6+"' where documentID='"+ID+"' ") != 1 );
+                 { stmt.executeUpdate("INSERT INTO book (documentID, edition)"+" VALUES ( '"+ ID +"', '"+value6+"')"); }
+
+                 break;
+                 
+             case "journalarticle":
+                 stmt.executeUpdate("update referencedocument set documentType='journalarticle' where documentID='"+ID+"' ");
+                 if( stmt.executeUpdate("update journalarticle set journalName='"+value6+"' , volume='"+value7+"' where documentID='"+ID+"' ") != 1 );
+                 { stmt.executeUpdate("INSERT INTO journalarticle (documentID, journalName, volume)"+" VALUES ( '"+ ID +"', '"+value6+"', '"+value7+"')"); }
+                  
+
+                 break;
+                 
+             case "magazinearticle":
+                 stmt.executeUpdate("update referencedocument set documentType='magazinearticle' where documentID='"+ID+"' ");
+                 if( stmt.executeUpdate("update magazinearticle set magazineName='"+value6+"' , month='"+value7+"' where documentID='"+ID+"' ") != 1 );
+                 { stmt.executeUpdate("INSERT INTO magazinearticle (documentID, magazineName, month)"+" VALUES ( '"+ ID +"', '"+value6+"', '"+value7+"')"); }
+                 break;
+                 
+             case "webpage":
+                 stmt.executeUpdate("update referencedocument set documentType='webpage' where documentID='"+ID+"' ");
+                 if( stmt.executeUpdate("update webpage set url='"+value6+"' , AccessDate='"+value7+"' where documentID='"+ID+"' ") != 1 );
+                 { stmt.executeUpdate("INSERT INTO webpage (documentID, url, AccessDate)"+" VALUES ( '"+ ID +"', '"+value6+"', '"+value7+"')"); }
+
+                 break;
+                 
+             case "conferenceproceeding":
+                 stmt.executeUpdate("update referencedocument set documentType='conferenceproceeding' where documentID='"+ID+"' ");
+                 if( stmt.executeUpdate("update conferenceproceeding set conferenceName='"+value6+"' , place='"+value7+"' where documentID='"+ID+"' ") != 1 );
+                 { stmt.executeUpdate("INSERT INTO conferenceproceeding (documentID, conferenceName, place)"+" VALUES ( '"+ ID +"', '"+value6+"', '"+value7+"')"); }
+
+                 break;
+                 
+             case "other": 
+                 stmt.executeUpdate("update referencedocument set documentType='other' where documentID='"+ID+"' ");
+                 break;
+                 
+         } // End newType switch
 
                     TextField_year.setText(" ");
                     TextField_publisher.setText(" ");
@@ -1049,6 +1111,7 @@ public class Library extends javax.swing.JFrame {
                    
                   model.removeRow( modelRow );
                   
+                   ComboBox_type.setSelectedIndex(5);
                     TextField_year.setText(" ");
                     TextField_publisher.setText(" ");
                     TextField_author.setText(" ");
@@ -1232,7 +1295,21 @@ public class Library extends javax.swing.JFrame {
 
             break;
         } // End of switch
-        
+
+                    typeCombobox.setSelectedIndex(0);
+                    titleTextField.setText(" ");
+                    publisherTextField.setText(" ");
+                    authorTextField.setText(" ");
+                    yearTextField.setText(" ");
+                    pagesTextField.setText(" ");
+                    extraInfo1TextField.setText(" ");
+                    extraInfo2TextField.setText(" ");
+                    extraInfo1Label.setVisible(true);
+                    extraInfo1Label.setText("الطبعة");
+                    extraInfo1TextField.setVisible(true);
+                    extraInfo2Label.setVisible(false);
+                    extraInfo2TextField.setVisible(false);
+                    
     }//GEN-LAST:event_MenuItem_manuallyActionPerformed
 
     private void MenuItem_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItem_deleteActionPerformed
@@ -1272,8 +1349,36 @@ public class Library extends javax.swing.JFrame {
             int ID = (int) model.getValueAt(i, 5);
             ResultSet rs = stmt.executeQuery("SELECT documentType FROM referencedocument WHERE documentID = "+ID);
             rs.next();
-            String type = rs.getString("documentType");
-       
+            String oldType = rs.getString("documentType");
+            String newType = null;
+            int newTypeInt = ComboBox_type.getSelectedIndex();
+             switch (newTypeInt) 
+             {
+                 case 0: 
+                     newType = "book";
+                     break; 
+                 
+                 case 1: 
+                     newType = "journalarticle";
+                     break;
+                 
+                 case 2:
+                     newType = "magazinearticle";
+                     break;
+                     
+                 case 3: 
+                     newType = "webpage";
+                     break;
+                     
+                 case 4:
+                     newType = "conferenceproceeding";
+                     break;
+                     
+                 case 5:
+                     newType = "other";
+                     break;
+             } // End newTypeInt switch
+             
          String value1= TextField_title.getText();
          String value2= TextField_author.getText();
          String value3= TextField_publisher.getText();
@@ -1288,54 +1393,89 @@ public class Library extends javax.swing.JFrame {
          
          RefereshTable();
          
-         switch (type)
+         switch (oldType)
          {
              case "book":
-                  query = "update book set edition='"+value6+"' where documentID='"+ID+"' ";
-                  pst = con.prepareStatement(query);
-                  pst.execute();
-                  
-                   RefereshTable();
+                 stmt.execute("DELETE FROM book WHERE documentID ="+ID+"");
                  break;
                  
              case "journalarticle":
-                  query = "update journalarticle set journalName='"+value6+"' , volume='"+value7+"' where documentID='"+ID+"' ";
-                  pst = con.prepareStatement(query);
-                  pst.execute();
-                  
-                  RefereshTable();
+                 stmt.execute("DELETE FROM journalarticle WHERE documentID ="+ID+"");
                  break;
                  
              case "magazinearticle":
-                 query = "update magazinearticle set magazineName='"+value6+"' , month='"+value7+"' where documentID='"+ID+"' ";
-                 pst = con.prepareStatement(query);
-                 pst.execute();
-                 
-                 RefereshTable();
+                 stmt.execute("DELETE FROM magazinearticle WHERE documentID ="+ID+"");
                  break;
                  
              case "webpage":
-                 query = "update webpage set url='"+value6+"' , AccessDate='"+value7+"' where documentID='"+ID+"' ";
-                 pst = con.prepareStatement(query);
-                 pst.execute();
-                 
-                 RefereshTable();
+                 stmt.execute("DELETE FROM webpage WHERE documentID ="+ID+"");
                  break;
                  
              case "conferenceproceeding":
-                 query = "update conferenceproceeding set conferenceName='"+value6+"' , place='"+value7+"' where documentID='"+ID+"' ";
-                 pst = con.prepareStatement(query);
-                 pst.execute();
-                 
-                 RefereshTable();
+                 stmt.execute("DELETE FROM conferenceproceeding WHERE documentID ="+ID+"");
                  break;
+                 
          }
+         switch (newType)
+         {
+             case "book":
+                 stmt.executeUpdate("update referencedocument set documentType='book' where documentID='"+ID+"' ");
+                  if( stmt.executeUpdate("update book set edition='"+value6+"' where documentID='"+ID+"' ") != 1 );
+                 { stmt.executeUpdate("INSERT INTO book (documentID, edition)"+" VALUES ( '"+ ID +"', '"+value6+"')"); }
 
+                 break;
+                 
+             case "journalarticle":
+                 stmt.executeUpdate("update referencedocument set documentType='journalarticle' where documentID='"+ID+"' ");
+                 if( stmt.executeUpdate("update journalarticle set journalName='"+value6+"' , volume='"+value7+"' where documentID='"+ID+"' ") != 1 );
+                 { stmt.executeUpdate("INSERT INTO journalarticle (documentID, journalName, volume)"+" VALUES ( '"+ ID +"', '"+value6+"', '"+value7+"')"); }
+                  
+
+                 break;
+                 
+             case "magazinearticle":
+                 stmt.executeUpdate("update referencedocument set documentType='magazinearticle' where documentID='"+ID+"' ");
+                 if( stmt.executeUpdate("update magazinearticle set magazineName='"+value6+"' , month='"+value7+"' where documentID='"+ID+"' ") != 1 );
+                 { stmt.executeUpdate("INSERT INTO magazinearticle (documentID, magazineName, month)"+" VALUES ( '"+ ID +"', '"+value6+"', '"+value7+"')"); }
+                 break;
+                 
+             case "webpage":
+                 stmt.executeUpdate("update referencedocument set documentType='webpage' where documentID='"+ID+"' ");
+                 if( stmt.executeUpdate("update webpage set url='"+value6+"' , AccessDate='"+value7+"' where documentID='"+ID+"' ") != 1 );
+                 { stmt.executeUpdate("INSERT INTO webpage (documentID, url, AccessDate)"+" VALUES ( '"+ ID +"', '"+value6+"', '"+value7+"')"); }
+
+                 break;
+                 
+             case "conferenceproceeding":
+                 stmt.executeUpdate("update referencedocument set documentType='conferenceproceeding' where documentID='"+ID+"' ");
+                 if( stmt.executeUpdate("update conferenceproceeding set conferenceName='"+value6+"' , place='"+value7+"' where documentID='"+ID+"' ") != 1 );
+                 { stmt.executeUpdate("INSERT INTO conferenceproceeding (documentID, conferenceName, place)"+" VALUES ( '"+ ID +"', '"+value6+"', '"+value7+"')"); }
+
+                 break;
+                 
+             case "other": 
+                 stmt.executeUpdate("update referencedocument set documentType='other' where documentID='"+ID+"' ");
+                 break;
+                 
+         } // End newType switch
+
+                    TextField_year.setText(" ");
+                    TextField_publisher.setText(" ");
+                    TextField_author.setText(" ");
+                    TextField_title.setText(" ");
+                    TextField_pages.setText(" ");
+                    TextField_extra.setText(" ");
+                    TextField_extra1.setText(" ");
+                    Label_extra.setVisible(false);
+                    TextField_extra.setVisible(false);
+                    Label_extra1.setVisible(false);
+                    TextField_extra1.setVisible(false);
+                    
          JOptionPane.showMessageDialog(null, "تم التحديث بنجاح");
          }catch (Exception ex)
           {
               JOptionPane.showMessageDialog(null, ex.getMessage());
-          }
+          }         
     }//GEN-LAST:event_MenuItem_editActionPerformed
 
     private void typeComboboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeComboboxActionPerformed
@@ -1549,17 +1689,25 @@ public class Library extends javax.swing.JFrame {
             break;
         } // End of switch
 
-       // this.setVisible(false);
-
-        /*  Library lib;
-        lib = new Library();
-        lib.setVisible(false);
-        lib.setVisible(true); */
+                    typeCombobox.setSelectedIndex(0);
+                    titleTextField.setText(" ");
+                    publisherTextField.setText(" ");
+                    authorTextField.setText(" ");
+                    yearTextField.setText(" ");
+                    pagesTextField.setText(" ");
+                    extraInfo1TextField.setText(" ");
+                    extraInfo2TextField.setText(" ");
+                    extraInfo1Label.setVisible(true);
+                    extraInfo1Label.setText("الطبعة");
+                    extraInfo1TextField.setVisible(true);
+                    extraInfo2Label.setVisible(false);
+                    extraInfo2TextField.setVisible(false);
+                    
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void ComboBox_typeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboBox_typeActionPerformed
         // TODO add your handling code here:
-        int index = typeCombobox.getSelectedIndex();
+        int index = ComboBox_type.getSelectedIndex();
         switch ( index )
         {
             case 0:
@@ -1735,9 +1883,11 @@ public class Library extends javax.swing.JFrame {
     private javax.swing.JLabel extraInfo2Label;
     private javax.swing.JTextField extraInfo2TextField;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTree jTree1;
     private javax.swing.JLabel pagesLabel;
     private javax.swing.JTextField pagesTextField;
     private javax.swing.JLabel publisherLabel;
