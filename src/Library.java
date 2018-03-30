@@ -107,7 +107,7 @@ public class Library extends javax.swing.JFrame {
             out.writeObject(e);
             out.close();
             fileOut.close();
-            System.out.printf("Serialized data is saved in model.ser");
+           // System.out.printf("Serialized data is saved in model.ser");
         } catch (IOException i) {
             i.printStackTrace();
         }
@@ -1072,18 +1072,20 @@ public class Library extends javax.swing.JFrame {
             RefereshTable();
             updateTree(chooser.getSelectedFile().getName(), documentId);
         } catch (HeadlessException | IOException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
+            JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
         }
     }//GEN-LAST:event_Button_importActionPerformed
 
     private void Button_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_deleteActionPerformed
         // TODO add your handling code here:
         try {
+            int i = DocsList.getSelectedRow();
+            if ( i != -1)
+            {
 
             int confirmed = JOptionPane.showConfirmDialog(null, "سيتم حذف المرجع", "تأكيد",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
-            int i = DocsList.getSelectedRow();
             DefaultTableModel model = (DefaultTableModel) DocsList.getModel();
             Connection con = DBConnection();
             Statement stmt = con.createStatement();
@@ -1114,6 +1116,10 @@ public class Library extends javax.swing.JFrame {
                 if (treeModelMap.getTreeMap().get(ID) != null) {
                     ((DefaultTreeModel) jTree1.getModel()).removeNodeFromParent(treeModelMap.getTreeMap().get(ID));
                 }
+            }
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "حدد مرجع للحذف");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1152,7 +1158,7 @@ public class Library extends javax.swing.JFrame {
             RefereshTable();
             updateTree(chooser.getSelectedFile().getName(), documentId);
         } catch (HeadlessException | IOException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
+            JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
         }
     }//GEN-LAST:event_MenuItem_addActionPerformed
 
@@ -1191,7 +1197,7 @@ public class Library extends javax.swing.JFrame {
                     updateTree(titleTextField.getText(), id);
                     RefereshTable();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
                 }
                 break;
 
@@ -1223,7 +1229,7 @@ public class Library extends javax.swing.JFrame {
                     updateTree(titleTextField.getText(), id);
                     RefereshTable();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
                 }
                 break;
 
@@ -1246,7 +1252,7 @@ public class Library extends javax.swing.JFrame {
                     updateTree(titleTextField.getText(), id);
                     RefereshTable();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
                 }
 
                 break;
@@ -1270,7 +1276,7 @@ public class Library extends javax.swing.JFrame {
                     updateTree(titleTextField.getText(), id);
                     RefereshTable();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
                 }
 
                 break;
@@ -1294,7 +1300,7 @@ public class Library extends javax.swing.JFrame {
                     updateTree(titleTextField.getText(), id);
                     RefereshTable();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
                 }
 
                 break;
@@ -1316,7 +1322,7 @@ public class Library extends javax.swing.JFrame {
                     updateTree(titleTextField.getText(), id);
                     RefereshTable();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
                 }
 
                 break;
@@ -1340,11 +1346,13 @@ public class Library extends javax.swing.JFrame {
     private void MenuItem_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItem_deleteActionPerformed
         // TODO add your handling code here:
         try {
+            int i = DocsList.getSelectedRow();
+            if ( i != -1)
+            {
 
             int confirmed = JOptionPane.showConfirmDialog(null, "سيتم حذف المرجع", "تأكيد",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
-            int i = DocsList.getSelectedRow();
             DefaultTableModel model = (DefaultTableModel) DocsList.getModel();
             Connection con = DBConnection();
             Statement stmt = con.createStatement();
@@ -1375,6 +1383,10 @@ public class Library extends javax.swing.JFrame {
                 if (treeModelMap.getTreeMap().get(ID) != null) {
                     ((DefaultTreeModel) jTree1.getModel()).removeNodeFromParent(treeModelMap.getTreeMap().get(ID));
                 }
+            }
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "حدد مرجع للحذف");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1537,7 +1549,7 @@ public class Library extends javax.swing.JFrame {
 
             JOptionPane.showMessageDialog(null, "تم التحديث بنجاح");
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
+            JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
         }
     }//GEN-LAST:event_MenuItem_editActionPerformed
 
@@ -1572,7 +1584,8 @@ public class Library extends javax.swing.JFrame {
                     stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear)"
                             + " VALUES ('book', '" + titleTextField.getText() + "', '" + authorTextField.getText()
                             + "', '" + Integer.parseInt(pagesTextField.getText()) + "', '" + publisherTextField.getText()
-                            + "', '" + Integer.parseInt(yearTextField.getText()) + "')");
+                            + "', '" + Integer.parseInt(yearTextField.getText()) + "')"); 
+
                     rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + titleTextField.getText()
                             + "' AND author = '" + authorTextField.getText() + "'");
                     rs.next();
@@ -1580,9 +1593,10 @@ public class Library extends javax.swing.JFrame {
                     stmt.executeUpdate("INSERT INTO book (documentID, edition)" + " VALUES ( '" + id + "', '"
                             + Integer.parseInt(extraInfo1TextField.getText()) + "')");  // Book Edition
                     updateTree(titleTextField.getText(), id);
-                    RefereshTable();
+                    RefereshTable(); 
+              
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
                 }
                 break;
 
@@ -1614,7 +1628,7 @@ public class Library extends javax.swing.JFrame {
                     updateTree(titleTextField.getText(), id);
                     RefereshTable();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
                 }
                 break;
 
@@ -1637,7 +1651,7 @@ public class Library extends javax.swing.JFrame {
                     updateTree(titleTextField.getText(), id);
                     RefereshTable();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
                 }
 
                 break;
@@ -1661,7 +1675,7 @@ public class Library extends javax.swing.JFrame {
                     updateTree(titleTextField.getText(), id);
                     RefereshTable();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
                 }
 
                 break;
@@ -1685,7 +1699,7 @@ public class Library extends javax.swing.JFrame {
                     updateTree(titleTextField.getText(), id);
                     RefereshTable();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
                 }
 
                 break;
@@ -1707,7 +1721,7 @@ public class Library extends javax.swing.JFrame {
                     updateTree(titleTextField.getText(), id);
                     RefereshTable();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
                 }
 
                 break;
@@ -1950,7 +1964,7 @@ public class Library extends javax.swing.JFrame {
 
             JOptionPane.showMessageDialog(null, "تم التحديث بنجاح");
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
+            JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
         }
     }//GEN-LAST:event_Button_editActionPerformed
 
