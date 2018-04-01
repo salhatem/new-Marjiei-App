@@ -53,33 +53,16 @@ public class PDFManager {
         DatabaseConnect();
     }
 
-    public int ToText() throws IOException {
-
+    public int ToText() throws IOException { 
+        
         int documentId = -1;
-
-       //this.pdfStripper = null;
-        //this.pdDoc = null;
-        //this.cosDoc = null;
         file = new File(filePath);
-
-        //parser = new PDFParser(new RandomAccessFile(file,"r")); // update for PDFBox V 2.0
-        //parser.parse();
-        //cosDoc = parser.getDocument();
-        //pdfStripper = new PDFTextStripper();
-        //pdDoc = new PDDocument(cosDoc);
-        //pdDoc.getNumberOfPages();
-        //pdfStripper.setStartPage(1);
-        //pdfStripper.setEndPage(10);
         PDDocument document = PDDocument.load(file);
+        // Extract Document Information
         PDDocumentInformation pdd = document.getDocumentInformation();
         author = pdd.getAuthor();
         title = pdd.getTitle();
         numberOfPages = document.getNumberOfPages();
-
-        //reading text from page 1 to 10
-        // if you want to get text from full pdf file use this code
-        // pdfStripper.setEndPage(pdDoc.getNumberOfPages());  
-        //Text = pdfStripper.getText(pdDoc);
         if (author == null) {
             author = "";
         } else if (title == null) {
@@ -87,25 +70,26 @@ public class PDFManager {
             int last = fileName.lastIndexOf(".");
             title = last >= 1 ? fileName.substring(0, last) : fileName;
         }
-        // Code to insert book information here.
+        
+        // Insert Document Information to Database.
         try {
-
             FileInputStream fis = new FileInputStream(file);
             int len = (int) file.length();
-            // insert pdf file to db
-            Query = ("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, referenceFile)" + " VALUES(?, ?, ? ,? ,?)");
+            Query = ("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, referenceFile)" 
+                    + " VALUES(?, ?, ? ,? ,?)");
             pstmt = con.prepareStatement(Query);
             pstmt.setString(1, "book");
             pstmt.setString(2, title);
             pstmt.setString(3, author);
             pstmt.setInt(4, numberOfPages);
-            // method to insert a stream of bytes
             pstmt.setBinaryStream(5, fis, len);
             pstmt.executeUpdate();
-            rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + title + "' AND author = '" + author + "'");
+            rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + title 
+                    + "' AND author = '" + author + "'");
             rs.next();
             documentId = rs.getInt("documentID");
             stmt.executeUpdate("INSERT INTO book (documentID, edition)" + " VALUES ( '" + documentId + "', '" + 0 + "')");
+            
             //*************************************************************
             File f = new File("m.pdf");
             FileOutputStream output = new FileOutputStream(f);

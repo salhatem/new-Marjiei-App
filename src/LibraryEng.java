@@ -40,7 +40,7 @@ import javax.swing.tree.TreePath;
  *
  * @author Shatha Suliman
  */
-public class Library extends javax.swing.JFrame {
+public class LibraryEng extends javax.swing.JFrame {
 
 //    private HashMap<Integer, DefaultMutableTreeNode> treeMap;
     private TreeModelMap treeModelMap;
@@ -48,7 +48,7 @@ public class Library extends javax.swing.JFrame {
     /**
      * Creates new form Library
      */
-    public Library() {
+    public LibraryEng() {
         initComponents();
         setIconImage(new ImageIcon(getClass().getResource("/Icons/Logo.jpg")).getImage());
         ShowDocuments();
@@ -137,7 +137,7 @@ public class Library extends javax.swing.JFrame {
             jTree1.scrollPathToVisible(path);
             jTree1.setSelectionPath(path);
         } else {
-            JOptionPane.showMessageDialog(null, "حدد مجلد للإضافة");
+            JOptionPane.showMessageDialog(null, "Please Select Folder.");
         }
     }
 
@@ -189,7 +189,7 @@ public class Library extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) DocsList.getModel();
         Object[] row = new Object[6];
         for (int i = 0; i < List.size(); i++) {
-            row[0] = List.get(i).getDateAdded();
+            row[0] = List.get(i).getDateAdded(); // Switch for English Alignment
             row[1] = List.get(i).getPublishYear();
             row[2] = List.get(i).getPublisher();
             row[3] = List.get(i).getAuthor();
@@ -229,6 +229,12 @@ public class Library extends javax.swing.JFrame {
         TextField_search = new javax.swing.JTextField();
         Label_searchIcon = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
+        Panel_folders = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTree1 = new javax.swing.JTree();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jTabbedPane2 = new javax.swing.JTabbedPane();
         Panel_manually = new javax.swing.JPanel();
         typeCombobox = new javax.swing.JComboBox<>();
         titleLabel = new javax.swing.JLabel();
@@ -263,12 +269,6 @@ public class Library extends javax.swing.JFrame {
         TextField_pages = new javax.swing.JTextField();
         TextField_extra1 = new javax.swing.JTextField();
         Button_edit = new javax.swing.JButton();
-        jTabbedPane2 = new javax.swing.JTabbedPane();
-        Panel_folders = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTree1 = new javax.swing.JTree();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         MenuBar = new javax.swing.JMenuBar();
         Menu_file = new javax.swing.JMenu();
         MenuItem_add = new javax.swing.JMenuItem();
@@ -276,17 +276,17 @@ public class Library extends javax.swing.JFrame {
         MenuItem_edit = new javax.swing.JMenuItem();
         MenuItem_delete = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        MenuItem_NewFolder = new javax.swing.JMenuItem();
-        MenuItem_DeleteFolder = new javax.swing.JMenuItem();
+        MenuItem_folder = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         MenuItem_exit = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
-        MenuItem_english = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         Menu_help = new javax.swing.JMenu();
         MenuItem_help = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("مكتبة مرجعي");
+        setTitle("Marjiei Library");
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -297,7 +297,7 @@ public class Library extends javax.swing.JFrame {
         Panel.setBackground(new java.awt.Color(245, 245, 245));
 
         Button_import.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/addIcon.png"))); // NOI18N
-        Button_import.setText("إضافة مرجع");
+        Button_import.setText("Import Document");
         Button_import.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Button_importActionPerformed(evt);
@@ -305,7 +305,7 @@ public class Library extends javax.swing.JFrame {
         });
 
         Button_delete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/deleteIcon.png"))); // NOI18N
-        Button_delete.setText("حذف مرجع");
+        Button_delete.setText("Delete Document");
         Button_delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Button_deleteActionPerformed(evt);
@@ -356,51 +356,99 @@ public class Library extends javax.swing.JFrame {
 
         jTabbedPane1.setBackground(new java.awt.Color(249, 249, 249));
 
+        Panel_folders.setBackground(new java.awt.Color(249, 249, 249));
+
+        jTree1.setBackground(new java.awt.Color(249, 249, 249));
+        jScrollPane2.setViewportView(jTree1);
+
+        jButton1.setText("Create Folder");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Delete Folder");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout Panel_foldersLayout = new javax.swing.GroupLayout(Panel_folders);
+        Panel_folders.setLayout(Panel_foldersLayout);
+        Panel_foldersLayout.setHorizontalGroup(
+            Panel_foldersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Panel_foldersLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(Panel_foldersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
+                    .addGroup(Panel_foldersLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        Panel_foldersLayout.setVerticalGroup(
+            Panel_foldersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Panel_foldersLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(Panel_foldersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(jButton1))
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Folders", Panel_folders);
+
         Panel_manually.setBackground(new java.awt.Color(249, 249, 249));
 
-        typeCombobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "كتاب", "مقال صحفي", "مقال مجلة", "صفحة ويب", "ورقة مؤتمر", "أخرى", " " }));
+        typeCombobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Book", "Journal Article", "Magazine Article", "Web Page", "Conference Proceeding", "Miscellaneous", " " }));
         typeCombobox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 typeComboboxActionPerformed(evt);
             }
         });
 
-        titleLabel.setText("العنوان");
+        titleLabel.setText("Title");
 
-        titleTextField.setColumns(10);
+        titleTextField.setColumns(15);
         titleTextField.setToolTipText("");
 
-        publisherLabel.setText("الناشر");
+        publisherLabel.setText("Publisher");
 
-        publisherTextField.setColumns(10);
+        publisherTextField.setColumns(15);
 
-        pagesLabel.setText("الصفحات");
+        pagesLabel.setText("Pages");
 
-        pagesTextField.setColumns(10);
+        pagesTextField.setColumns(15);
 
         extraInfo2Label.setText("jLabel1");
 
-        extraInfo2TextField.setColumns(10);
+        extraInfo2TextField.setColumns(15);
 
-        authorLabel.setText("المؤلف");
+        authorLabel.setText("Author");
 
-        authorTextField.setColumns(10);
+        authorTextField.setColumns(15);
         authorTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 authorTextFieldActionPerformed(evt);
             }
         });
 
-        yearLabel.setText("سنة النشر");
+        yearLabel.setText("Publish Year");
 
-        yearTextField.setColumns(10);
+        yearTextField.setColumns(15);
 
-        extraInfo1Label.setText("الطبعة");
+        extraInfo1Label.setText("Edition");
 
-        extraInfo1TextField.setColumns(10);
+        extraInfo1TextField.setColumns(15);
 
         addButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/manuallyIcon.png"))); // NOI18N
-        addButton.setText("إدخال");
+        addButton.setText("Enter");
         addButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 addButtonMouseClicked(evt);
@@ -417,99 +465,90 @@ public class Library extends javax.swing.JFrame {
         Panel_manuallyLayout.setHorizontalGroup(
             Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Panel_manuallyLayout.createSequentialGroup()
+                .addContainerGap(55, Short.MAX_VALUE)
                 .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(Panel_manuallyLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(typeCombobox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(Panel_manuallyLayout.createSequentialGroup()
-                        .addGap(61, 61, 61)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_manuallyLayout.createSequentialGroup()
                         .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(Panel_manuallyLayout.createSequentialGroup()
-                                .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(authorTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(titleTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(publisherTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(yearTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(32, 32, 32)
-                                .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(yearLabel)
-                                    .addComponent(publisherLabel)
-                                    .addComponent(titleLabel)
-                                    .addComponent(authorLabel)))
-                            .addGroup(Panel_manuallyLayout.createSequentialGroup()
-                                .addComponent(pagesTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(32, 32, 32)
-                                .addComponent(pagesLabel))
-                            .addGroup(Panel_manuallyLayout.createSequentialGroup()
-                                .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(extraInfo1TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(extraInfo2TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(32, 32, 32)
-                                .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(extraInfo2Label)
-                                    .addComponent(extraInfo1Label)))))
-                    .addGroup(Panel_manuallyLayout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(addButton)))
-                .addContainerGap(30, Short.MAX_VALUE))
+                            .addComponent(yearLabel)
+                            .addComponent(publisherLabel)
+                            .addComponent(authorLabel)
+                            .addComponent(titleLabel)
+                            .addComponent(pagesLabel)
+                            .addComponent(extraInfo1Label)
+                            .addComponent(extraInfo2Label))
+                        .addGap(18, 18, 18)
+                        .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(authorTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(titleTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(publisherTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(yearTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(pagesTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(extraInfo1TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(extraInfo2TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(65, 65, 65))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_manuallyLayout.createSequentialGroup()
+                        .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(typeCombobox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(addButton))
+                        .addGap(19, 19, 19))))
         );
         Panel_manuallyLayout.setVerticalGroup(
             Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Panel_manuallyLayout.createSequentialGroup()
-                .addGap(64, 64, 64)
+                .addGap(68, 68, 68)
                 .addComponent(typeCombobox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(43, 43, 43)
                 .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(titleLabel)
-                    .addComponent(titleTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(titleTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(titleLabel))
                 .addGap(18, 18, 18)
                 .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(authorTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(authorLabel))
                 .addGap(18, 18, 18)
                 .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(publisherLabel)
-                    .addComponent(publisherTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(publisherTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(publisherLabel))
                 .addGap(18, 18, 18)
                 .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(yearLabel)
-                    .addComponent(yearTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(yearTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(yearLabel))
                 .addGap(18, 18, 18)
                 .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pagesTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pagesLabel))
                 .addGap(18, 18, 18)
                 .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(extraInfo1Label)
-                    .addComponent(extraInfo1TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(extraInfo1TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(extraInfo1Label))
                 .addGap(18, 18, 18)
                 .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(extraInfo2Label)
-                    .addComponent(extraInfo2TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(51, 51, 51)
+                    .addComponent(extraInfo2TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(extraInfo2Label))
+                .addGap(52, 52, 52)
                 .addComponent(addButton)
-                .addContainerGap(132, Short.MAX_VALUE))
+                .addContainerGap(98, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("إدخال يدوي", Panel_manually);
+        jTabbedPane2.addTab("Insert Manually", Panel_manually);
 
         Panel_edit.setBackground(new java.awt.Color(249, 249, 249));
 
-        Label_title.setText("العنوان");
+        Label_title.setText("Title");
 
-        Label_author.setText("المؤلف");
+        Label_author.setText("Author");
 
-        Label_publisher.setText("الناشر");
+        Label_publisher.setText("Publisher");
 
-        Label_year.setText("سنة النشر");
+        Label_year.setText("Publish Year");
 
-        Label_pages.setText("الصفحات");
+        Label_pages.setText("Pages");
 
         Label_extra.setText("jLabel1");
 
         Label_extra1.setText("jLabel1");
 
-        ComboBox_type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "كتاب", "مقال صحيفة", "مقال مجلة", "صفحة ويب", "ورقة مؤتمر", "أخرى" }));
+        ComboBox_type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Book", "Journal Article", "Magazine Article", "Web Page", "Conference Proceeding", "Miscellaneous" }));
         ComboBox_type.setSelectedIndex(5);
         ComboBox_type.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -532,7 +571,7 @@ public class Library extends javax.swing.JFrame {
         TextField_extra1.setColumns(15);
 
         Button_edit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/editIcon.png"))); // NOI18N
-        Button_edit.setText("تعديل");
+        Button_edit.setText("Edit");
         Button_edit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Button_editActionPerformed(evt);
@@ -544,119 +583,81 @@ public class Library extends javax.swing.JFrame {
         Panel_editLayout.setHorizontalGroup(
             Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Panel_editLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(81, Short.MAX_VALUE)
                 .addGroup(Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_editLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(TextField_title, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(TextField_author, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(TextField_year, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(TextField_publisher, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(TextField_extra, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(TextField_pages, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(TextField_extra1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                            .addComponent(ComboBox_type, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Button_edit, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_editLayout.createSequentialGroup()
                         .addGroup(Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Label_extra1)
-                            .addComponent(Label_extra)
-                            .addComponent(Label_pages)
-                            .addComponent(Label_author)
-                            .addComponent(Label_publisher)
-                            .addComponent(Label_year)
-                            .addComponent(Label_title)))
-                    .addGroup(Panel_editLayout.createSequentialGroup()
-                        .addGroup(Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Button_edit)
-                            .addComponent(ComboBox_type, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(24, 24, 24))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(Panel_editLayout.createSequentialGroup()
+                                    .addComponent(Label_publisher)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(TextField_publisher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_editLayout.createSequentialGroup()
+                                    .addComponent(Label_author)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(TextField_author, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_editLayout.createSequentialGroup()
+                                    .addComponent(Label_title)
+                                    .addGap(47, 47, 47)
+                                    .addComponent(TextField_title, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_editLayout.createSequentialGroup()
+                                .addGroup(Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(Label_extra1)
+                                    .addComponent(Label_extra)
+                                    .addComponent(Label_pages)
+                                    .addComponent(Label_year))
+                                .addGap(24, 24, 24)
+                                .addGroup(Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(TextField_year, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(TextField_pages, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(TextField_extra, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(TextField_extra1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(33, 33, 33))))
         );
         Panel_editLayout.setVerticalGroup(
             Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_editLayout.createSequentialGroup()
-                .addContainerGap(103, Short.MAX_VALUE)
+                .addContainerGap(78, Short.MAX_VALUE)
                 .addComponent(ComboBox_type, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
-                .addGroup(Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Label_title)
-                    .addComponent(TextField_title, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(39, 39, 39)
+                .addGroup(Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(TextField_title, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Label_title))
                 .addGap(18, 18, 18)
                 .addGroup(Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Label_author)
-                    .addComponent(TextField_author, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(TextField_author, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Label_author))
                 .addGap(18, 18, 18)
                 .addGroup(Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Label_publisher)
-                    .addComponent(TextField_publisher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(TextField_publisher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Label_publisher))
                 .addGap(18, 18, 18)
                 .addGroup(Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Label_year)
-                    .addComponent(TextField_year, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(TextField_year, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Label_year))
                 .addGap(18, 18, 18)
                 .addGroup(Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Label_pages)
-                    .addComponent(TextField_pages, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(TextField_pages, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Label_pages))
                 .addGap(18, 18, 18)
                 .addGroup(Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Label_extra)
-                    .addComponent(TextField_extra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(TextField_extra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Label_extra))
                 .addGap(18, 18, 18)
-                .addGroup(Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Label_extra1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(TextField_extra1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32)
+                .addGroup(Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(TextField_extra1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Label_extra1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(68, 68, 68)
                 .addComponent(Button_edit)
-                .addGap(99, 99, 99))
+                .addGap(76, 76, 76))
         );
 
-        jTabbedPane1.addTab("تعديل مرجع", Panel_edit);
-
-        Panel_folders.setBackground(new java.awt.Color(249, 249, 249));
-
-        jTree1.setBackground(new java.awt.Color(249, 249, 249));
-        jScrollPane2.setViewportView(jTree1);
-
-        jButton1.setText("إنشاء مجلد");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        jButton2.setText("حذف مجلد");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout Panel_foldersLayout = new javax.swing.GroupLayout(Panel_folders);
-        Panel_folders.setLayout(Panel_foldersLayout);
-        Panel_foldersLayout.setHorizontalGroup(
-            Panel_foldersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Panel_foldersLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(Panel_foldersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
-                    .addGroup(Panel_foldersLayout.createSequentialGroup()
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        Panel_foldersLayout.setVerticalGroup(
-            Panel_foldersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Panel_foldersLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 530, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(Panel_foldersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)))
-        );
-
-        jTabbedPane2.addTab("الملفات", Panel_folders);
+        jTabbedPane2.addTab("Edit Document", Panel_edit);
 
         javax.swing.GroupLayout PanelLayout = new javax.swing.GroupLayout(Panel);
         Panel.setLayout(PanelLayout);
@@ -701,10 +702,10 @@ public class Library extends javax.swing.JFrame {
                             .addComponent(jTabbedPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 598, javax.swing.GroupLayout.PREFERRED_SIZE)))))
         );
 
-        Menu_file.setText("ملف");
+        Menu_file.setText("File");
 
         MenuItem_add.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
-        MenuItem_add.setText("إضافة مرجع");
+        MenuItem_add.setText("Import Document");
         MenuItem_add.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MenuItem_addActionPerformed(evt);
@@ -713,7 +714,7 @@ public class Library extends javax.swing.JFrame {
         Menu_file.add(MenuItem_add);
 
         MenuItem_manually.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
-        MenuItem_manually.setText("إدخال يدوي");
+        MenuItem_manually.setText("Insert Entry Manully");
         MenuItem_manually.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MenuItem_manuallyActionPerformed(evt);
@@ -722,7 +723,7 @@ public class Library extends javax.swing.JFrame {
         Menu_file.add(MenuItem_manually);
 
         MenuItem_edit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_MASK));
-        MenuItem_edit.setText("تعديل مرجع");
+        MenuItem_edit.setText("Edit Document");
         MenuItem_edit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MenuItem_editActionPerformed(evt);
@@ -731,7 +732,7 @@ public class Library extends javax.swing.JFrame {
         Menu_file.add(MenuItem_edit);
 
         MenuItem_delete.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
-        MenuItem_delete.setText("حذف مرجع");
+        MenuItem_delete.setText("Delete Document");
         MenuItem_delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MenuItem_deleteActionPerformed(evt);
@@ -740,21 +741,26 @@ public class Library extends javax.swing.JFrame {
         Menu_file.add(MenuItem_delete);
         Menu_file.add(jSeparator1);
 
-        MenuItem_NewFolder.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
-        MenuItem_NewFolder.setText("إنشاء مجلد");
-        MenuItem_NewFolder.addActionListener(new java.awt.event.ActionListener() {
+        MenuItem_folder.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        MenuItem_folder.setText("Create Folder");
+        MenuItem_folder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MenuItem_NewFolderActionPerformed(evt);
+                MenuItem_folderActionPerformed(evt);
             }
         });
-        Menu_file.add(MenuItem_NewFolder);
+        Menu_file.add(MenuItem_folder);
 
-        MenuItem_DeleteFolder.setText("حذف مجلد");
-        Menu_file.add(MenuItem_DeleteFolder);
+        jMenuItem2.setText("Delete Folder");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        Menu_file.add(jMenuItem2);
         Menu_file.add(jSeparator2);
 
         MenuItem_exit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.SHIFT_MASK));
-        MenuItem_exit.setText("خروج");
+        MenuItem_exit.setText("Exit");
         MenuItem_exit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MenuItem_exitActionPerformed(evt);
@@ -764,22 +770,22 @@ public class Library extends javax.swing.JFrame {
 
         MenuBar.add(Menu_file);
 
-        jMenu1.setText("عرض");
+        jMenu1.setText("View");
 
-        MenuItem_english.setText("English");
-        MenuItem_english.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItem1.setText("عربي");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MenuItem_englishActionPerformed(evt);
+                jMenuItem1ActionPerformed(evt);
             }
         });
-        jMenu1.add(MenuItem_english);
+        jMenu1.add(jMenuItem1);
 
         MenuBar.add(jMenu1);
 
         Menu_help.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/helpIcon.png"))); // NOI18N
 
         MenuItem_help.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, java.awt.event.InputEvent.CTRL_MASK));
-        MenuItem_help.setText("مساعدة");
+        MenuItem_help.setText("Help");
         Menu_help.add(MenuItem_help);
 
         MenuBar.add(Menu_help);
@@ -839,7 +845,7 @@ public class Library extends javax.swing.JFrame {
                     ComboBox_type.setSelectedIndex(0);
                     Label_extra.setVisible(true);
                     TextField_extra.setVisible(true);
-                    Label_extra.setText("الطبعة");
+                    Label_extra.setText("Edition");
                     if (model.getValueAt(i, 4) != null) {
                         TextField_title.setText(model.getValueAt(i, 4).toString()); }
                     if (model.getValueAt(i, 3) != null) {
@@ -864,8 +870,8 @@ public class Library extends javax.swing.JFrame {
                     TextField_extra.setVisible(true);
                     Label_extra1.setVisible(true);
                     TextField_extra1.setVisible(true);
-                    Label_extra.setText("الصحيفة");
-                    Label_extra1.setText("الحجم");
+                    Label_extra.setText("Journal");
+                    Label_extra1.setText("Volume");
 
                     if (model.getValueAt(i, 4) != null) {
                         TextField_title.setText(model.getValueAt(i, 4).toString());
@@ -896,8 +902,8 @@ public class Library extends javax.swing.JFrame {
                     TextField_extra.setVisible(true);
                     Label_extra1.setVisible(true);
                     TextField_extra1.setVisible(true);
-                    Label_extra.setText("المجلة");
-                    Label_extra1.setText("الشهر");
+                    Label_extra.setText("Magazine");
+                    Label_extra1.setText("Month");
 
                     if (model.getValueAt(i, 4) != null) {
                         TextField_title.setText(model.getValueAt(i, 4).toString());
@@ -928,8 +934,8 @@ public class Library extends javax.swing.JFrame {
                     TextField_extra.setVisible(true);
                     Label_extra1.setVisible(true);
                     TextField_extra1.setVisible(true);
-                    Label_extra.setText("الرابط");
-                    Label_extra1.setText("تاريخ الوصول");
+                    Label_extra.setText("URL");
+                    Label_extra1.setText("Access Date");
 
                     if (model.getValueAt(i, 4) != null) {
                         TextField_title.setText(model.getValueAt(i, 4).toString());
@@ -960,8 +966,8 @@ public class Library extends javax.swing.JFrame {
                     TextField_extra.setVisible(true);
                     Label_extra1.setVisible(true);
                     TextField_extra1.setVisible(true);
-                    Label_extra.setText("المؤتمر");
-                    Label_extra1.setText("المكان");
+                    Label_extra.setText("Conference");
+                    Label_extra1.setText("Place");
 
                     if (model.getValueAt(i, 4) != null) {
                         TextField_title.setText(model.getValueAt(i, 4).toString());
@@ -1047,7 +1053,7 @@ public class Library extends javax.swing.JFrame {
     private void Button_importActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_importActionPerformed
         DefaultMutableTreeNode selNode = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
         if (selNode == null) {
-            JOptionPane.showMessageDialog(null, "حدد مجلد للإضافة");  }
+            JOptionPane.showMessageDialog(null, "Please Select Folder");  }
         if (selNode == null) {
             return; }
         try {
@@ -1071,7 +1077,7 @@ public class Library extends javax.swing.JFrame {
             RefereshTable();
             updateTree(chooser.getSelectedFile().getName(), documentId);
         } catch (HeadlessException | IOException ex) {
-            JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Invalid Inputs\n" + ex.getMessage());
         }
     }//GEN-LAST:event_Button_importActionPerformed
 
@@ -1080,7 +1086,7 @@ public class Library extends javax.swing.JFrame {
             int i = DocsList.getSelectedRow();
             if ( i != -1) // If there is Selected Document
             { // Show Confirmation Message
-            int confirmed = JOptionPane.showConfirmDialog(null, "سيتم حذف المرجع", "تأكيد",
+            int confirmed = JOptionPane.showConfirmDialog(null, "Document will be Deleted!", "Confirm",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             DefaultTableModel model = (DefaultTableModel) DocsList.getModel();
             Connection con = DBConnection();
@@ -1109,7 +1115,7 @@ public class Library extends javax.swing.JFrame {
                     ((DefaultTreeModel) jTree1.getModel()).removeNodeFromParent(treeModelMap.getTreeMap().get(ID)); }
             }
             } else {
-                JOptionPane.showMessageDialog(null, "حدد مرجع للحذف");
+                JOptionPane.showMessageDialog(null, "Select Document to Delete.");
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
@@ -1121,7 +1127,7 @@ public class Library extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultMutableTreeNode selNode = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
         if (selNode == null) {
-            JOptionPane.showMessageDialog(null, "حدد مجلد للإضافة");
+            JOptionPane.showMessageDialog(null, "Please Select Folder.");
         }
 
         if (selNode == null) {
@@ -1148,7 +1154,7 @@ public class Library extends javax.swing.JFrame {
             RefereshTable();
             updateTree(chooser.getSelectedFile().getName(), documentId);
         } catch (HeadlessException | IOException ex) {
-            JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Invalid Inputs\n" + ex.getMessage());
         }
     }//GEN-LAST:event_MenuItem_addActionPerformed
 
@@ -1157,7 +1163,7 @@ public class Library extends javax.swing.JFrame {
         DefaultMutableTreeNode selNode = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
 
         if (selNode == null) {
-            JOptionPane.showMessageDialog(null, "حدد مجلد للإضافة");
+            JOptionPane.showMessageDialog(null, "Please Select Folder.");
         }
 
         if (selNode == null) {
@@ -1187,7 +1193,7 @@ public class Library extends javax.swing.JFrame {
                     updateTree(titleTextField.getText(), id);
                     RefereshTable();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "Invalid Inputs\n" + ex.getMessage());
                 }
                 break;
 
@@ -1219,7 +1225,7 @@ public class Library extends javax.swing.JFrame {
                     updateTree(titleTextField.getText(), id);
                     RefereshTable();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "Invalid Inputs\n" + ex.getMessage());
                 }
                 break;
 
@@ -1242,7 +1248,7 @@ public class Library extends javax.swing.JFrame {
                     updateTree(titleTextField.getText(), id);
                     RefereshTable();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "Invalid Inputs\n" + ex.getMessage());
                 }
 
                 break;
@@ -1266,7 +1272,7 @@ public class Library extends javax.swing.JFrame {
                     updateTree(titleTextField.getText(), id);
                     RefereshTable();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "Invalid Inputs\n" + ex.getMessage());
                 }
 
                 break;
@@ -1290,7 +1296,7 @@ public class Library extends javax.swing.JFrame {
                     updateTree(titleTextField.getText(), id);
                     RefereshTable();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "Invalid Inputs\n" + ex.getMessage());
                 }
 
                 break;
@@ -1312,7 +1318,7 @@ public class Library extends javax.swing.JFrame {
                     updateTree(titleTextField.getText(), id);
                     RefereshTable();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "Invalid Inputs\n" + ex.getMessage());
                 }
 
                 break;
@@ -1327,7 +1333,7 @@ public class Library extends javax.swing.JFrame {
         extraInfo1TextField.setText(" ");
         extraInfo2TextField.setText(" ");
         extraInfo1Label.setVisible(true);
-        extraInfo1Label.setText("الطبعة");
+        extraInfo1Label.setText("Edition");
         extraInfo1TextField.setVisible(true);
         extraInfo2Label.setVisible(false);
         extraInfo2TextField.setVisible(false);
@@ -1340,7 +1346,7 @@ public class Library extends javax.swing.JFrame {
             if ( i != -1)
             {
 
-            int confirmed = JOptionPane.showConfirmDialog(null, "سيتم حذف المرجع", "تأكيد",
+            int confirmed = JOptionPane.showConfirmDialog(null, "Document will be Deleted!", "Confirm",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
             DefaultTableModel model = (DefaultTableModel) DocsList.getModel();
@@ -1376,7 +1382,7 @@ public class Library extends javax.swing.JFrame {
             }
             }
             else {
-                JOptionPane.showMessageDialog(null, "حدد مرجع للحذف");
+                JOptionPane.showMessageDialog(null, "Select Document to Delete");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1537,9 +1543,9 @@ public class Library extends javax.swing.JFrame {
             Label_extra1.setVisible(false);
             TextField_extra1.setVisible(false);
 
-            JOptionPane.showMessageDialog(null, "تم التحديث بنجاح");
+            JOptionPane.showMessageDialog(null, "Updated Successfully.");
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Invalid Inputs\n" + ex.getMessage());
         }
     }//GEN-LAST:event_MenuItem_editActionPerformed
 
@@ -1553,7 +1559,7 @@ public class Library extends javax.swing.JFrame {
         // Declaring local variables
         DefaultMutableTreeNode selNode = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
         if (selNode == null) {
-            JOptionPane.showMessageDialog(null, "حدد مجلد للإضافة"); }
+            JOptionPane.showMessageDialog(null, "Please Select Folder."); }
         if (selNode == null) {
             return;  }
         Connection con = DBConnection();
@@ -1577,7 +1583,7 @@ public class Library extends javax.swing.JFrame {
                     updateTree(titleTextField.getText(), id);
                     RefereshTable(); 
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());  }
+                    JOptionPane.showMessageDialog(null, "Invalid Inputs\n" + ex.getMessage());  }
                 break;
 
             /*   String type = "book";
@@ -1608,7 +1614,7 @@ public class Library extends javax.swing.JFrame {
                     updateTree(titleTextField.getText(), id);
                     RefereshTable();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "Invalid Inputs\n" + ex.getMessage());
                 }
                 break;
 
@@ -1631,7 +1637,7 @@ public class Library extends javax.swing.JFrame {
                     updateTree(titleTextField.getText(), id);
                     RefereshTable();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "Invalid Inputs\n" + ex.getMessage());
                 }
 
                 break;
@@ -1655,7 +1661,7 @@ public class Library extends javax.swing.JFrame {
                     updateTree(titleTextField.getText(), id);
                     RefereshTable();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "Invalid Inputs\n" + ex.getMessage());
                 }
 
                 break;
@@ -1679,7 +1685,7 @@ public class Library extends javax.swing.JFrame {
                     updateTree(titleTextField.getText(), id);
                     RefereshTable();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "Invalid Inputs\n" + ex.getMessage());
                 }
 
                 break;
@@ -1701,7 +1707,7 @@ public class Library extends javax.swing.JFrame {
                     updateTree(titleTextField.getText(), id);
                     RefereshTable();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "Invalid Inputs\n" + ex.getMessage());
                 }
 
                 break;
@@ -1716,7 +1722,7 @@ public class Library extends javax.swing.JFrame {
         extraInfo1TextField.setText(" ");
         extraInfo2TextField.setText(" ");
         extraInfo1Label.setVisible(true);
-        extraInfo1Label.setText("الطبعة");
+        extraInfo1Label.setText("Edition");
         extraInfo1TextField.setVisible(true);
         extraInfo2Label.setVisible(false);
         extraInfo2TextField.setVisible(false);
@@ -1738,7 +1744,7 @@ public class Library extends javax.swing.JFrame {
         switch (index) {
             case 0:
                 // Code for show Book form
-                extraInfo1Label.setText("الطبعة");
+                extraInfo1Label.setText("Edition");
                 extraInfo1Label.setVisible(true);
                 extraInfo1TextField.setVisible(true);
                 extraInfo2Label.setVisible(false);
@@ -1747,40 +1753,40 @@ public class Library extends javax.swing.JFrame {
                 break;
             case 1:
                 // Code for show Journal Article form
-                extraInfo1Label.setText("الصحيفة");
+                extraInfo1Label.setText("Journal");
                 extraInfo1Label.setVisible(true);
                 extraInfo1TextField.setVisible(true);
-                extraInfo2Label.setText("الحجم");
+                extraInfo2Label.setText("Volume");
                 extraInfo2Label.setVisible(true);
                 extraInfo2TextField.setVisible(true);
 
                 break;
             case 2:
                 // Code for show Magazine Article form
-                extraInfo1Label.setText("المجلة");
+                extraInfo1Label.setText("Magazine");
                 extraInfo1Label.setVisible(true);
                 extraInfo1TextField.setVisible(true);
-                extraInfo2Label.setText("الشهر");
+                extraInfo2Label.setText("Month");
                 extraInfo2Label.setVisible(true);
                 extraInfo2TextField.setVisible(true);
 
                 break;
             case 3:
                 // Code for show Web Page form
-                extraInfo1Label.setText("الرابط");
+                extraInfo1Label.setText("URL");
                 extraInfo1Label.setVisible(true);
                 extraInfo1TextField.setVisible(true);
-                extraInfo2Label.setText("تاريخ الوصول");
+                extraInfo2Label.setText("Access Date");
                 extraInfo2Label.setVisible(true);
                 extraInfo2TextField.setVisible(true);
 
                 break;
             case 4:
                 // Code for show Conference Proceeding form
-                extraInfo1Label.setText("المؤتمر");
+                extraInfo1Label.setText("Conference");
                 extraInfo1Label.setVisible(true);
                 extraInfo1TextField.setVisible(true);
-                extraInfo2Label.setText("المكان");
+                extraInfo2Label.setText("Place");
                 extraInfo2Label.setVisible(true);
                 extraInfo2TextField.setVisible(true);
 
@@ -1941,9 +1947,9 @@ public class Library extends javax.swing.JFrame {
             Label_extra1.setVisible(false);
             TextField_extra1.setVisible(false);
 
-            JOptionPane.showMessageDialog(null, "تم التحديث بنجاح");
+            JOptionPane.showMessageDialog(null, "Updated Successfully");
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Invalid Inputs\n" + ex.getMessage());
         }
     }//GEN-LAST:event_Button_editActionPerformed
 
@@ -1953,7 +1959,7 @@ public class Library extends javax.swing.JFrame {
         switch (index) {
             case 0:
                 // Code for show Book form
-                Label_extra.setText("الطبعة");
+                Label_extra.setText("Edition");
                 Label_extra.setVisible(true);
                 TextField_extra.setVisible(true);
                 Label_extra1.setVisible(false);
@@ -1962,40 +1968,40 @@ public class Library extends javax.swing.JFrame {
                 break;
             case 1:
                 // Code for show Journal Article form
-                Label_extra.setText("الصحيفة");
+                Label_extra.setText("Journal");
                 Label_extra.setVisible(true);
                 TextField_extra.setVisible(true);
-                Label_extra1.setText("الحجم");
+                Label_extra1.setText("Volume");
                 Label_extra1.setVisible(true);
                 TextField_extra1.setVisible(true);
 
                 break;
             case 2:
                 // Code for show Magazine Article form
-                Label_extra.setText("المجلة");
+                Label_extra.setText("Magazine");
                 Label_extra.setVisible(true);
                 TextField_extra.setVisible(true);
-                Label_extra1.setText("الشهر");
+                Label_extra1.setText("Month");
                 Label_extra1.setVisible(true);
                 TextField_extra1.setVisible(true);
 
                 break;
             case 3:
                 // Code for show Web Page form
-                Label_extra.setText("الرابط");
+                Label_extra.setText("URL");
                 Label_extra.setVisible(true);
                 TextField_extra.setVisible(true);
-                Label_extra1.setText("تاريخ الوصول");
+                Label_extra1.setText("Access Date");
                 Label_extra1.setVisible(true);
                 TextField_extra1.setVisible(true);
 
                 break;
             case 4:
                 // Code for show Conference Proceeding form
-                Label_extra.setText("المؤتمر");
+                Label_extra.setText("Conference");
                 Label_extra.setVisible(true);
                 TextField_extra.setVisible(true);
-                Label_extra1.setText("المكان");
+                Label_extra1.setText("Place");
                 Label_extra1.setVisible(true);
                 TextField_extra1.setVisible(true);
 
@@ -2015,13 +2021,13 @@ public class Library extends javax.swing.JFrame {
         DefaultMutableTreeNode selNode = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
         DefaultTreeModel model = (DefaultTreeModel) jTree1.getModel();
         if (selNode != null) {
-            int confirmed = JOptionPane.showConfirmDialog(null, "سيتم حذف المجلد", "تأكيد", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            int confirmed = JOptionPane.showConfirmDialog(null, "Folder will be Deleted!", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (confirmed == 0) {
                 model.removeNodeFromParent(selNode);
                 //                saveModel(model);
             }
         } else {
-            JOptionPane.showMessageDialog(null, "حدد مجلد للحذف");
+            JOptionPane.showMessageDialog(null, "Please Select Folder.");
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -2030,7 +2036,7 @@ public class Library extends javax.swing.JFrame {
         DefaultMutableTreeNode selNode = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
         DefaultTreeModel model = (DefaultTreeModel) jTree1.getModel();
         if (selNode != null) {
-            DefaultMutableTreeNode newNode = new DefaultMutableTreeNode("مجلد جديد");
+            DefaultMutableTreeNode newNode = new DefaultMutableTreeNode("New Folder");
             model.insertNodeInto(newNode, selNode, selNode.getChildCount());
             TreeNode[] nodes = model.getPathToRoot(newNode);
             TreePath path = new TreePath(nodes);
@@ -2039,16 +2045,16 @@ public class Library extends javax.swing.JFrame {
             jTree1.startEditingAtPath(path);
             //            saveModel(model);
         } else {
-            JOptionPane.showMessageDialog(null, "حدد مجلد أساسي");
+            JOptionPane.showMessageDialog(null, "Select Parent Folder");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void MenuItem_NewFolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItem_NewFolderActionPerformed
+    private void MenuItem_folderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItem_folderActionPerformed
         // TODO add your handling code here:
         DefaultMutableTreeNode selNode = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
         DefaultTreeModel model = (DefaultTreeModel) jTree1.getModel();
         if (selNode != null) {
-            DefaultMutableTreeNode newNode = new DefaultMutableTreeNode("مجلد جديد");
+            DefaultMutableTreeNode newNode = new DefaultMutableTreeNode("New Folder");
             model.insertNodeInto(newNode, selNode, selNode.getChildCount());
             TreeNode[] nodes = model.getPathToRoot(newNode);
             TreePath path = new TreePath(nodes);
@@ -2057,16 +2063,20 @@ public class Library extends javax.swing.JFrame {
             jTree1.startEditingAtPath(path);
             //            saveModel(model);
         } else {
-            JOptionPane.showMessageDialog(null, "حدد مجلد أساسي");
+            JOptionPane.showMessageDialog(null, "Select Parent Folder");
         }
-    }//GEN-LAST:event_MenuItem_NewFolderActionPerformed
+    }//GEN-LAST:event_MenuItem_folderActionPerformed
 
-    private void MenuItem_englishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItem_englishActionPerformed
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
-        LibraryEng Eng = new LibraryEng();
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        Library Arb = new Library();
         this.setVisible(false);
-        Eng.setVisible(true);
-    }//GEN-LAST:event_MenuItem_englishActionPerformed
+        Arb.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /*    public void addNewDoc(){
      String Query;
@@ -2153,13 +2163,11 @@ public class Library extends javax.swing.JFrame {
     private javax.swing.JLabel Label_title;
     private javax.swing.JLabel Label_year;
     private javax.swing.JMenuBar MenuBar;
-    private javax.swing.JMenuItem MenuItem_DeleteFolder;
-    private javax.swing.JMenuItem MenuItem_NewFolder;
     private javax.swing.JMenuItem MenuItem_add;
     private javax.swing.JMenuItem MenuItem_delete;
     private javax.swing.JMenuItem MenuItem_edit;
-    private javax.swing.JMenuItem MenuItem_english;
     private javax.swing.JMenuItem MenuItem_exit;
+    private javax.swing.JMenuItem MenuItem_folder;
     private javax.swing.JMenuItem MenuItem_help;
     private javax.swing.JMenuItem MenuItem_manually;
     private javax.swing.JMenu Menu_file;
@@ -2186,6 +2194,8 @@ public class Library extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPopupMenu.Separator jSeparator1;
