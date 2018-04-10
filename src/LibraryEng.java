@@ -54,10 +54,10 @@ public class LibraryEng extends javax.swing.JFrame {
         setIconImage(new ImageIcon(getClass().getResource("/Icons/Logo.jpg")).getImage());
         ShowDocuments();
         JTableHeader header = DocsList.getTableHeader();
-        ((DefaultTableCellRenderer) header.getDefaultRenderer()).setHorizontalAlignment(JLabel.RIGHT);
+        ((DefaultTableCellRenderer) header.getDefaultRenderer()).setHorizontalAlignment(JLabel.LEFT);
         for (int i = 0; i <= 5; i++) {
             DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
-            rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
+            rightRenderer.setHorizontalAlignment(JLabel.LEFT);
             DocsList.getColumnModel().getColumn(i).setCellRenderer(rightRenderer);
         }
         Sort();
@@ -138,7 +138,7 @@ public class LibraryEng extends javax.swing.JFrame {
             jTree1.scrollPathToVisible(path);
             jTree1.setSelectionPath(path);
         } else {
-            JOptionPane.showMessageDialog(null, "حدد مجلد للإضافة");
+            JOptionPane.showMessageDialog(null, "Please Select Folder");
         }
     }
 
@@ -190,11 +190,11 @@ public class LibraryEng extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) DocsList.getModel();
         Object[] row = new Object[6];
         for (int i = 0; i < List.size(); i++) {
-            row[0] = List.get(i).getDateAdded();
-            row[1] = List.get(i).getPublishYear();
+            row[4] = List.get(i).getDateAdded();
+            row[3] = List.get(i).getPublishYear();
             row[2] = List.get(i).getPublisher();
-            row[3] = List.get(i).getAuthor();
-            row[4] = List.get(i).getTitle();
+            row[1] = List.get(i).getAuthor();
+            row[0] = List.get(i).getTitle();
             row[5] = List.get(i).getID();
             model.addRow(row);
         }
@@ -319,7 +319,7 @@ public class LibraryEng extends javax.swing.JFrame {
 
             },
             new String [] {
-                "تاريخ الإضافة", "سنة النشر", "الناشر", "المؤلف", "العنوان", "null"
+                "Title", "Author", "Publisher", "Year", "Date Added", "null"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -337,10 +337,11 @@ public class LibraryEng extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(DocsList);
         if (DocsList.getColumnModel().getColumnCount() > 0) {
-            DocsList.getColumnModel().getColumn(0).setPreferredWidth(130);
-            DocsList.getColumnModel().getColumn(1).setPreferredWidth(30);
+            DocsList.getColumnModel().getColumn(0).setPreferredWidth(150);
+            DocsList.getColumnModel().getColumn(1).setResizable(false);
             DocsList.getColumnModel().getColumn(2).setPreferredWidth(50);
-            DocsList.getColumnModel().getColumn(4).setPreferredWidth(150);
+            DocsList.getColumnModel().getColumn(3).setPreferredWidth(30);
+            DocsList.getColumnModel().getColumn(4).setPreferredWidth(130);
             DocsList.getColumnModel().getColumn(5).setMinWidth(0);
             DocsList.getColumnModel().getColumn(5).setPreferredWidth(0);
             DocsList.getColumnModel().getColumn(5).setMaxWidth(0);
@@ -818,7 +819,7 @@ public class LibraryEng extends javax.swing.JFrame {
 
     private void DocsListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DocsListMouseClicked
         // Show Edit Section and get the Selected Document. 
-        jTabbedPane1.setSelectedComponent(Panel_edit);
+        jTabbedPane2.setSelectedComponent(Panel_edit);
         TableModel model = DocsList.getModel();
         // Reset the TextFields 
         TextField_year.setText(" ");
@@ -839,8 +840,8 @@ public class LibraryEng extends javax.swing.JFrame {
             Connection con = DBConnection();
             Statement stmt = con.createStatement();
            // int ID = (int) model.getValueAt(i, 5);
-            ResultSet rs = stmt.executeQuery("SELECT documentType FROM referencedocument WHERE title = '" + model.getValueAt(i, 4) 
-            + "' AND author = '" + model.getValueAt(i, 3) +"'" );
+            ResultSet rs = stmt.executeQuery("SELECT documentType FROM referencedocument WHERE title = '" + model.getValueAt(i, 0) 
+            + "' AND author = '" + model.getValueAt(i, 1) +"'" );
             rs.next(); 
             String type = rs.getString("documentType");
             // Set Text Fields According to Document Type. 
@@ -850,15 +851,18 @@ public class LibraryEng extends javax.swing.JFrame {
                     Label_extra.setVisible(true);
                     TextField_extra.setVisible(true);
                     Label_extra.setText("Edition");
-                    if (model.getValueAt(i, 4) != null) {
-                        TextField_title.setText(model.getValueAt(i, 4).toString()); }
-                    if (model.getValueAt(i, 3) != null) {
-                        TextField_author.setText(model.getValueAt(i, 3).toString()); }
+                    if (model.getValueAt(i, 0) != null) {
+                        TextField_title.setText(model.getValueAt(i, 0).toString()); }
+                    if (model.getValueAt(i, 1) != null) {
+                        TextField_author.setText(model.getValueAt(i, 1).toString()); }
                     if (model.getValueAt(i, 2) != null) {
                         TextField_publisher.setText(model.getValueAt(i, 2).toString()); }
                     TextField_year.setText(model.getValueAt(i, 1).toString());
-                    // Get the Rest of Document Information From Database. 
-                    int bookID = (int) model.getValueAt(i, 5);
+                    // Get the Rest of Document Information From Database.
+                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + model.getValueAt(i, 0) 
+                        + "' AND author = '" + model.getValueAt(i, 1) +"'" );
+                    rs.next();
+                    int bookID = rs.getInt("documentID");
                     rs = stmt.executeQuery("SELECT pages FROM referencedocument WHERE documentID = " + bookID);
                     rs.next();
                     TextField_pages.setText(rs.getString("pages")); 
@@ -877,18 +881,22 @@ public class LibraryEng extends javax.swing.JFrame {
                     Label_extra.setText("Journal");
                     Label_extra1.setText("Volume");
 
-                    if (model.getValueAt(i, 4) != null) {
-                        TextField_title.setText(model.getValueAt(i, 4).toString());
+                    if (model.getValueAt(i, 0) != null) {
+                        TextField_title.setText(model.getValueAt(i, 0).toString());
                     }
-                    if (model.getValueAt(i, 3) != null) {
-                        TextField_author.setText(model.getValueAt(i, 3).toString());
+                    if (model.getValueAt(i, 1) != null) {
+                        TextField_author.setText(model.getValueAt(i, 1).toString());
                     }
                     if (model.getValueAt(i, 2) != null) {
                         TextField_publisher.setText(model.getValueAt(i, 2).toString());
                     }
                     TextField_year.setText(model.getValueAt(i, 1).toString());
 
-                    int jarticleID = (int) model.getValueAt(i, 5);
+                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + model.getValueAt(i, 0) 
+                        + "' AND author = '" + model.getValueAt(i, 1) +"'" );
+                    rs.next();
+                    int jarticleID = rs.getInt("documentID");
+
                     rs = stmt.executeQuery("SELECT pages FROM referencedocument WHERE documentID = " + jarticleID);
                     rs.next();
                     TextField_pages.setText(rs.getString("pages"));
@@ -909,18 +917,21 @@ public class LibraryEng extends javax.swing.JFrame {
                     Label_extra.setText("Magazine");
                     Label_extra1.setText("Month");
 
-                    if (model.getValueAt(i, 4) != null) {
-                        TextField_title.setText(model.getValueAt(i, 4).toString());
+                    if (model.getValueAt(i, 0) != null) {
+                        TextField_title.setText(model.getValueAt(i, 0).toString());
                     }
-                    if (model.getValueAt(i, 3) != null) {
-                        TextField_author.setText(model.getValueAt(i, 3).toString());
+                    if (model.getValueAt(i, 1) != null) {
+                        TextField_author.setText(model.getValueAt(i, 1).toString());
                     }
                     if (model.getValueAt(i, 2) != null) {
                         TextField_publisher.setText(model.getValueAt(i, 2).toString());
                     }
                     TextField_year.setText(model.getValueAt(i, 1).toString());
 
-                    int marticleID = (int) model.getValueAt(i, 5);
+                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + model.getValueAt(i, 0) 
+                        + "' AND author = '" + model.getValueAt(i, 1) +"'" );
+                    rs.next();
+                    int marticleID = rs.getInt("documentID");
                     rs = stmt.executeQuery("SELECT pages FROM referencedocument WHERE documentID = " + marticleID);
                     rs.next();
                     TextField_pages.setText(rs.getString("pages"));
@@ -941,18 +952,21 @@ public class LibraryEng extends javax.swing.JFrame {
                     Label_extra.setText("URL");
                     Label_extra1.setText("Access Date");
 
-                    if (model.getValueAt(i, 4) != null) {
-                        TextField_title.setText(model.getValueAt(i, 4).toString());
+                    if (model.getValueAt(i, 0) != null) {
+                        TextField_title.setText(model.getValueAt(i, 0).toString());
                     }
-                    if (model.getValueAt(i, 3) != null) {
-                        TextField_author.setText(model.getValueAt(i, 3).toString());
+                    if (model.getValueAt(i, 1) != null) {
+                        TextField_author.setText(model.getValueAt(i, 1).toString());
                     }
                     if (model.getValueAt(i, 2) != null) {
                         TextField_publisher.setText(model.getValueAt(i, 2).toString());
                     }
                     TextField_year.setText(model.getValueAt(i, 1).toString());
 
-                    int webID = (int) model.getValueAt(i, 5);
+                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + model.getValueAt(i, 0) 
+                        + "' AND author = '" + model.getValueAt(i, 1) +"'" );
+                    rs.next();
+                    int webID = rs.getInt("documentID");
                     rs = stmt.executeQuery("SELECT pages FROM referencedocument WHERE documentID = " + webID);
                     rs.next();
                     TextField_pages.setText(rs.getString("pages"));
@@ -973,18 +987,21 @@ public class LibraryEng extends javax.swing.JFrame {
                     Label_extra.setText("Conference");
                     Label_extra1.setText("City");
 
-                    if (model.getValueAt(i, 4) != null) {
-                        TextField_title.setText(model.getValueAt(i, 4).toString());
+                    if (model.getValueAt(i, 0) != null) {
+                        TextField_title.setText(model.getValueAt(i, 0).toString());
                     }
-                    if (model.getValueAt(i, 3) != null) {
-                        TextField_author.setText(model.getValueAt(i, 3).toString());
+                    if (model.getValueAt(i, 1) != null) {
+                        TextField_author.setText(model.getValueAt(i, 1).toString());
                     }
                     if (model.getValueAt(i, 2) != null) {
                         TextField_publisher.setText(model.getValueAt(i, 2).toString());
                     }
                     TextField_year.setText(model.getValueAt(i, 1).toString());
 
-                    int cpID = (int) model.getValueAt(i, 5);
+                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + model.getValueAt(i, 0) 
+                        + "' AND author = '" + model.getValueAt(i, 1) +"'" );
+                    rs.next();
+                    int cpID = rs.getInt("documentID");
                     rs = stmt.executeQuery("SELECT pages FROM referencedocument WHERE documentID = " + cpID);
                     rs.next();
                     TextField_pages.setText(rs.getString("pages"));
@@ -995,7 +1012,7 @@ public class LibraryEng extends javax.swing.JFrame {
                     TextField_extra1.setText(rs.getString("place"));
                     break;
 
-                case "other":
+                case "miscellaneous":
                     ComboBox_type.setSelectedIndex(5);
 
                     Label_extra.setVisible(false);
@@ -1003,18 +1020,21 @@ public class LibraryEng extends javax.swing.JFrame {
                     Label_extra1.setVisible(false);
                     TextField_extra1.setVisible(false);
 
-                    if (model.getValueAt(i, 4) != null) {
-                        TextField_title.setText(model.getValueAt(i, 4).toString());
+                    if (model.getValueAt(i, 0) != null) {
+                        TextField_title.setText(model.getValueAt(i, 0).toString());
                     }
-                    if (model.getValueAt(i, 3) != null) {
-                        TextField_author.setText(model.getValueAt(i, 3).toString());
+                    if (model.getValueAt(i, 1) != null) {
+                        TextField_author.setText(model.getValueAt(i, 1).toString());
                     }
                     if (model.getValueAt(i, 2) != null) {
                         TextField_publisher.setText(model.getValueAt(i, 2).toString());
                     }
                     TextField_year.setText(model.getValueAt(i, 1).toString());
 
-                    int otherID = (int) model.getValueAt(i, 5);
+                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + model.getValueAt(i, 0) 
+                        + "' AND author = '" + model.getValueAt(i, 1) +"'" );
+                    rs.next();
+                    int otherID = rs.getInt("documentID");
                     rs = stmt.executeQuery("SELECT pages FROM referencedocument WHERE documentID = " + otherID);
                     rs.next();
                     TextField_pages.setText(rs.getString("pages"));
@@ -1217,7 +1237,7 @@ public class LibraryEng extends javax.swing.JFrame {
                     //    LocalDate localDate = LocalDate.now();
                     stmt = con.createStatement();
              stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear, folder)"
-                      + " VALUES ('book', '" + titleTextField.getText() + "', '" + authorTextField.getText()
+                      + " VALUES ('journalarticle', '" + titleTextField.getText() + "', '" + authorTextField.getText()
                       + "', '" + pagesTextField.getText() + "', '" + publisherTextField.getText()
                       + "', '" + yearTextField.getText() + "', '" + selNode.getUserObject().toString() + "')");
                     rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + titleTextField.getText() 
@@ -1240,7 +1260,7 @@ public class LibraryEng extends javax.swing.JFrame {
                     //     LocalDate localDate = LocalDate.now();
                     stmt = con.createStatement();
              stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear, folder)"
-                      + " VALUES ('book', '" + titleTextField.getText() + "', '" + authorTextField.getText()
+                      + " VALUES ('magazinearticle', '" + titleTextField.getText() + "', '" + authorTextField.getText()
                       + "', '" + pagesTextField.getText() + "', '" + publisherTextField.getText()
                       + "', '" + yearTextField.getText() + "', '" + selNode.getUserObject().toString() + "')");
                     rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + titleTextField.getText() 
@@ -1264,7 +1284,7 @@ public class LibraryEng extends javax.swing.JFrame {
                     //     LocalDate localDate = LocalDate.now();
                     stmt = con.createStatement();
              stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear, folder)"
-                      + " VALUES ('book', '" + titleTextField.getText() + "', '" + authorTextField.getText()
+                      + " VALUES ('webpage', '" + titleTextField.getText() + "', '" + authorTextField.getText()
                       + "', '" + pagesTextField.getText() + "', '" + publisherTextField.getText()
                       + "', '" + yearTextField.getText() + "', '" + selNode.getUserObject().toString() + "')");
                     rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + titleTextField.getText() 
@@ -1288,7 +1308,7 @@ public class LibraryEng extends javax.swing.JFrame {
                     //    LocalDate localDate = LocalDate.now();
                     stmt = con.createStatement();
              stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear, folder)"
-                      + " VALUES ('book', '" + titleTextField.getText() + "', '" + authorTextField.getText()
+                      + " VALUES ('conferenceproceeding', '" + titleTextField.getText() + "', '" + authorTextField.getText()
                       + "', '" + pagesTextField.getText() + "', '" + publisherTextField.getText()
                       + "', '" + yearTextField.getText() + "', '" + selNode.getUserObject().toString() + "')");
                     rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + titleTextField.getText() 
@@ -1306,13 +1326,13 @@ public class LibraryEng extends javax.swing.JFrame {
                 break;
 
             case 5:
-                // Code to insert other document information here.
+                // Code to insert miscellaneous document information here.
                 try {
                     //    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00:00");
                     //   LocalDate localDate = LocalDate.now();
                     stmt = con.createStatement();
              stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear, folder)"
-                      + " VALUES ('book', '" + titleTextField.getText() + "', '" + authorTextField.getText()
+                      + " VALUES ('miscellaneous', '" + titleTextField.getText() + "', '" + authorTextField.getText()
                       + "', '" + pagesTextField.getText() + "', '" + publisherTextField.getText()
                       + "', '" + yearTextField.getText() + "', '" + selNode.getUserObject().toString() + "')");
                     rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + titleTextField.getText() 
