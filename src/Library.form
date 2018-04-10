@@ -70,6 +70,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="&#x62d;&#x630;&#x641; &#x645;&#x62c;&#x644;&#x62f;"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="MenuItem_DeleteFolderActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator2">
             </MenuItem>
@@ -262,7 +265,7 @@
                     <Column editable="false" title="&#x627;&#x644;&#x646;&#x627;&#x634;&#x631;" type="java.lang.Object"/>
                     <Column editable="false" title="&#x627;&#x644;&#x645;&#x624;&#x644;&#x641;" type="java.lang.Object"/>
                     <Column editable="false" title="&#x627;&#x644;&#x639;&#x646;&#x648;&#x627;&#x646;" type="java.lang.Object"/>
-                    <Column editable="false" title="id" type="java.lang.Object"/>
+                    <Column editable="false" title="null" type="java.lang.Object"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -357,47 +360,46 @@
                                   <Component id="typeCombobox" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" attributes="0">
                                           <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="authorTextField" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              <Component id="titleTextField" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              <Component id="publisherTextField" alignment="0" min="-2" max="-2" attributes="0"/>
                                               <Component id="yearTextField" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="yearLabel" min="-2" max="-2" attributes="0"/>
-                                              <Component id="publisherLabel" min="-2" max="-2" attributes="0"/>
-                                              <Component id="titleLabel" min="-2" max="-2" attributes="0"/>
-                                              <Component id="authorLabel" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
-                                      <Group type="102" attributes="0">
-                                          <Component id="pagesTextField" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-                                          <Component id="pagesLabel" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="pagesTextField" alignment="0" min="-2" max="-2" attributes="0"/>
                                               <Component id="extraInfo1TextField" alignment="0" min="-2" max="-2" attributes="0"/>
                                               <Component id="extraInfo2TextField" alignment="0" min="-2" max="-2" attributes="0"/>
                                           </Group>
-                                          <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="pagesLabel" min="-2" max="-2" attributes="0"/>
+                                              <Component id="yearLabel" min="-2" max="-2" attributes="0"/>
+                                              <Component id="extraInfo1Label" alignment="0" min="-2" max="-2" attributes="0"/>
                                               <Component id="extraInfo2Label" min="-2" max="-2" attributes="0"/>
-                                              <Component id="extraInfo1Label" min="-2" max="-2" attributes="0"/>
                                           </Group>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="titleTextField" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="titleLabel" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="authorTextField" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="authorLabel" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="publisherTextField" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="publisherLabel" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
                                   <Component id="addButton" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace pref="30" max="32767" attributes="0"/>
+                          <EmptySpace pref="22" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -408,23 +410,23 @@
                           <Component id="typeCombobox" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="titleLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="titleTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="authorTextField" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Component id="authorLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="titleLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="publisherLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="authorTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="authorLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="publisherTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="publisherLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="yearLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="yearTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="yearLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -433,17 +435,17 @@
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="extraInfo1TextField" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
                               <Component id="extraInfo1Label" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="extraInfo1TextField" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="extraInfo2Label" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="extraInfo2TextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="extraInfo2Label" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
                           <Component id="addButton" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="132" max="32767" attributes="0"/>
+                          <EmptySpace pref="141" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -477,7 +479,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="titleTextField">
                   <Properties>
-                    <Property name="columns" type="int" value="10"/>
+                    <Property name="columns" type="int" value="15"/>
                     <Property name="toolTipText" type="java.lang.String" value=""/>
                   </Properties>
                 </Component>
@@ -488,7 +490,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="publisherTextField">
                   <Properties>
-                    <Property name="columns" type="int" value="10"/>
+                    <Property name="columns" type="int" value="15"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="pagesLabel">
@@ -498,7 +500,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="pagesTextField">
                   <Properties>
-                    <Property name="columns" type="int" value="10"/>
+                    <Property name="columns" type="int" value="15"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="extraInfo2Label">
@@ -508,7 +510,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="extraInfo2TextField">
                   <Properties>
-                    <Property name="columns" type="int" value="10"/>
+                    <Property name="columns" type="int" value="15"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="authorLabel">
@@ -518,7 +520,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="authorTextField">
                   <Properties>
-                    <Property name="columns" type="int" value="10"/>
+                    <Property name="columns" type="int" value="15"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="authorTextFieldActionPerformed"/>
@@ -531,7 +533,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="yearTextField">
                   <Properties>
-                    <Property name="columns" type="int" value="10"/>
+                    <Property name="columns" type="int" value="15"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="extraInfo1Label">
@@ -541,7 +543,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="extraInfo1TextField">
                   <Properties>
-                    <Property name="columns" type="int" value="10"/>
+                    <Property name="columns" type="int" value="15"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JButton" name="addButton">
@@ -614,8 +616,8 @@
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace pref="103" max="32767" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="72" max="-2" attributes="0"/>
                           <Component id="ComboBox_type" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -654,7 +656,7 @@
                           </Group>
                           <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                           <Component id="Button_edit" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="99" max="-2" attributes="0"/>
+                          <EmptySpace pref="130" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -792,9 +794,9 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jScrollPane2" pref="266" max="32767" attributes="0"/>
                               <Group type="102" attributes="0">
-                                  <Component id="jButton2" min="-2" pref="131" max="-2" attributes="0"/>
+                                  <Component id="Button_deleteFolder" min="-2" pref="131" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="jButton1" max="32767" attributes="0"/>
+                                  <Component id="Button_newFolder" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
@@ -808,8 +810,8 @@
                           <Component id="jScrollPane2" pref="530" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="Button_newFolder" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="Button_deleteFolder" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -832,20 +834,20 @@
                     </Component>
                   </SubComponents>
                 </Container>
-                <Component class="javax.swing.JButton" name="jButton1">
+                <Component class="javax.swing.JButton" name="Button_newFolder">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="&#x625;&#x646;&#x634;&#x627;&#x621; &#x645;&#x62c;&#x644;&#x62f;"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Button_newFolderActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JButton" name="jButton2">
+                <Component class="javax.swing.JButton" name="Button_deleteFolder">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="&#x62d;&#x630;&#x641; &#x645;&#x62c;&#x644;&#x62f;"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Button_deleteFolderActionPerformed"/>
                   </Events>
                 </Component>
               </SubComponents>
