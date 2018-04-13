@@ -1093,14 +1093,14 @@ public class Library extends javax.swing.JFrame {
             pdfManager.setFilePath(fileName);
             int documentId = pdfManager.ToText(selNode.getUserObject().toString());
             // Update the Library 
-            if (documentId != -1)
-            {
+           // if (documentId != -1)
+           // {
             RefereshTable();
             updateTree(chooser.getSelectedFile().getName(), documentId);
-            } else 
-            {
-                JOptionPane.showMessageDialog(null, "ملف غير صالح");
-            }
+          //  } else 
+          //  {
+          //      JOptionPane.showMessageDialog(null, "ملف غير صالح");
+          //  }
         } catch (HeadlessException | IOException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
@@ -1172,14 +1172,14 @@ public class Library extends javax.swing.JFrame {
             pdfManager.setFilePath(fileName);
             int documentId = pdfManager.ToText(selNode.getUserObject().toString());
             // Update the Library 
-            if (documentId != -1)
-            {
+           // if (documentId != -1)
+           // {
             RefereshTable();
             updateTree(chooser.getSelectedFile().getName(), documentId);
-            } else 
-            {
-                JOptionPane.showMessageDialog(null, "ملف غير صالح");
-            }
+          //  } else 
+          //  {
+          //      JOptionPane.showMessageDialog(null, "ملف غير صالح");
+          //  }
         } catch (HeadlessException | IOException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
@@ -1444,7 +1444,7 @@ public class Library extends javax.swing.JFrame {
                     break;
 
                 case 5:
-                    newType = "other";
+                    newType = "miscellaneous";
                     break;
             } // End newTypeInt switch
 
@@ -1456,8 +1456,9 @@ public class Library extends javax.swing.JFrame {
             String value6 = TextField_extra.getText();
             String value7 = TextField_extra1.getText();
 
-            rs = stmt.executeQuery("SELECT documentType FROM referencedocument WHERE title = '" + model.getValueAt(i, 4) 
+            rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + model.getValueAt(i, 4) 
             + "' AND author = '" + model.getValueAt(i, 3) +"'" );
+            rs.next();
             int ID = rs.getInt("documentID");
             String query = "update referencedocument set title='" + value1 + "' , author='" + value2 + "', publisher='" 
                     + value3 + "', publishYear='" + value4 + "', pages='" + value5 + "' where documentID='" + ID + "' ";
@@ -1539,7 +1540,7 @@ public class Library extends javax.swing.JFrame {
 
                     break;
 
-                case "other":
+                case "miscellaneous":
                     stmt.executeUpdate("update referencedocument set documentType='other' where documentID='" + ID + "' ");
                     break;
 
@@ -1560,6 +1561,7 @@ public class Library extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "تم التحديث بنجاح");
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
+            System.out.print(ex);
         }
     }//GEN-LAST:event_MenuItem_editActionPerformed
 
@@ -2070,7 +2072,7 @@ public class Library extends javax.swing.JFrame {
     }//GEN-LAST:event_Button_newFolderActionPerformed
 
     private void MenuItem_NewFolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItem_NewFolderActionPerformed
-        // TODO add your handling code here:
+         // TODO add your handling code here:
         DefaultMutableTreeNode selNode = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
         DefaultTreeModel model = (DefaultTreeModel) jTree1.getModel();
         if (selNode != null) {
@@ -2096,7 +2098,7 @@ public class Library extends javax.swing.JFrame {
     }//GEN-LAST:event_MenuItem_englishActionPerformed
 
     private void MenuItem_DeleteFolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItem_DeleteFolderActionPerformed
-        // TODO add your handling code here:
+       // TODO add your handling code here:
         DefaultMutableTreeNode selNode = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
         DefaultTreeModel model = (DefaultTreeModel) jTree1.getModel();
         if (selNode != null) {

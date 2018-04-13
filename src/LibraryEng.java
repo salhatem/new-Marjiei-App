@@ -1105,14 +1105,14 @@ public class LibraryEng extends javax.swing.JFrame {
             pdfManager.setFilePath(fileName);
             int documentId = pdfManager.ToText(selNode.getUserObject().toString());
             // Update the Library 
-            if (documentId != -1)
-            {
+          //  if (documentId != -1)
+          //  {
             RefereshTable();
             updateTree(chooser.getSelectedFile().getName(), documentId);
-            } else 
-            {
-                JOptionPane.showMessageDialog(null, "Invaliv Document");
-            }
+          //  } else 
+          //  {
+          //      JOptionPane.showMessageDialog(null, "Invaliv Document");
+         //   }
         } catch (HeadlessException | IOException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
@@ -1184,14 +1184,14 @@ public class LibraryEng extends javax.swing.JFrame {
             pdfManager.setFilePath(fileName);
             int documentId = pdfManager.ToText(selNode.getUserObject().toString());
             // Update the Library 
-            if (documentId != -1)
-            {
+          //  if (documentId != -1)
+          //  {
             RefereshTable();
             updateTree(chooser.getSelectedFile().getName(), documentId);
-            } else 
-            {
-                JOptionPane.showMessageDialog(null, "Invalid Document");
-            }
+          //  } else 
+          //  {
+          //      JOptionPane.showMessageDialog(null, "Invaliv Document");
+         //   }
         } catch (HeadlessException | IOException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
@@ -1364,18 +1364,18 @@ public class LibraryEng extends javax.swing.JFrame {
         extraInfo1TextField.setText(" ");
         extraInfo2TextField.setText(" ");
         extraInfo1Label.setVisible(true);
-        extraInfo1Label.setText("الطبعة");
+        extraInfo1Label.setText("Edition");
         extraInfo1TextField.setVisible(true);
         extraInfo2Label.setVisible(false);
         extraInfo2TextField.setVisible(false);
     }//GEN-LAST:event_MenuItem_manuallyActionPerformed
 
     private void MenuItem_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItem_deleteActionPerformed
-       try {
+      try {
             int i = DocsList.getSelectedRow();
             if ( i != -1) // If there is Selected Document
             { // Show Confirmation Message
-            int confirmed = JOptionPane.showConfirmDialog(null, "Reference will be Deleted", "Confirmation",
+            int confirmed = JOptionPane.showConfirmDialog(null, "Reference will be Deleted", "Comfirmation",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             DefaultTableModel model = (DefaultTableModel) DocsList.getModel();
             Connection con = DBConnection();
@@ -1456,7 +1456,7 @@ public class LibraryEng extends javax.swing.JFrame {
                     break;
 
                 case 5:
-                    newType = "other";
+                    newType = "miscellaneous";
                     break;
             } // End newTypeInt switch
 
@@ -1468,8 +1468,9 @@ public class LibraryEng extends javax.swing.JFrame {
             String value6 = TextField_extra.getText();
             String value7 = TextField_extra1.getText();
 
-            rs = stmt.executeQuery("SELECT documentType FROM referencedocument WHERE title = '" + model.getValueAt(i, 4) 
+            rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + model.getValueAt(i, 4) 
             + "' AND author = '" + model.getValueAt(i, 3) +"'" );
+            rs.next();
             int ID = rs.getInt("documentID");
             String query = "update referencedocument set title='" + value1 + "' , author='" + value2 + "', publisher='" 
                     + value3 + "', publishYear='" + value4 + "', pages='" + value5 + "' where documentID='" + ID + "' ";
@@ -1551,8 +1552,8 @@ public class LibraryEng extends javax.swing.JFrame {
 
                     break;
 
-                case "other":
-                    stmt.executeUpdate("update referencedocument set documentType='other' where documentID='" + ID + "' ");
+                case "miscellaneous":
+                    stmt.executeUpdate("update referencedocument set documentType='miscellaneous' where documentID='" + ID + "' ");
                     break;
 
             } // End newType switch
@@ -1571,7 +1572,8 @@ public class LibraryEng extends javax.swing.JFrame {
 
             JOptionPane.showMessageDialog(null, "Updated Successfully");
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Invalid Inputs\n" + ex.getMessage());
+            System.out.print(ex);
         }
     }//GEN-LAST:event_MenuItem_editActionPerformed
 
@@ -2045,7 +2047,7 @@ public class LibraryEng extends javax.swing.JFrame {
     }//GEN-LAST:event_MenuItem_englishActionPerformed
 
     private void MenuItem_DeleteFolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItem_DeleteFolderActionPerformed
-        // TODO add your handling code here:
+       // TODO add your handling code here:
         DefaultMutableTreeNode selNode = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
         DefaultTreeModel model = (DefaultTreeModel) jTree1.getModel();
         if (selNode != null) {
@@ -2055,7 +2057,7 @@ public class LibraryEng extends javax.swing.JFrame {
                 //                saveModel(model);
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Select Folder tp Delete");
+            JOptionPane.showMessageDialog(null, "Select Folder to Delete");
         }
     }//GEN-LAST:event_MenuItem_DeleteFolderActionPerformed
 

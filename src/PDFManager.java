@@ -75,29 +75,29 @@ public class PDFManager {
         try {
             FileInputStream fis = new FileInputStream(file);
             int len = (int) file.length();
-            Query = ("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, folder)" 
-                    + " VALUES(?, ?, ? ,? ,?)");
+            Query = ("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, folder, referenceFile)" 
+                    + " VALUES(?, ?, ? ,? ,?, ?)");
             pstmt = con.prepareStatement(Query);
             pstmt.setString(1, "book");
             pstmt.setString(2, title);
             pstmt.setString(3, author);
             pstmt.setInt(4, numberOfPages);
             pstmt.setString(5, folderName);
-           // pstmt.setBinaryStream(6, fis, len);
+            pstmt.setBinaryStream(6, fis, len);
             int i = pstmt.executeUpdate();
-            if (i != -1)
-            {
+         //   if (i != -1)
+          //  {
             rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + title 
                     + "' AND author = '" + author + "'");
             rs.next();
             documentId = rs.getInt("documentID");
             stmt.executeUpdate("INSERT INTO book (documentID, edition)" + " VALUES ( '" + documentId + "', '" + 0 + "')");
-            } else 
-            {
-                return -1;
-            }
+         //   } else 
+          //  {
+         //       return -1;
+         //   }
             //*************************************************************
-          /*  File f = new File("m.pdf");
+            File f = new File("m.pdf");
             FileOutputStream output = new FileOutputStream(f);
             rs = stmt.executeQuery("SELECT referenceFile FROM referencedocument WHERE title = '" + title + "' AND author = '" + author + "'");
             if (rs.next()) {
@@ -106,7 +106,7 @@ public class PDFManager {
                 while (input.read(buffer) > 0) {
                     output.write(buffer);
                 } 
-            } */
+            } 
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         } 
