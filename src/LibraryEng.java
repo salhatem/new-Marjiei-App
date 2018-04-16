@@ -823,6 +823,11 @@ public class LibraryEng extends javax.swing.JFrame {
 
         MenuItem_help.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, java.awt.event.InputEvent.CTRL_MASK));
         MenuItem_help.setText("Help");
+        MenuItem_help.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuItem_helpActionPerformed(evt);
+            }
+        });
         Menu_help.add(MenuItem_help);
 
         MenuBar.add(Menu_help);
@@ -2176,6 +2181,30 @@ public class LibraryEng extends javax.swing.JFrame {
     private void TextField_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextField_searchActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_TextField_searchActionPerformed
+
+    private void MenuItem_helpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItem_helpActionPerformed
+        // TODO add your handling code here:
+        
+        try {
+                Connection con = DBConnection();
+                Statement stmt = con.createStatement();
+                File f = new File("m.pdf");
+                FileOutputStream output = new FileOutputStream(f);
+                ResultSet rs = stmt.executeQuery("SELECT File FROM help WHERE fileID = '" + 2 + "'");
+                if (rs.next()) {
+                    InputStream input = rs.getBinaryStream("File");
+                    byte[] buffer = new byte[1024];
+                    while (input.read(buffer) > 0) {
+                        output.write(buffer);
+                    }
+                }
+                output.close();
+                Desktop.getDesktop().open(f);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage() );
+            }
+        
+    }//GEN-LAST:event_MenuItem_helpActionPerformed
 
     /*    public void addNewDoc(){
      String Query;

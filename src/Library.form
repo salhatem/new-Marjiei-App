@@ -118,6 +118,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="&#x645;&#x633;&#x627;&#x639;&#x62f;&#x629;"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="MenuItem_helpActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>

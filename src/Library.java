@@ -259,7 +259,7 @@ public class Library extends javax.swing.JFrame {
         Label_searchIcon = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         Panel_manually = new javax.swing.JPanel();
-        typeCombobox = new javax.swing.JComboBox<String>();
+        typeCombobox = new javax.swing.JComboBox<>();
         titleLabel = new javax.swing.JLabel();
         titleTextField = new javax.swing.JTextField();
         publisherLabel = new javax.swing.JLabel();
@@ -283,7 +283,7 @@ public class Library extends javax.swing.JFrame {
         Label_pages = new javax.swing.JLabel();
         Label_extra = new javax.swing.JLabel();
         Label_extra1 = new javax.swing.JLabel();
-        ComboBox_type = new javax.swing.JComboBox<String>();
+        ComboBox_type = new javax.swing.JComboBox<>();
         TextField_title = new javax.swing.JTextField();
         TextField_author = new javax.swing.JTextField();
         TextField_year = new javax.swing.JTextField();
@@ -387,7 +387,7 @@ public class Library extends javax.swing.JFrame {
 
         Panel_manually.setBackground(new java.awt.Color(249, 249, 249));
 
-        typeCombobox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "كتاب", "مقال صحفي", "مقال مجلة", "صفحة ويب", "ورقة مؤتمر", "أخرى", " " }));
+        typeCombobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "كتاب", "مقال صحفي", "مقال مجلة", "صفحة ويب", "ورقة مؤتمر", "أخرى", " " }));
         typeCombobox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 typeComboboxActionPerformed(evt);
@@ -538,7 +538,7 @@ public class Library extends javax.swing.JFrame {
 
         Label_extra1.setText("jLabel1");
 
-        ComboBox_type.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "كتاب", "مقال صحيفة", "مقال مجلة", "صفحة ويب", "ورقة مؤتمر", "أخرى" }));
+        ComboBox_type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "كتاب", "مقال صحيفة", "مقال مجلة", "صفحة ويب", "ورقة مؤتمر", "أخرى" }));
         ComboBox_type.setSelectedIndex(5);
         ComboBox_type.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -814,6 +814,11 @@ public class Library extends javax.swing.JFrame {
 
         MenuItem_help.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, java.awt.event.InputEvent.CTRL_MASK));
         MenuItem_help.setText("مساعدة");
+        MenuItem_help.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuItem_helpActionPerformed(evt);
+            }
+        });
         Menu_help.add(MenuItem_help);
 
         MenuBar.add(Menu_help);
@@ -2160,6 +2165,30 @@ public class Library extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "حدد مجلد للحذف");
         }
     }//GEN-LAST:event_MenuItem_DeleteFolderActionPerformed
+
+    private void MenuItem_helpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItem_helpActionPerformed
+        // TODO add your handling code here:
+        
+        try {
+                Connection con = DBConnection();
+                Statement stmt = con.createStatement();
+                File f = new File("m.pdf");
+                FileOutputStream output = new FileOutputStream(f);
+                ResultSet rs = stmt.executeQuery("SELECT File FROM help WHERE fileID = '" + 1 + "'");
+                if (rs.next()) {
+                    InputStream input = rs.getBinaryStream("File");
+                    byte[] buffer = new byte[1024];
+                    while (input.read(buffer) > 0) {
+                        output.write(buffer);
+                    }
+                }
+                output.close();
+                Desktop.getDesktop().open(f);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage() );
+            }
+        
+    }//GEN-LAST:event_MenuItem_helpActionPerformed
 
     /*    public void addNewDoc(){
      String Query;
