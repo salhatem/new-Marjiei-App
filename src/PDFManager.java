@@ -107,6 +107,7 @@ public class PDFManager {
                     output.write(buffer);
                 } 
             } 
+            output.close();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         } 

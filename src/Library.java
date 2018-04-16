@@ -1,9 +1,13 @@
 
 import com.mysql.jdbc.Connection;
+import java.awt.Desktop;
 import java.awt.HeadlessException;
+import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.sql.DriverManager;
@@ -101,6 +105,30 @@ public class Library extends javax.swing.JFrame {
         }
     }
 
+    private void openDocument(int documentId, MouseEvent evt) {
+
+        if (evt.getClickCount() == 2) {
+            try {
+                Connection con = DBConnection();
+                Statement stmt = con.createStatement();
+                File f = new File("m.pdf");
+                FileOutputStream output = new FileOutputStream(f);
+                ResultSet rs = stmt.executeQuery("SELECT referenceFile FROM referencedocument WHERE documentID = '" + documentId + "'");
+                if (rs.next()) {
+                    InputStream input = rs.getBinaryStream("referenceFile");
+                    byte[] buffer = new byte[1024];
+                    while (input.read(buffer) > 0) {
+                        output.write(buffer);
+                    }
+                }
+                output.close();
+                Desktop.getDesktop().open(f);
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+    }
+
     private void saveModel(TreeModelMap e) {
         try {
             FileOutputStream fileOut = new FileOutputStream("treeModelMap.ser");
@@ -108,7 +136,7 @@ public class Library extends javax.swing.JFrame {
             out.writeObject(e);
             out.close();
             fileOut.close();
-           // System.out.printf("Serialized data is saved in model.ser");
+            // System.out.printf("Serialized data is saved in model.ser");
         } catch (IOException i) {
             i.printStackTrace();
         }
@@ -231,7 +259,7 @@ public class Library extends javax.swing.JFrame {
         Label_searchIcon = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         Panel_manually = new javax.swing.JPanel();
-        typeCombobox = new javax.swing.JComboBox<>();
+        typeCombobox = new javax.swing.JComboBox<String>();
         titleLabel = new javax.swing.JLabel();
         titleTextField = new javax.swing.JTextField();
         publisherLabel = new javax.swing.JLabel();
@@ -255,7 +283,7 @@ public class Library extends javax.swing.JFrame {
         Label_pages = new javax.swing.JLabel();
         Label_extra = new javax.swing.JLabel();
         Label_extra1 = new javax.swing.JLabel();
-        ComboBox_type = new javax.swing.JComboBox<>();
+        ComboBox_type = new javax.swing.JComboBox<String>();
         TextField_title = new javax.swing.JTextField();
         TextField_author = new javax.swing.JTextField();
         TextField_year = new javax.swing.JTextField();
@@ -359,7 +387,7 @@ public class Library extends javax.swing.JFrame {
 
         Panel_manually.setBackground(new java.awt.Color(249, 249, 249));
 
-        typeCombobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "كتاب", "مقال صحفي", "مقال مجلة", "صفحة ويب", "ورقة مؤتمر", "أخرى", " " }));
+        typeCombobox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "كتاب", "مقال صحفي", "مقال مجلة", "صفحة ويب", "ورقة مؤتمر", "أخرى", " " }));
         typeCombobox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 typeComboboxActionPerformed(evt);
@@ -510,7 +538,7 @@ public class Library extends javax.swing.JFrame {
 
         Label_extra1.setText("jLabel1");
 
-        ComboBox_type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "كتاب", "مقال صحيفة", "مقال مجلة", "صفحة ويب", "ورقة مؤتمر", "أخرى" }));
+        ComboBox_type.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "كتاب", "مقال صحيفة", "مقال مجلة", "صفحة ويب", "ورقة مؤتمر", "أخرى" }));
         ComboBox_type.setSelectedIndex(5);
         ComboBox_type.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -829,16 +857,16 @@ public class Library extends javax.swing.JFrame {
         TextField_extra.setVisible(false);
         Label_extra1.setVisible(false);
         TextField_extra1.setVisible(false);
-        
+
         try {
             // Get the Selected Document Type. 
             int i = DocsList.getSelectedRow();
             Connection con = DBConnection();
             Statement stmt = con.createStatement();
-           // int ID = (int) model.getValueAt(i, 5);
-            ResultSet rs = stmt.executeQuery("SELECT documentType FROM referencedocument WHERE title = '" + model.getValueAt(i, 4) 
-            + "' AND author = '" + model.getValueAt(i, 3) +"'" );
-            rs.next(); 
+            // int ID = (int) model.getValueAt(i, 5);
+            ResultSet rs = stmt.executeQuery("SELECT documentType FROM referencedocument WHERE title = '" + model.getValueAt(i, 4)
+                    + "' AND author = '" + model.getValueAt(i, 3) + "'");
+            rs.next();
             String type = rs.getString("documentType");
             // Set Text Fields According to Document Type. 
             switch (type) {
@@ -848,23 +876,27 @@ public class Library extends javax.swing.JFrame {
                     TextField_extra.setVisible(true);
                     Label_extra.setText("الطبعة");
                     if (model.getValueAt(i, 4) != null) {
-                        TextField_title.setText(model.getValueAt(i, 4).toString()); }
+                        TextField_title.setText(model.getValueAt(i, 4).toString());
+                    }
                     if (model.getValueAt(i, 3) != null) {
-                        TextField_author.setText(model.getValueAt(i, 3).toString()); }
+                        TextField_author.setText(model.getValueAt(i, 3).toString());
+                    }
                     if (model.getValueAt(i, 2) != null) {
-                        TextField_publisher.setText(model.getValueAt(i, 2).toString()); }
+                        TextField_publisher.setText(model.getValueAt(i, 2).toString());
+                    }
                     TextField_year.setText(model.getValueAt(i, 1).toString());
                     // Get the Rest of Document Information From Database. 
-                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + model.getValueAt(i, 4) 
-                        + "' AND author = '" + model.getValueAt(i, 3) +"'" );
+                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + model.getValueAt(i, 4)
+                            + "' AND author = '" + model.getValueAt(i, 3) + "'");
                     rs.next();
                     int bookID = rs.getInt("documentID");
                     rs = stmt.executeQuery("SELECT pages FROM referencedocument WHERE documentID = " + bookID);
                     rs.next();
-                    TextField_pages.setText(rs.getString("pages")); 
+                    TextField_pages.setText(rs.getString("pages"));
                     rs = stmt.executeQuery("SELECT * FROM book WHERE documentID = " + bookID);
                     rs.next();
                     TextField_extra.setText(rs.getString("edition"));
+                    openDocument(bookID, evt);
                     break;
 
                 case "journalarticle":
@@ -888,8 +920,8 @@ public class Library extends javax.swing.JFrame {
                     }
                     TextField_year.setText(model.getValueAt(i, 1).toString());
 
-                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + model.getValueAt(i, 4) 
-                        + "' AND author = '" + model.getValueAt(i, 3) +"'" );
+                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + model.getValueAt(i, 4)
+                            + "' AND author = '" + model.getValueAt(i, 3) + "'");
                     rs.next();
                     int jarticleID = rs.getInt("documentID");
                     rs = stmt.executeQuery("SELECT pages FROM referencedocument WHERE documentID = " + jarticleID);
@@ -900,6 +932,7 @@ public class Library extends javax.swing.JFrame {
                     rs.next();
                     TextField_extra.setText(rs.getString("journalName"));
                     TextField_extra1.setText(rs.getString("volume"));
+                    openDocument(jarticleID, evt);
                     break;
 
                 case "magazinearticle":
@@ -923,8 +956,8 @@ public class Library extends javax.swing.JFrame {
                     }
                     TextField_year.setText(model.getValueAt(i, 1).toString());
 
-                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + model.getValueAt(i, 4) 
-                        + "' AND author = '" + model.getValueAt(i, 3) +"'" );
+                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + model.getValueAt(i, 4)
+                            + "' AND author = '" + model.getValueAt(i, 3) + "'");
                     rs.next();
                     int marticleID = rs.getInt("documentID");
                     rs = stmt.executeQuery("SELECT pages FROM referencedocument WHERE documentID = " + marticleID);
@@ -935,6 +968,7 @@ public class Library extends javax.swing.JFrame {
                     rs.next();
                     TextField_extra.setText(rs.getString("magazineName"));
                     TextField_extra1.setText(rs.getString("month"));
+                    openDocument(marticleID, evt);
                     break;
 
                 case "webpage":
@@ -958,8 +992,8 @@ public class Library extends javax.swing.JFrame {
                     }
                     TextField_year.setText(model.getValueAt(i, 1).toString());
 
-                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + model.getValueAt(i, 4) 
-                        + "' AND author = '" + model.getValueAt(i, 3) +"'" );
+                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + model.getValueAt(i, 4)
+                            + "' AND author = '" + model.getValueAt(i, 3) + "'");
                     rs.next();
                     int webID = rs.getInt("documentID");
                     rs = stmt.executeQuery("SELECT pages FROM referencedocument WHERE documentID = " + webID);
@@ -970,6 +1004,7 @@ public class Library extends javax.swing.JFrame {
                     rs.next();
                     TextField_extra.setText(rs.getString("url"));
                     TextField_extra1.setText(rs.getString("AccessDate"));
+                    openDocument(webID, evt);
                     break;
 
                 case "conferenceproceeding":
@@ -993,8 +1028,8 @@ public class Library extends javax.swing.JFrame {
                     }
                     TextField_year.setText(model.getValueAt(i, 1).toString());
 
-                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + model.getValueAt(i, 4) 
-                        + "' AND author = '" + model.getValueAt(i, 3) +"'" );
+                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + model.getValueAt(i, 4)
+                            + "' AND author = '" + model.getValueAt(i, 3) + "'");
                     rs.next();
                     int cpID = rs.getInt("documentID");
                     rs = stmt.executeQuery("SELECT pages FROM referencedocument WHERE documentID = " + cpID);
@@ -1005,6 +1040,7 @@ public class Library extends javax.swing.JFrame {
                     rs.next();
                     TextField_extra.setText(rs.getString("conferenceName"));
                     TextField_extra1.setText(rs.getString("place"));
+                    openDocument(cpID, evt);
                     break;
 
                 case "other":
@@ -1026,13 +1062,14 @@ public class Library extends javax.swing.JFrame {
                     }
                     TextField_year.setText(model.getValueAt(i, 1).toString());
 
-                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + model.getValueAt(i, 4) 
-                        + "' AND author = '" + model.getValueAt(i, 3) +"'" );
+                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + model.getValueAt(i, 4)
+                            + "' AND author = '" + model.getValueAt(i, 3) + "'");
                     rs.next();
                     int otherID = rs.getInt("documentID");
                     rs = stmt.executeQuery("SELECT pages FROM referencedocument WHERE documentID = " + otherID);
                     rs.next();
                     TextField_pages.setText(rs.getString("pages"));
+                    openDocument(otherID, evt);
                     break;
             }
 
@@ -1072,9 +1109,11 @@ public class Library extends javax.swing.JFrame {
     private void Button_importActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_importActionPerformed
         DefaultMutableTreeNode selNode = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
         if (selNode == null) {
-            JOptionPane.showMessageDialog(null, "حدد مجلد للإضافة");  }
+            JOptionPane.showMessageDialog(null, "حدد مجلد للإضافة");
+        }
         if (selNode == null) {
-            return; }
+            return;
+        }
         try {
             // Declaring Components & local Variables
             JFileChooser chooser = new JFileChooser();
@@ -1093,14 +1132,14 @@ public class Library extends javax.swing.JFrame {
             pdfManager.setFilePath(fileName);
             int documentId = pdfManager.ToText(selNode.getUserObject().toString());
             // Update the Library 
-           // if (documentId != -1)
-           // {
+            // if (documentId != -1)
+            // {
             RefereshTable();
             updateTree(chooser.getSelectedFile().getName(), documentId);
           //  } else 
-          //  {
-          //      JOptionPane.showMessageDialog(null, "ملف غير صالح");
-          //  }
+            //  {
+            //      JOptionPane.showMessageDialog(null, "ملف غير صالح");
+            //  }
         } catch (HeadlessException | IOException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
@@ -1109,36 +1148,37 @@ public class Library extends javax.swing.JFrame {
     private void Button_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_deleteActionPerformed
         try {
             int i = DocsList.getSelectedRow();
-            if ( i != -1) // If there is Selected Document
+            if (i != -1) // If there is Selected Document
             { // Show Confirmation Message
-            int confirmed = JOptionPane.showConfirmDialog(null, "سيتم حذف المرجع", "تأكيد",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-            DefaultTableModel model = (DefaultTableModel) DocsList.getModel();
-            Connection con = DBConnection();
-            Statement stmt = con.createStatement();
-            int row = DocsList.getSelectedRow();
-            int ID = (int) model.getValueAt(i, 5);
-            // Check the User Option
-            if (confirmed == 0) {
-                stmt.execute("DELETE FROM referencedocument WHERE documentID =" + ID + "");
-                int modelRow = DocsList.convertRowIndexToModel(row);
-                model.removeRow(modelRow);
-                // Reset TextFields. 
-                ComboBox_type.setSelectedIndex(5);
-                TextField_year.setText(" ");
-                TextField_publisher.setText(" ");
-                TextField_author.setText(" ");
-                TextField_title.setText(" ");
-                TextField_pages.setText(" ");
-                TextField_extra.setText(" ");
-                TextField_extra1.setText(" ");
-                Label_extra.setVisible(false);
-                TextField_extra.setVisible(false);
-                Label_extra1.setVisible(false);
-                TextField_extra1.setVisible(false);
-                if (treeModelMap.getTreeMap().get(ID) != null) {
-                    ((DefaultTreeModel) jTree1.getModel()).removeNodeFromParent(treeModelMap.getTreeMap().get(ID)); }
-            }
+                int confirmed = JOptionPane.showConfirmDialog(null, "سيتم حذف المرجع", "تأكيد",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                DefaultTableModel model = (DefaultTableModel) DocsList.getModel();
+                Connection con = DBConnection();
+                Statement stmt = con.createStatement();
+                int row = DocsList.getSelectedRow();
+                int ID = (int) model.getValueAt(i, 5);
+                // Check the User Option
+                if (confirmed == 0) {
+                    stmt.execute("DELETE FROM referencedocument WHERE documentID =" + ID + "");
+                    int modelRow = DocsList.convertRowIndexToModel(row);
+                    model.removeRow(modelRow);
+                    // Reset TextFields. 
+                    ComboBox_type.setSelectedIndex(5);
+                    TextField_year.setText(" ");
+                    TextField_publisher.setText(" ");
+                    TextField_author.setText(" ");
+                    TextField_title.setText(" ");
+                    TextField_pages.setText(" ");
+                    TextField_extra.setText(" ");
+                    TextField_extra1.setText(" ");
+                    Label_extra.setVisible(false);
+                    TextField_extra.setVisible(false);
+                    Label_extra1.setVisible(false);
+                    TextField_extra1.setVisible(false);
+                    if (treeModelMap.getTreeMap().get(ID) != null) {
+                        ((DefaultTreeModel) jTree1.getModel()).removeNodeFromParent(treeModelMap.getTreeMap().get(ID));
+                    }
+                }
             } else {
                 JOptionPane.showMessageDialog(null, "حدد مرجع للحذف");
             }
@@ -1149,11 +1189,13 @@ public class Library extends javax.swing.JFrame {
     }//GEN-LAST:event_Button_deleteActionPerformed
 
     private void MenuItem_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItem_addActionPerformed
-       DefaultMutableTreeNode selNode = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
+        DefaultMutableTreeNode selNode = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
         if (selNode == null) {
-            JOptionPane.showMessageDialog(null, "حدد مجلد للإضافة");  }
+            JOptionPane.showMessageDialog(null, "حدد مجلد للإضافة");
+        }
         if (selNode == null) {
-            return; }
+            return;
+        }
         try {
             // Declaring Components & local Variables
             JFileChooser chooser = new JFileChooser();
@@ -1172,26 +1214,28 @@ public class Library extends javax.swing.JFrame {
             pdfManager.setFilePath(fileName);
             int documentId = pdfManager.ToText(selNode.getUserObject().toString());
             // Update the Library 
-           // if (documentId != -1)
-           // {
+            // if (documentId != -1)
+            // {
             RefereshTable();
             updateTree(chooser.getSelectedFile().getName(), documentId);
           //  } else 
-          //  {
-          //      JOptionPane.showMessageDialog(null, "ملف غير صالح");
-          //  }
+            //  {
+            //      JOptionPane.showMessageDialog(null, "ملف غير صالح");
+            //  }
         } catch (HeadlessException | IOException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
     }//GEN-LAST:event_MenuItem_addActionPerformed
 
     private void MenuItem_manuallyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItem_manuallyActionPerformed
-       // Declaring local variables
+        // Declaring local variables
         DefaultMutableTreeNode selNode = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
         if (selNode == null) {
-            JOptionPane.showMessageDialog(null, "حدد مجلد للإضافة"); }
+            JOptionPane.showMessageDialog(null, "حدد مجلد للإضافة");
+        }
         if (selNode == null) {
-            return;  }
+            return;
+        }
         Connection con = DBConnection();
         Statement stmt;
         ResultSet rs;
@@ -1199,11 +1243,11 @@ public class Library extends javax.swing.JFrame {
         switch (index) {
             case 0: // Book
                 try {   // Code to insert book information here.
-             stmt = con.createStatement();
-             stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear, folder)"
-                      + " VALUES ('book', '" + titleTextField.getText() + "', '" + authorTextField.getText()
-                      + "', '" + pagesTextField.getText() + "', '" + publisherTextField.getText()
-                      + "', '" + yearTextField.getText() + "', '" + selNode.getUserObject().toString() + "')");
+                    stmt = con.createStatement();
+                    stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear, folder)"
+                            + " VALUES ('book', '" + titleTextField.getText() + "', '" + authorTextField.getText()
+                            + "', '" + pagesTextField.getText() + "', '" + publisherTextField.getText()
+                            + "', '" + yearTextField.getText() + "', '" + selNode.getUserObject().toString() + "')");
                     rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + titleTextField.getText()
                             + "' AND author = '" + authorTextField.getText() + "'");
                     rs.next();
@@ -1211,9 +1255,10 @@ public class Library extends javax.swing.JFrame {
                     stmt.executeUpdate("INSERT INTO book (documentID, edition)" + " VALUES ( '" + id + "', '"
                             + extraInfo1TextField.getText() + "')"); // Book Edition
                     updateTree(titleTextField.getText(), id);
-                    RefereshTable(); 
+                    RefereshTable();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());  }
+                    JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
+                }
                 break;
 
             /*   String type = "book";
@@ -1231,15 +1276,15 @@ public class Library extends javax.swing.JFrame {
                     // DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00:00");
                     //    LocalDate localDate = LocalDate.now();
                     stmt = con.createStatement();
-             stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear, folder)"
-                      + " VALUES ('journalarticle', '" + titleTextField.getText() + "', '" + authorTextField.getText()
-                      + "', '" + pagesTextField.getText() + "', '" + publisherTextField.getText()
-                      + "', '" + yearTextField.getText() + "', '" + selNode.getUserObject().toString() + "')");
-                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + titleTextField.getText() 
+                    stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear, folder)"
+                            + " VALUES ('journalarticle', '" + titleTextField.getText() + "', '" + authorTextField.getText()
+                            + "', '" + pagesTextField.getText() + "', '" + publisherTextField.getText()
+                            + "', '" + yearTextField.getText() + "', '" + selNode.getUserObject().toString() + "')");
+                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + titleTextField.getText()
                             + "' AND author = '" + authorTextField.getText() + "'");
                     rs.next();
                     int id = rs.getInt("documentID");
-                    stmt.executeUpdate("INSERT INTO journalarticle (documentID, journalName, volume)" 
+                    stmt.executeUpdate("INSERT INTO journalarticle (documentID, journalName, volume)"
                             + " VALUES ( '" + id + "', '" + extraInfo1TextField.getText() + "', '" + extraInfo2TextField.getText() + "')");
                     updateTree(titleTextField.getText(), id);
                     RefereshTable();
@@ -1254,15 +1299,15 @@ public class Library extends javax.swing.JFrame {
                     //  DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00:00");
                     //     LocalDate localDate = LocalDate.now();
                     stmt = con.createStatement();
-             stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear, folder)"
-                      + " VALUES ('magazinearticle', '" + titleTextField.getText() + "', '" + authorTextField.getText()
-                      + "', '" + pagesTextField.getText() + "', '" + publisherTextField.getText()
-                      + "', '" + yearTextField.getText() + "', '" + selNode.getUserObject().toString() + "')");
-                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + titleTextField.getText() 
+                    stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear, folder)"
+                            + " VALUES ('magazinearticle', '" + titleTextField.getText() + "', '" + authorTextField.getText()
+                            + "', '" + pagesTextField.getText() + "', '" + publisherTextField.getText()
+                            + "', '" + yearTextField.getText() + "', '" + selNode.getUserObject().toString() + "')");
+                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + titleTextField.getText()
                             + "' AND author = '" + authorTextField.getText() + "'");
                     rs.next();
                     int id = rs.getInt("documentID");
-                    stmt.executeUpdate("INSERT INTO magazinearticle (documentID, magazineName, month) " 
+                    stmt.executeUpdate("INSERT INTO magazinearticle (documentID, magazineName, month) "
                             + " VALUES ( '" + id + "', '" + extraInfo1TextField.getText() + "', '" + extraInfo2TextField.getText() + "')");
                     updateTree(titleTextField.getText(), id);
                     RefereshTable();
@@ -1278,15 +1323,15 @@ public class Library extends javax.swing.JFrame {
                     //   DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00:00");
                     //     LocalDate localDate = LocalDate.now();
                     stmt = con.createStatement();
-             stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear, folder)"
-                      + " VALUES ('webpage', '" + titleTextField.getText() + "', '" + authorTextField.getText()
-                      + "', '" + pagesTextField.getText() + "', '" + publisherTextField.getText()
-                      + "', '" + yearTextField.getText() + "', '" + selNode.getUserObject().toString() + "')");
-                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + titleTextField.getText() 
+                    stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear, folder)"
+                            + " VALUES ('webpage', '" + titleTextField.getText() + "', '" + authorTextField.getText()
+                            + "', '" + pagesTextField.getText() + "', '" + publisherTextField.getText()
+                            + "', '" + yearTextField.getText() + "', '" + selNode.getUserObject().toString() + "')");
+                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + titleTextField.getText()
                             + "' AND author = '" + authorTextField.getText() + "'");
                     rs.next();
                     int id = rs.getInt("documentID");
-                    stmt.executeUpdate("INSERT INTO webpage (documentID, url, AccessDate) " 
+                    stmt.executeUpdate("INSERT INTO webpage (documentID, url, AccessDate) "
                             + " VALUES ( '" + id + "', '" + extraInfo1TextField.getText() + "', '" + extraInfo2TextField.getText() + "')");
                     updateTree(titleTextField.getText(), id);
                     RefereshTable();
@@ -1302,15 +1347,15 @@ public class Library extends javax.swing.JFrame {
                     //   DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00:00");
                     //    LocalDate localDate = LocalDate.now();
                     stmt = con.createStatement();
-             stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear, folder)"
-                      + " VALUES ('conferenceproceeding', '" + titleTextField.getText() + "', '" + authorTextField.getText()
-                      + "', '" + pagesTextField.getText() + "', '" + publisherTextField.getText()
-                      + "', '" + yearTextField.getText() + "', '" + selNode.getUserObject().toString() + "')");
-                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + titleTextField.getText() 
+                    stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear, folder)"
+                            + " VALUES ('conferenceproceeding', '" + titleTextField.getText() + "', '" + authorTextField.getText()
+                            + "', '" + pagesTextField.getText() + "', '" + publisherTextField.getText()
+                            + "', '" + yearTextField.getText() + "', '" + selNode.getUserObject().toString() + "')");
+                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + titleTextField.getText()
                             + "' AND author = '" + authorTextField.getText() + "'");
                     rs.next();
                     int id = rs.getInt("documentID");
-                    stmt.executeUpdate("INSERT INTO conferenceproceeding (documentID, conferenceName, place) " 
+                    stmt.executeUpdate("INSERT INTO conferenceproceeding (documentID, conferenceName, place) "
                             + " VALUES ( '" + id + "', '" + extraInfo1TextField.getText() + "', '" + extraInfo2TextField.getText() + "')");
                     updateTree(titleTextField.getText(), id);
                     RefereshTable();
@@ -1326,11 +1371,11 @@ public class Library extends javax.swing.JFrame {
                     //    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00:00");
                     //   LocalDate localDate = LocalDate.now();
                     stmt = con.createStatement();
-             stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear, folder)"
-                      + " VALUES ('miscellaneous', '" + titleTextField.getText() + "', '" + authorTextField.getText()
-                      + "', '" + pagesTextField.getText() + "', '" + publisherTextField.getText()
-                      + "', '" + yearTextField.getText() + "', '" + selNode.getUserObject().toString() + "')");
-                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + titleTextField.getText() 
+                    stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear, folder)"
+                            + " VALUES ('miscellaneous', '" + titleTextField.getText() + "', '" + authorTextField.getText()
+                            + "', '" + pagesTextField.getText() + "', '" + publisherTextField.getText()
+                            + "', '" + yearTextField.getText() + "', '" + selNode.getUserObject().toString() + "')");
+                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + titleTextField.getText()
                             + "' AND author = '" + authorTextField.getText() + "'");
                     rs.next();
                     int id = rs.getInt("documentID");
@@ -1359,38 +1404,39 @@ public class Library extends javax.swing.JFrame {
     }//GEN-LAST:event_MenuItem_manuallyActionPerformed
 
     private void MenuItem_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItem_deleteActionPerformed
-       try {
+        try {
             int i = DocsList.getSelectedRow();
-            if ( i != -1) // If there is Selected Document
+            if (i != -1) // If there is Selected Document
             { // Show Confirmation Message
-            int confirmed = JOptionPane.showConfirmDialog(null, "سيتم حذف المرجع", "تأكيد",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-            DefaultTableModel model = (DefaultTableModel) DocsList.getModel();
-            Connection con = DBConnection();
-            Statement stmt = con.createStatement();
-            int row = DocsList.getSelectedRow();
-            int ID = (int) model.getValueAt(i, 5);
-            // Check the User Option
-            if (confirmed == 0) {
-                stmt.execute("DELETE FROM referencedocument WHERE documentID =" + ID + "");
-                int modelRow = DocsList.convertRowIndexToModel(row);
-                model.removeRow(modelRow);
-                // Reset TextFields. 
-                ComboBox_type.setSelectedIndex(5);
-                TextField_year.setText(" ");
-                TextField_publisher.setText(" ");
-                TextField_author.setText(" ");
-                TextField_title.setText(" ");
-                TextField_pages.setText(" ");
-                TextField_extra.setText(" ");
-                TextField_extra1.setText(" ");
-                Label_extra.setVisible(false);
-                TextField_extra.setVisible(false);
-                Label_extra1.setVisible(false);
-                TextField_extra1.setVisible(false);
-                if (treeModelMap.getTreeMap().get(ID) != null) {
-                    ((DefaultTreeModel) jTree1.getModel()).removeNodeFromParent(treeModelMap.getTreeMap().get(ID)); }
-            }
+                int confirmed = JOptionPane.showConfirmDialog(null, "سيتم حذف المرجع", "تأكيد",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                DefaultTableModel model = (DefaultTableModel) DocsList.getModel();
+                Connection con = DBConnection();
+                Statement stmt = con.createStatement();
+                int row = DocsList.getSelectedRow();
+                int ID = (int) model.getValueAt(i, 5);
+                // Check the User Option
+                if (confirmed == 0) {
+                    stmt.execute("DELETE FROM referencedocument WHERE documentID =" + ID + "");
+                    int modelRow = DocsList.convertRowIndexToModel(row);
+                    model.removeRow(modelRow);
+                    // Reset TextFields. 
+                    ComboBox_type.setSelectedIndex(5);
+                    TextField_year.setText(" ");
+                    TextField_publisher.setText(" ");
+                    TextField_author.setText(" ");
+                    TextField_title.setText(" ");
+                    TextField_pages.setText(" ");
+                    TextField_extra.setText(" ");
+                    TextField_extra1.setText(" ");
+                    Label_extra.setVisible(false);
+                    TextField_extra.setVisible(false);
+                    Label_extra1.setVisible(false);
+                    TextField_extra1.setVisible(false);
+                    if (treeModelMap.getTreeMap().get(ID) != null) {
+                        ((DefaultTreeModel) jTree1.getModel()).removeNodeFromParent(treeModelMap.getTreeMap().get(ID));
+                    }
+                }
             } else {
                 JOptionPane.showMessageDialog(null, "حدد مرجع للحذف");
             }
@@ -1402,22 +1448,22 @@ public class Library extends javax.swing.JFrame {
     private void MenuItem_exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItem_exitActionPerformed
         // TODO add your handling code here:
         saveModel(treeModelMap);
-        
+
         Platform.exit();
         System.exit(0);
     }//GEN-LAST:event_MenuItem_exitActionPerformed
 
     private void MenuItem_editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItem_editActionPerformed
-       // TODO add your handling code here:
+        // TODO add your handling code here:
         //
         try {
             int i = DocsList.getSelectedRow();
             TableModel model = DocsList.getModel();
             Connection con = DBConnection();
             Statement stmt = con.createStatement();
-           // int ID = (int) model.getValueAt(i, 5);
-            ResultSet rs = stmt.executeQuery("SELECT documentType FROM referencedocument WHERE title = '" + model.getValueAt(i, 4) 
-            + "' AND author = '" + model.getValueAt(i, 3) +"'" );
+            // int ID = (int) model.getValueAt(i, 5);
+            ResultSet rs = stmt.executeQuery("SELECT documentType FROM referencedocument WHERE title = '" + model.getValueAt(i, 4)
+                    + "' AND author = '" + model.getValueAt(i, 3) + "'");
             rs.next();
             String oldType = rs.getString("documentType");
             String newType = null;
@@ -1456,11 +1502,11 @@ public class Library extends javax.swing.JFrame {
             String value6 = TextField_extra.getText();
             String value7 = TextField_extra1.getText();
 
-            rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + model.getValueAt(i, 4) 
-            + "' AND author = '" + model.getValueAt(i, 3) +"'" );
+            rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + model.getValueAt(i, 4)
+                    + "' AND author = '" + model.getValueAt(i, 3) + "'");
             rs.next();
             int ID = rs.getInt("documentID");
-            String query = "update referencedocument set title='" + value1 + "' , author='" + value2 + "', publisher='" 
+            String query = "update referencedocument set title='" + value1 + "' , author='" + value2 + "', publisher='"
                     + value3 + "', publishYear='" + value4 + "', pages='" + value5 + "' where documentID='" + ID + "' ";
             PreparedStatement pst = con.prepareStatement(query);
             pst.execute();
@@ -1575,9 +1621,11 @@ public class Library extends javax.swing.JFrame {
         // Declaring local variables
         DefaultMutableTreeNode selNode = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
         if (selNode == null) {
-            JOptionPane.showMessageDialog(null, "حدد مجلد للإضافة"); }
+            JOptionPane.showMessageDialog(null, "حدد مجلد للإضافة");
+        }
         if (selNode == null) {
-            return;  }
+            return;
+        }
         Connection con = DBConnection();
         Statement stmt;
         ResultSet rs;
@@ -1585,11 +1633,11 @@ public class Library extends javax.swing.JFrame {
         switch (index) {
             case 0: // Book
                 try {   // Code to insert book information here.
-             stmt = con.createStatement();
-             stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear, folder)"
-                      + " VALUES ('book', '" + titleTextField.getText() + "', '" + authorTextField.getText()
-                      + "', '" + pagesTextField.getText() + "', '" + publisherTextField.getText()
-                      + "', '" + yearTextField.getText() + "', '" + selNode.getUserObject().toString() + "')");
+                    stmt = con.createStatement();
+                    stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear, folder)"
+                            + " VALUES ('book', '" + titleTextField.getText() + "', '" + authorTextField.getText()
+                            + "', '" + pagesTextField.getText() + "', '" + publisherTextField.getText()
+                            + "', '" + yearTextField.getText() + "', '" + selNode.getUserObject().toString() + "')");
                     rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + titleTextField.getText()
                             + "' AND author = '" + authorTextField.getText() + "'");
                     rs.next();
@@ -1597,9 +1645,10 @@ public class Library extends javax.swing.JFrame {
                     stmt.executeUpdate("INSERT INTO book (documentID, edition)" + " VALUES ( '" + id + "', '"
                             + extraInfo1TextField.getText() + "')"); // Book Edition
                     updateTree(titleTextField.getText(), id);
-                    RefereshTable(); 
+                    RefereshTable();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());  }
+                    JOptionPane.showMessageDialog(null, "بيانات غير صالحة\n" + ex.getMessage());
+                }
                 break;
 
             /*   String type = "book";
@@ -1617,15 +1666,15 @@ public class Library extends javax.swing.JFrame {
                     // DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00:00");
                     //    LocalDate localDate = LocalDate.now();
                     stmt = con.createStatement();
-             stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear, folder)"
-                      + " VALUES ('journalarticle', '" + titleTextField.getText() + "', '" + authorTextField.getText()
-                      + "', '" + pagesTextField.getText() + "', '" + publisherTextField.getText()
-                      + "', '" + yearTextField.getText() + "', '" + selNode.getUserObject().toString() + "')");
-                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + titleTextField.getText() 
+                    stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear, folder)"
+                            + " VALUES ('journalarticle', '" + titleTextField.getText() + "', '" + authorTextField.getText()
+                            + "', '" + pagesTextField.getText() + "', '" + publisherTextField.getText()
+                            + "', '" + yearTextField.getText() + "', '" + selNode.getUserObject().toString() + "')");
+                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + titleTextField.getText()
                             + "' AND author = '" + authorTextField.getText() + "'");
                     rs.next();
                     int id = rs.getInt("documentID");
-                    stmt.executeUpdate("INSERT INTO journalarticle (documentID, journalName, volume)" 
+                    stmt.executeUpdate("INSERT INTO journalarticle (documentID, journalName, volume)"
                             + " VALUES ( '" + id + "', '" + extraInfo1TextField.getText() + "', '" + extraInfo2TextField.getText() + "')");
                     updateTree(titleTextField.getText(), id);
                     RefereshTable();
@@ -1640,15 +1689,15 @@ public class Library extends javax.swing.JFrame {
                     //  DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00:00");
                     //     LocalDate localDate = LocalDate.now();
                     stmt = con.createStatement();
-             stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear, folder)"
-                      + " VALUES ('magazinearticle', '" + titleTextField.getText() + "', '" + authorTextField.getText()
-                      + "', '" + pagesTextField.getText() + "', '" + publisherTextField.getText()
-                      + "', '" + yearTextField.getText() + "', '" + selNode.getUserObject().toString() + "')");
-                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + titleTextField.getText() 
+                    stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear, folder)"
+                            + " VALUES ('magazinearticle', '" + titleTextField.getText() + "', '" + authorTextField.getText()
+                            + "', '" + pagesTextField.getText() + "', '" + publisherTextField.getText()
+                            + "', '" + yearTextField.getText() + "', '" + selNode.getUserObject().toString() + "')");
+                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + titleTextField.getText()
                             + "' AND author = '" + authorTextField.getText() + "'");
                     rs.next();
                     int id = rs.getInt("documentID");
-                    stmt.executeUpdate("INSERT INTO magazinearticle (documentID, magazineName, month) " 
+                    stmt.executeUpdate("INSERT INTO magazinearticle (documentID, magazineName, month) "
                             + " VALUES ( '" + id + "', '" + extraInfo1TextField.getText() + "', '" + extraInfo2TextField.getText() + "')");
                     updateTree(titleTextField.getText(), id);
                     RefereshTable();
@@ -1664,15 +1713,15 @@ public class Library extends javax.swing.JFrame {
                     //   DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00:00");
                     //     LocalDate localDate = LocalDate.now();
                     stmt = con.createStatement();
-             stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear, folder)"
-                      + " VALUES ('webpage', '" + titleTextField.getText() + "', '" + authorTextField.getText()
-                      + "', '" + pagesTextField.getText() + "', '" + publisherTextField.getText()
-                      + "', '" + yearTextField.getText() + "', '" + selNode.getUserObject().toString() + "')");
-                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + titleTextField.getText() 
+                    stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear, folder)"
+                            + " VALUES ('webpage', '" + titleTextField.getText() + "', '" + authorTextField.getText()
+                            + "', '" + pagesTextField.getText() + "', '" + publisherTextField.getText()
+                            + "', '" + yearTextField.getText() + "', '" + selNode.getUserObject().toString() + "')");
+                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + titleTextField.getText()
                             + "' AND author = '" + authorTextField.getText() + "'");
                     rs.next();
                     int id = rs.getInt("documentID");
-                    stmt.executeUpdate("INSERT INTO webpage (documentID, url, AccessDate) " 
+                    stmt.executeUpdate("INSERT INTO webpage (documentID, url, AccessDate) "
                             + " VALUES ( '" + id + "', '" + extraInfo1TextField.getText() + "', '" + extraInfo2TextField.getText() + "')");
                     updateTree(titleTextField.getText(), id);
                     RefereshTable();
@@ -1688,15 +1737,15 @@ public class Library extends javax.swing.JFrame {
                     //   DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00:00");
                     //    LocalDate localDate = LocalDate.now();
                     stmt = con.createStatement();
-             stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear, folder)"
-                      + " VALUES ('conferenceproceeding', '" + titleTextField.getText() + "', '" + authorTextField.getText()
-                      + "', '" + pagesTextField.getText() + "', '" + publisherTextField.getText()
-                      + "', '" + yearTextField.getText() + "', '" + selNode.getUserObject().toString() + "')");
-                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + titleTextField.getText() 
+                    stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear, folder)"
+                            + " VALUES ('conferenceproceeding', '" + titleTextField.getText() + "', '" + authorTextField.getText()
+                            + "', '" + pagesTextField.getText() + "', '" + publisherTextField.getText()
+                            + "', '" + yearTextField.getText() + "', '" + selNode.getUserObject().toString() + "')");
+                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + titleTextField.getText()
                             + "' AND author = '" + authorTextField.getText() + "'");
                     rs.next();
                     int id = rs.getInt("documentID");
-                    stmt.executeUpdate("INSERT INTO conferenceproceeding (documentID, conferenceName, place) " 
+                    stmt.executeUpdate("INSERT INTO conferenceproceeding (documentID, conferenceName, place) "
                             + " VALUES ( '" + id + "', '" + extraInfo1TextField.getText() + "', '" + extraInfo2TextField.getText() + "')");
                     updateTree(titleTextField.getText(), id);
                     RefereshTable();
@@ -1712,11 +1761,11 @@ public class Library extends javax.swing.JFrame {
                     //    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00:00");
                     //   LocalDate localDate = LocalDate.now();
                     stmt = con.createStatement();
-             stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear, folder)"
-                      + " VALUES ('miscellaneous', '" + titleTextField.getText() + "', '" + authorTextField.getText()
-                      + "', '" + pagesTextField.getText() + "', '" + publisherTextField.getText()
-                      + "', '" + yearTextField.getText() + "', '" + selNode.getUserObject().toString() + "')");
-                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + titleTextField.getText() 
+                    stmt.executeUpdate("INSERT IGNORE INTO referencedocument (documentType, title, author, pages, publisher, publishYear, folder)"
+                            + " VALUES ('miscellaneous', '" + titleTextField.getText() + "', '" + authorTextField.getText()
+                            + "', '" + pagesTextField.getText() + "', '" + publisherTextField.getText()
+                            + "', '" + yearTextField.getText() + "', '" + selNode.getUserObject().toString() + "')");
+                    rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + titleTextField.getText()
                             + "' AND author = '" + authorTextField.getText() + "'");
                     rs.next();
                     int id = rs.getInt("documentID");
@@ -1825,9 +1874,9 @@ public class Library extends javax.swing.JFrame {
             TableModel model = DocsList.getModel();
             Connection con = DBConnection();
             Statement stmt = con.createStatement();
-           // int ID = (int) model.getValueAt(i, 5);
-            ResultSet rs = stmt.executeQuery("SELECT documentType FROM referencedocument WHERE title = '" + model.getValueAt(i, 4) 
-            + "' AND author = '" + model.getValueAt(i, 3) +"'" );
+            // int ID = (int) model.getValueAt(i, 5);
+            ResultSet rs = stmt.executeQuery("SELECT documentType FROM referencedocument WHERE title = '" + model.getValueAt(i, 4)
+                    + "' AND author = '" + model.getValueAt(i, 3) + "'");
             rs.next();
             String oldType = rs.getString("documentType");
             String newType = null;
@@ -1866,11 +1915,11 @@ public class Library extends javax.swing.JFrame {
             String value6 = TextField_extra.getText();
             String value7 = TextField_extra1.getText();
 
-            rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + model.getValueAt(i, 4) 
-            + "' AND author = '" + model.getValueAt(i, 3) +"'" );
+            rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + model.getValueAt(i, 4)
+                    + "' AND author = '" + model.getValueAt(i, 3) + "'");
             rs.next();
             int ID = rs.getInt("documentID");
-            String query = "update referencedocument set title='" + value1 + "' , author='" + value2 + "', publisher='" 
+            String query = "update referencedocument set title='" + value1 + "' , author='" + value2 + "', publisher='"
                     + value3 + "', publishYear='" + value4 + "', pages='" + value5 + "' where documentID='" + ID + "' ";
             PreparedStatement pst = con.prepareStatement(query);
             pst.execute();
@@ -2072,7 +2121,7 @@ public class Library extends javax.swing.JFrame {
     }//GEN-LAST:event_Button_newFolderActionPerformed
 
     private void MenuItem_NewFolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItem_NewFolderActionPerformed
-         // TODO add your handling code here:
+        // TODO add your handling code here:
         DefaultMutableTreeNode selNode = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
         DefaultTreeModel model = (DefaultTreeModel) jTree1.getModel();
         if (selNode != null) {
@@ -2098,7 +2147,7 @@ public class Library extends javax.swing.JFrame {
     }//GEN-LAST:event_MenuItem_englishActionPerformed
 
     private void MenuItem_DeleteFolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItem_DeleteFolderActionPerformed
-       // TODO add your handling code here:
+        // TODO add your handling code here:
         DefaultMutableTreeNode selNode = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
         DefaultTreeModel model = (DefaultTreeModel) jTree1.getModel();
         if (selNode != null) {
