@@ -499,7 +499,7 @@ public class LibraryEng extends javax.swing.JFrame {
         Panel_manuallyLayout.setHorizontalGroup(
             Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_manuallyLayout.createSequentialGroup()
-                .addContainerGap(40, Short.MAX_VALUE)
+                .addContainerGap(41, Short.MAX_VALUE)
                 .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_manuallyLayout.createSequentialGroup()
                         .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -702,20 +702,20 @@ public class LibraryEng extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelLayout.createSequentialGroup()
+                .addGroup(PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(PanelLayout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 685, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                    .addGroup(PanelLayout.createSequentialGroup()
                         .addComponent(Label_searchIcon)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(TextField_search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                        .addComponent(Button_delete)
                         .addGap(18, 18, 18)
                         .addComponent(Button_import)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(Button_delete)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 169, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 685, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE)
+                        .addGap(150, 150, 150)))
+                .addComponent(jTabbedPane2)
                 .addContainerGap())
         );
         PanelLayout.setVerticalGroup(
@@ -730,7 +730,7 @@ public class LibraryEng extends javax.swing.JFrame {
                             .addGroup(PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(Button_import)
                                 .addComponent(Button_delete)))
-                        .addGap(17, 17, 17)
+                        .addGap(18, 18, 18)
                         .addComponent(jScrollPane1))
                     .addGroup(PanelLayout.createSequentialGroup()
                         .addGap(0, 34, Short.MAX_VALUE)
@@ -1643,6 +1643,16 @@ public class LibraryEng extends javax.swing.JFrame {
         if (selNode == null) {
             return;
         }
+        
+        if (titleTextField.getText().length() == 0 || authorTextField.getText().length() == 0)
+        {
+            JOptionPane.showMessageDialog(null, "Insert Title and Author");
+        }
+        if (titleTextField.getText().length() == 0 || authorTextField.getText().length() == 0)
+        {
+            return;
+        }
+        
         Connection con = DBConnection();
         Statement stmt;
         ResultSet rs;
@@ -1887,6 +1897,16 @@ public class LibraryEng extends javax.swing.JFrame {
         // TODO add your handling code here:
         //
         try {
+                          
+            if (TextField_title.getText().length() == 0 || TextField_author.getText().length() == 0)
+        {
+            JOptionPane.showMessageDialog(null, "Insert Title and Author");
+        }
+        if (TextField_title.getText().length() == 0 || TextField_author.getText().length() == 0)
+        {
+            return;
+        }
+        
             int i = DocsList.getSelectedRow();
             TableModel model = DocsList.getModel();
             Connection con = DBConnection();

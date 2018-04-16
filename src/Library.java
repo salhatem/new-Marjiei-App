@@ -1631,6 +1631,14 @@ public class Library extends javax.swing.JFrame {
         if (selNode == null) {
             return;
         }
+        if (titleTextField.getText().length() == 0 || authorTextField.getText().length() == 0)
+        {
+            JOptionPane.showMessageDialog(null, "أدخل العنوان والمؤلف");
+        }
+        if (titleTextField.getText().length() == 0 || authorTextField.getText().length() == 0)
+        {
+            return;
+        }
         Connection con = DBConnection();
         Statement stmt;
         ResultSet rs;
@@ -1875,6 +1883,16 @@ public class Library extends javax.swing.JFrame {
         // TODO add your handling code here:
         //
         try {
+            
+            if (TextField_title.getText().length() == 0 || TextField_author.getText().length() == 0)
+        {
+            JOptionPane.showMessageDialog(null, "أدخل العنوان والمؤلف");
+        }
+        if (TextField_title.getText().length() == 0 || TextField_author.getText().length() == 0)
+        {
+            return;
+        }
+        
             int i = DocsList.getSelectedRow();
             TableModel model = DocsList.getModel();
             Connection con = DBConnection();
