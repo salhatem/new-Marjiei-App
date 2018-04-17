@@ -584,28 +584,37 @@ public class LibraryEng extends javax.swing.JFrame {
 
         ComboBox_type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Book", "Journal Article", "Magazine Article", "Web Page", "Conference Proceeding", "miscellaneous" }));
         ComboBox_type.setSelectedIndex(5);
+        ComboBox_type.setEnabled(false);
         ComboBox_type.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ComboBox_typeActionPerformed(evt);
             }
         });
 
+        TextField_title.setEditable(false);
         TextField_title.setColumns(15);
 
+        TextField_author.setEditable(false);
         TextField_author.setColumns(15);
 
+        TextField_year.setEditable(false);
         TextField_year.setColumns(15);
 
+        TextField_publisher.setEditable(false);
         TextField_publisher.setColumns(15);
 
+        TextField_extra.setEditable(false);
         TextField_extra.setColumns(15);
 
+        TextField_pages.setEditable(false);
         TextField_pages.setColumns(15);
 
+        TextField_extra1.setEditable(false);
         TextField_extra1.setColumns(15);
 
         Button_edit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/editIcon.png"))); // NOI18N
         Button_edit.setText("Edit");
+        Button_edit.setEnabled(false);
         Button_edit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Button_editActionPerformed(evt);
@@ -862,6 +871,17 @@ public class LibraryEng extends javax.swing.JFrame {
         jTabbedPane2.setSelectedComponent(Panel_edit);
         TableModel model = DocsList.getModel();
         // Reset the TextFields 
+        
+        ComboBox_type.setEnabled(true);
+        TextField_title.setEditable(true);
+        TextField_author.setEditable(true);
+        TextField_publisher.setEditable(true);
+        TextField_year.setEditable(true);
+        TextField_pages.setEditable(true);
+        TextField_extra.setEditable(true);
+        TextField_extra1.setEditable(true);
+        Button_edit.setEnabled(true);
+        
         TextField_year.setText(" ");
         TextField_publisher.setText(" ");
         TextField_author.setText(" ");
@@ -900,7 +920,7 @@ public class LibraryEng extends javax.swing.JFrame {
                     if (model.getValueAt(i, 2) != null) {
                         TextField_publisher.setText(model.getValueAt(i, 2).toString());
                     }
-                    TextField_year.setText(model.getValueAt(i, 1).toString());
+                    TextField_year.setText(model.getValueAt(i, 3).toString());
                     // Get the Rest of Document Information From Database.
                     rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + model.getValueAt(i, 0)
                             + "' AND author = '" + model.getValueAt(i, 1) + "'");
@@ -934,7 +954,7 @@ public class LibraryEng extends javax.swing.JFrame {
                     if (model.getValueAt(i, 2) != null) {
                         TextField_publisher.setText(model.getValueAt(i, 2).toString());
                     }
-                    TextField_year.setText(model.getValueAt(i, 1).toString());
+                    TextField_year.setText(model.getValueAt(i, 3).toString());
 
                     rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + model.getValueAt(i, 0)
                             + "' AND author = '" + model.getValueAt(i, 1) + "'");
@@ -971,7 +991,7 @@ public class LibraryEng extends javax.swing.JFrame {
                     if (model.getValueAt(i, 2) != null) {
                         TextField_publisher.setText(model.getValueAt(i, 2).toString());
                     }
-                    TextField_year.setText(model.getValueAt(i, 1).toString());
+                    TextField_year.setText(model.getValueAt(i, 3).toString());
 
                     rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + model.getValueAt(i, 0)
                             + "' AND author = '" + model.getValueAt(i, 1) + "'");
@@ -1007,7 +1027,7 @@ public class LibraryEng extends javax.swing.JFrame {
                     if (model.getValueAt(i, 2) != null) {
                         TextField_publisher.setText(model.getValueAt(i, 2).toString());
                     }
-                    TextField_year.setText(model.getValueAt(i, 1).toString());
+                    TextField_year.setText(model.getValueAt(i, 3).toString());
 
                     rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + model.getValueAt(i, 0)
                             + "' AND author = '" + model.getValueAt(i, 1) + "'");
@@ -1043,7 +1063,7 @@ public class LibraryEng extends javax.swing.JFrame {
                     if (model.getValueAt(i, 2) != null) {
                         TextField_publisher.setText(model.getValueAt(i, 2).toString());
                     }
-                    TextField_year.setText(model.getValueAt(i, 1).toString());
+                    TextField_year.setText(model.getValueAt(i, 3).toString());
 
                     rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + model.getValueAt(i, 0)
                             + "' AND author = '" + model.getValueAt(i, 1) + "'");
@@ -1077,7 +1097,7 @@ public class LibraryEng extends javax.swing.JFrame {
                     if (model.getValueAt(i, 2) != null) {
                         TextField_publisher.setText(model.getValueAt(i, 2).toString());
                     }
-                    TextField_year.setText(model.getValueAt(i, 1).toString());
+                    TextField_year.setText(model.getValueAt(i, 3).toString());
 
                     rs = stmt.executeQuery("SELECT documentID FROM referencedocument WHERE title = '" + model.getValueAt(i, 0)
                             + "' AND author = '" + model.getValueAt(i, 1) + "'");
@@ -1192,6 +1212,17 @@ public class LibraryEng extends javax.swing.JFrame {
                     TextField_extra.setVisible(false);
                     Label_extra1.setVisible(false);
                     TextField_extra1.setVisible(false);
+                    
+                    ComboBox_type.setEnabled(false);
+                    TextField_title.setEditable(false);
+                    TextField_author.setEditable(false);
+                    TextField_publisher.setEditable(false);
+                    TextField_year.setEditable(false);
+                    TextField_pages.setEditable(false);
+                    TextField_extra.setEditable(false);
+                    TextField_extra1.setEditable(false);
+                    Button_edit.setEnabled(false);
+                    
                     if (treeModelMap.getTreeMap().get(ID) != null) {
                         ((DefaultTreeModel) jTree1.getModel()).removeNodeFromParent(treeModelMap.getTreeMap().get(ID));
                     }
@@ -1253,6 +1284,16 @@ public class LibraryEng extends javax.swing.JFrame {
         if (selNode == null) {
             return;
         }
+        
+        if (titleTextField.getText().length() == 0 || authorTextField.getText().length() == 0)
+        {
+            JOptionPane.showMessageDialog(null, "Insert Title and Author");
+        }
+        if (titleTextField.getText().length() == 0 || authorTextField.getText().length() == 0)
+        {
+            return;
+        }
+        
         Connection con = DBConnection();
         Statement stmt;
         ResultSet rs;
@@ -1418,6 +1459,7 @@ public class LibraryEng extends javax.swing.JFrame {
         extraInfo1TextField.setVisible(true);
         extraInfo2Label.setVisible(false);
         extraInfo2TextField.setVisible(false);
+        
     }//GEN-LAST:event_MenuItem_manuallyActionPerformed
 
     private void MenuItem_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItem_deleteActionPerformed
@@ -1450,6 +1492,17 @@ public class LibraryEng extends javax.swing.JFrame {
                     TextField_extra.setVisible(false);
                     Label_extra1.setVisible(false);
                     TextField_extra1.setVisible(false);
+                    
+                    ComboBox_type.setEnabled(false);
+                    TextField_title.setEditable(false);
+                    TextField_author.setEditable(false);
+                    TextField_publisher.setEditable(false);
+                    TextField_year.setEditable(false);
+                    TextField_pages.setEditable(false);
+                    TextField_extra.setEditable(false);
+                    TextField_extra1.setEditable(false);
+                    Button_edit.setEnabled(false);
+                    
                     if (treeModelMap.getTreeMap().get(ID) != null) {
                         ((DefaultTreeModel) jTree1.getModel()).removeNodeFromParent(treeModelMap.getTreeMap().get(ID));
                     }
@@ -1460,6 +1513,7 @@ public class LibraryEng extends javax.swing.JFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
+
     }//GEN-LAST:event_MenuItem_deleteActionPerformed
 
     private void MenuItem_exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItem_exitActionPerformed
@@ -1474,6 +1528,16 @@ public class LibraryEng extends javax.swing.JFrame {
         // TODO add your handling code here:
         //
         try {
+                          
+            if (TextField_title.getText().length() == 0 || TextField_author.getText().length() == 0)
+        {
+            JOptionPane.showMessageDialog(null, "Insert Title and Author");
+        }
+        if (TextField_title.getText().length() == 0 || TextField_author.getText().length() == 0)
+        {
+            return;
+        }
+        
             int i = DocsList.getSelectedRow();
             TableModel model = DocsList.getModel();
             Connection con = DBConnection();
@@ -1620,12 +1684,23 @@ public class LibraryEng extends javax.swing.JFrame {
             TextField_extra.setVisible(false);
             Label_extra1.setVisible(false);
             TextField_extra1.setVisible(false);
+            
+            ComboBox_type.setEnabled(false);
+            TextField_title.setEditable(false);
+            TextField_author.setEditable(false);
+            TextField_publisher.setEditable(false);
+            TextField_year.setEditable(false);
+            TextField_pages.setEditable(false);
+            TextField_extra.setEditable(false);
+            TextField_extra1.setEditable(false);
+            Button_edit.setEnabled(false);
 
             JOptionPane.showMessageDialog(null, "Updated Successfully");
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Invalid Inputs\n" + ex.getMessage());
             System.out.print(ex);
         }
+        
     }//GEN-LAST:event_MenuItem_editActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -2053,6 +2128,16 @@ public class LibraryEng extends javax.swing.JFrame {
             TextField_extra.setVisible(false);
             Label_extra1.setVisible(false);
             TextField_extra1.setVisible(false);
+            
+            ComboBox_type.setEnabled(false);
+            TextField_title.setEditable(false);
+            TextField_author.setEditable(false);
+            TextField_publisher.setEditable(false);
+            TextField_year.setEditable(false);
+            TextField_pages.setEditable(false);
+            TextField_extra.setEditable(false);
+            TextField_extra1.setEditable(false);
+            Button_edit.setEnabled(false);
 
             JOptionPane.showMessageDialog(null, "Updated Successfully");
         } catch (Exception ex) {

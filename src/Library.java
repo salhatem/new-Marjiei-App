@@ -540,28 +540,37 @@ public class Library extends javax.swing.JFrame {
 
         ComboBox_type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "كتاب", "مقال صحيفة", "مقال مجلة", "صفحة ويب", "ورقة مؤتمر", "أخرى" }));
         ComboBox_type.setSelectedIndex(5);
+        ComboBox_type.setEnabled(false);
         ComboBox_type.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ComboBox_typeActionPerformed(evt);
             }
         });
 
+        TextField_title.setEditable(false);
         TextField_title.setColumns(15);
 
+        TextField_author.setEditable(false);
         TextField_author.setColumns(15);
 
+        TextField_year.setEditable(false);
         TextField_year.setColumns(15);
 
+        TextField_publisher.setEditable(false);
         TextField_publisher.setColumns(15);
 
+        TextField_extra.setEditable(false);
         TextField_extra.setColumns(15);
 
+        TextField_pages.setEditable(false);
         TextField_pages.setColumns(15);
 
+        TextField_extra1.setEditable(false);
         TextField_extra1.setColumns(15);
 
         Button_edit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/editIcon.png"))); // NOI18N
         Button_edit.setText("تعديل");
+        Button_edit.setEnabled(false);
         Button_edit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Button_editActionPerformed(evt);
@@ -849,6 +858,17 @@ public class Library extends javax.swing.JFrame {
     private void DocsListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DocsListMouseClicked
         // Show Edit Section and get the Selected Document. 
         jTabbedPane1.setSelectedComponent(Panel_edit);
+        
+        ComboBox_type.setEnabled(true);
+        TextField_title.setEditable(true);
+        TextField_author.setEditable(true);
+        TextField_publisher.setEditable(true);
+        TextField_year.setEditable(true);
+        TextField_pages.setEditable(true);
+        TextField_extra.setEditable(true);
+        TextField_extra1.setEditable(true);
+        Button_edit.setEnabled(true);
+        
         TableModel model = DocsList.getModel();
         // Reset the TextFields 
         TextField_year.setText(" ");
@@ -861,7 +881,7 @@ public class Library extends javax.swing.JFrame {
         Label_extra.setVisible(false);
         TextField_extra.setVisible(false);
         Label_extra1.setVisible(false);
-        TextField_extra1.setVisible(false);
+        TextField_extra1.setVisible(false);  
 
         try {
             // Get the Selected Document Type. 
@@ -1048,7 +1068,7 @@ public class Library extends javax.swing.JFrame {
                     openDocument(cpID, evt);
                     break;
 
-                case "other":
+                case "miscellaneous":
                     ComboBox_type.setSelectedIndex(5);
 
                     Label_extra.setVisible(false);
@@ -1180,6 +1200,17 @@ public class Library extends javax.swing.JFrame {
                     TextField_extra.setVisible(false);
                     Label_extra1.setVisible(false);
                     TextField_extra1.setVisible(false);
+                    
+                    ComboBox_type.setEnabled(false);
+                    TextField_title.setEditable(false);
+                    TextField_author.setEditable(false);
+                    TextField_publisher.setEditable(false);
+                    TextField_year.setEditable(false);
+                    TextField_pages.setEditable(false);
+                    TextField_extra.setEditable(false);
+                    TextField_extra1.setEditable(false);
+                    Button_edit.setEnabled(false);
+            
                     if (treeModelMap.getTreeMap().get(ID) != null) {
                         ((DefaultTreeModel) jTree1.getModel()).removeNodeFromParent(treeModelMap.getTreeMap().get(ID));
                     }
@@ -1239,6 +1270,14 @@ public class Library extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "حدد مجلد للإضافة");
         }
         if (selNode == null) {
+            return;
+        }
+        if (titleTextField.getText().length() == 0 || authorTextField.getText().length() == 0)
+        {
+            JOptionPane.showMessageDialog(null, "أدخل العنوان والمؤلف");
+        }
+        if (titleTextField.getText().length() == 0 || authorTextField.getText().length() == 0)
+        {
             return;
         }
         Connection con = DBConnection();
@@ -1438,6 +1477,17 @@ public class Library extends javax.swing.JFrame {
                     TextField_extra.setVisible(false);
                     Label_extra1.setVisible(false);
                     TextField_extra1.setVisible(false);
+                    
+                    ComboBox_type.setEnabled(false);
+                    TextField_title.setEditable(false);
+                    TextField_author.setEditable(false);
+                    TextField_publisher.setEditable(false);
+                    TextField_year.setEditable(false);
+                    TextField_pages.setEditable(false);
+                    TextField_extra.setEditable(false);
+                    TextField_extra1.setEditable(false);
+                    Button_edit.setEnabled(false);
+            
                     if (treeModelMap.getTreeMap().get(ID) != null) {
                         ((DefaultTreeModel) jTree1.getModel()).removeNodeFromParent(treeModelMap.getTreeMap().get(ID));
                     }
@@ -1448,6 +1498,7 @@ public class Library extends javax.swing.JFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
+
     }//GEN-LAST:event_MenuItem_deleteActionPerformed
 
     private void MenuItem_exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItem_exitActionPerformed
@@ -1462,6 +1513,16 @@ public class Library extends javax.swing.JFrame {
         // TODO add your handling code here:
         //
         try {
+            
+            if (TextField_title.getText().length() == 0 || TextField_author.getText().length() == 0)
+        {
+            JOptionPane.showMessageDialog(null, "أدخل العنوان والمؤلف");
+        }
+        if (TextField_title.getText().length() == 0 || TextField_author.getText().length() == 0)
+        {
+            return;
+        }
+        
             int i = DocsList.getSelectedRow();
             TableModel model = DocsList.getModel();
             Connection con = DBConnection();
@@ -1608,6 +1669,16 @@ public class Library extends javax.swing.JFrame {
             TextField_extra.setVisible(false);
             Label_extra1.setVisible(false);
             TextField_extra1.setVisible(false);
+            
+            ComboBox_type.setEnabled(false);
+            TextField_title.setEditable(false);
+            TextField_author.setEditable(false);
+            TextField_publisher.setEditable(false);
+            TextField_year.setEditable(false);
+            TextField_pages.setEditable(false);
+            TextField_extra.setEditable(false);
+            TextField_extra1.setEditable(false);
+            Button_edit.setEnabled(false);
 
             JOptionPane.showMessageDialog(null, "تم التحديث بنجاح");
         } catch (Exception ex) {
@@ -2039,6 +2110,16 @@ public class Library extends javax.swing.JFrame {
             TextField_extra.setVisible(false);
             Label_extra1.setVisible(false);
             TextField_extra1.setVisible(false);
+            
+            ComboBox_type.setEnabled(false);
+            TextField_title.setEditable(false);
+            TextField_author.setEditable(false);
+            TextField_publisher.setEditable(false);
+            TextField_year.setEditable(false);
+            TextField_pages.setEditable(false);
+            TextField_extra.setEditable(false);
+            TextField_extra1.setEditable(false);
+            Button_edit.setEnabled(false);
 
             JOptionPane.showMessageDialog(null, "تم التحديث بنجاح");
         } catch (Exception ex) {
