@@ -275,6 +275,7 @@ public class Library extends javax.swing.JFrame {
         extraInfo1Label = new javax.swing.JLabel();
         extraInfo1TextField = new javax.swing.JTextField();
         addButton = new javax.swing.JButton();
+        Type_Label = new javax.swing.JLabel();
         Panel_edit = new javax.swing.JPanel();
         Label_title = new javax.swing.JLabel();
         Label_author = new javax.swing.JLabel();
@@ -441,6 +442,8 @@ public class Library extends javax.swing.JFrame {
             }
         });
 
+        Type_Label.setText("نوع المرجع");
+
         javax.swing.GroupLayout Panel_manuallyLayout = new javax.swing.GroupLayout(Panel_manually);
         Panel_manually.setLayout(Panel_manuallyLayout);
         Panel_manuallyLayout.setHorizontalGroup(
@@ -449,7 +452,9 @@ public class Library extends javax.swing.JFrame {
                 .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(Panel_manuallyLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(typeCombobox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(typeCombobox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(Type_Label))
                     .addGroup(Panel_manuallyLayout.createSequentialGroup()
                         .addGap(43, 43, 43)
                         .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -486,7 +491,9 @@ public class Library extends javax.swing.JFrame {
             Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Panel_manuallyLayout.createSequentialGroup()
                 .addGap(64, 64, 64)
-                .addComponent(typeCombobox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(typeCombobox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Type_Label))
                 .addGap(18, 18, 18)
                 .addGroup(Panel_manuallyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(titleTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -739,6 +746,10 @@ public class Library extends javax.swing.JFrame {
                             .addComponent(jTabbedPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 598, javax.swing.GroupLayout.PREFERRED_SIZE)))))
         );
 
+        MenuBar.setBackground(new java.awt.Color(204, 204, 255));
+        MenuBar.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
+        MenuBar.setForeground(new java.awt.Color(204, 204, 255));
+
         Menu_file.setText("ملف");
 
         MenuItem_add.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
@@ -807,7 +818,7 @@ public class Library extends javax.swing.JFrame {
 
         MenuBar.add(Menu_file);
 
-        jMenu1.setText("عرض");
+        jMenu1.setText("لغة");
 
         MenuItem_english.setText("English");
         MenuItem_english.addActionListener(new java.awt.event.ActionListener() {
@@ -2399,6 +2410,7 @@ public class Library extends javax.swing.JFrame {
     private javax.swing.JTextField TextField_search;
     private javax.swing.JTextField TextField_title;
     private javax.swing.JTextField TextField_year;
+    private javax.swing.JLabel Type_Label;
     private javax.swing.JButton addButton;
     private javax.swing.JLabel authorLabel;
     private javax.swing.JTextField authorTextField;
