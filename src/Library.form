@@ -70,9 +70,6 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="MenuItem_NewFolder">
               <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+N"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="&#x625;&#x646;&#x634;&#x627;&#x621; &#x645;&#x62c;&#x644;&#x62f;"/>
               </Properties>
               <Events>
@@ -246,6 +243,7 @@
               <Image iconType="3" name="/Icons/addIcon.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="&#x625;&#x636;&#x627;&#x641;&#x629; &#x645;&#x631;&#x62c;&#x639;"/>
+            <Property name="toolTipText" type="java.lang.String" value="Ctrl+R"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Button_importActionPerformed"/>
@@ -257,6 +255,7 @@
               <Image iconType="3" name="/Icons/deleteIcon.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="&#x62d;&#x630;&#x641; &#x645;&#x631;&#x62c;&#x639;"/>
+            <Property name="toolTipText" type="java.lang.String" value="Ctrl+D"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Button_deleteActionPerformed"/>
@@ -331,6 +330,7 @@
         <Component class="javax.swing.JTextField" name="TextField_search">
           <Properties>
             <Property name="columns" type="int" value="20"/>
+            <Property name="toolTipText" type="java.lang.String" value="&#x628;&#x62d;&#x62b;"/>
           </Properties>
           <Events>
             <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="TextField_searchKeyReleased"/>
@@ -573,6 +573,7 @@
                       <Image iconType="3" name="/Icons/manuallyIcon.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="&#x625;&#x62f;&#x62e;&#x627;&#x644;"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Ctrl+M"/>
                   </Properties>
                   <Events>
                     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="addButtonMouseClicked"/>
@@ -607,7 +608,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="1" attributes="0">
-                                  <EmptySpace pref="31" max="-2" attributes="0"/>
+                                  <EmptySpace pref="31" max="32767" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="TextField_title" alignment="1" min="-2" max="-2" attributes="0"/>
                                       <Component id="TextField_author" alignment="1" min="-2" max="-2" attributes="0"/>
@@ -628,10 +629,14 @@
                                       <Component id="Label_title" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
-                              <Group type="102" alignment="0" attributes="0">
+                              <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="Button_edit" min="-2" max="-2" attributes="0"/>
-                                      <Component id="ComboBox_type" min="-2" max="-2" attributes="0"/>
+                                      <Component id="Button_edit" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="ComboBox_type" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="Label_Type" min="-2" max="-2" attributes="0"/>
+                                      </Group>
                                   </Group>
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
@@ -644,7 +649,10 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="72" max="-2" attributes="0"/>
-                          <Component id="ComboBox_type" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="ComboBox_type" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="Label_Type" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="Label_title" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -793,11 +801,17 @@
                       <Image iconType="3" name="/Icons/editIcon.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="&#x62a;&#x639;&#x62f;&#x64a;&#x644;"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Ctrl+U"/>
                     <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Button_editActionPerformed"/>
                   </Events>
+                </Component>
+                <Component class="javax.swing.JLabel" name="Label_Type">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="&#x646;&#x648;&#x639; &#x627;&#x644;&#x645;&#x631;&#x62c;&#x639;"/>
+                  </Properties>
                 </Component>
               </SubComponents>
             </Container>
@@ -872,6 +886,7 @@
                 <Component class="javax.swing.JButton" name="Button_newFolder">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="&#x625;&#x646;&#x634;&#x627;&#x621; &#x645;&#x62c;&#x644;&#x62f;"/>
+                    <Property name="toolTipText" type="java.lang.String" value=""/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Button_newFolderActionPerformed"/>

@@ -70,9 +70,6 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="MenuItem_NewFolder">
               <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+N"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="Create Folder"/>
               </Properties>
               <Events>
@@ -142,7 +139,7 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
-    <Property name="title" type="java.lang.String" value="&#x645;&#x643;&#x62a;&#x628;&#x629; &#x645;&#x631;&#x62c;&#x639;&#x64a;"/>
+    <Property name="title" type="java.lang.String" value="Marjiei Library"/>
     <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <AccessibilityProperties>
@@ -252,6 +249,7 @@
               <Image iconType="3" name="/Icons/addIcon.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Import Reference"/>
+            <Property name="toolTipText" type="java.lang.String" value="Ctrl+R"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Button_importActionPerformed"/>
@@ -263,6 +261,7 @@
               <Image iconType="3" name="/Icons/deleteIcon.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Delete Reference"/>
+            <Property name="toolTipText" type="java.lang.String" value="Ctrl+D"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Button_deleteActionPerformed"/>
@@ -337,6 +336,7 @@
         <Component class="javax.swing.JTextField" name="TextField_search">
           <Properties>
             <Property name="columns" type="int" value="20"/>
+            <Property name="toolTipText" type="java.lang.String" value="Search"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TextField_searchActionPerformed"/>
@@ -654,6 +654,7 @@
                       <Image iconType="3" name="/Icons/manuallyIcon.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Enter"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Crtl+M"/>
                   </Properties>
                   <Events>
                     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="addButtonMouseClicked"/>
@@ -662,7 +663,7 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="Type_Label">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="&#x64c;Reference Type"/>
+                    <Property name="text" type="java.lang.String" value="Reference Type"/>
                   </Properties>
                 </Component>
               </SubComponents>
@@ -685,10 +686,14 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace pref="23" max="32767" attributes="0"/>
+                          <EmptySpace pref="24" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Component id="Button_edit" min="-2" max="-2" attributes="0"/>
-                              <Component id="ComboBox_type" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="Label_Type" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="ComboBox_type" min="-2" max="-2" attributes="0"/>
+                              </Group>
                               <Group type="102" alignment="1" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" alignment="1" attributes="0">
@@ -738,7 +743,10 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
-                          <Component id="ComboBox_type" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="ComboBox_type" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="Label_Type" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="TextField_title" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -887,11 +895,17 @@
                       <Image iconType="3" name="/Icons/editIcon.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Edit"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Ctrl+U"/>
                     <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Button_editActionPerformed"/>
                   </Events>
+                </Component>
+                <Component class="javax.swing.JLabel" name="Label_Type">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Reference Type"/>
+                  </Properties>
                 </Component>
               </SubComponents>
             </Container>

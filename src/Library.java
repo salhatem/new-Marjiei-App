@@ -293,6 +293,7 @@ public class Library extends javax.swing.JFrame {
         TextField_pages = new javax.swing.JTextField();
         TextField_extra1 = new javax.swing.JTextField();
         Button_edit = new javax.swing.JButton();
+        Label_Type = new javax.swing.JLabel();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         Panel_folders = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -328,6 +329,7 @@ public class Library extends javax.swing.JFrame {
 
         Button_import.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/addIcon.png"))); // NOI18N
         Button_import.setText("إضافة مرجع");
+        Button_import.setToolTipText("Ctrl+R");
         Button_import.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Button_importActionPerformed(evt);
@@ -336,6 +338,7 @@ public class Library extends javax.swing.JFrame {
 
         Button_delete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/deleteIcon.png"))); // NOI18N
         Button_delete.setText("حذف مرجع");
+        Button_delete.setToolTipText("Ctrl+D");
         Button_delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Button_deleteActionPerformed(evt);
@@ -376,6 +379,7 @@ public class Library extends javax.swing.JFrame {
         }
 
         TextField_search.setColumns(20);
+        TextField_search.setToolTipText("بحث");
         TextField_search.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 TextField_searchKeyReleased(evt);
@@ -431,6 +435,7 @@ public class Library extends javax.swing.JFrame {
 
         addButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/manuallyIcon.png"))); // NOI18N
         addButton.setText("إدخال");
+        addButton.setToolTipText("Ctrl+M");
         addButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 addButtonMouseClicked(evt);
@@ -577,12 +582,15 @@ public class Library extends javax.swing.JFrame {
 
         Button_edit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/editIcon.png"))); // NOI18N
         Button_edit.setText("تعديل");
+        Button_edit.setToolTipText("Ctrl+U");
         Button_edit.setEnabled(false);
         Button_edit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Button_editActionPerformed(evt);
             }
         });
+
+        Label_Type.setText("نوع المرجع");
 
         javax.swing.GroupLayout Panel_editLayout = new javax.swing.GroupLayout(Panel_edit);
         Panel_edit.setLayout(Panel_editLayout);
@@ -592,7 +600,7 @@ public class Library extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_editLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                         .addGroup(Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(TextField_title, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(TextField_author, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -613,7 +621,10 @@ public class Library extends javax.swing.JFrame {
                     .addGroup(Panel_editLayout.createSequentialGroup()
                         .addGroup(Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(Button_edit)
-                            .addComponent(ComboBox_type, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(Panel_editLayout.createSequentialGroup()
+                                .addComponent(ComboBox_type, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(Label_Type)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(24, 24, 24))
         );
@@ -621,7 +632,9 @@ public class Library extends javax.swing.JFrame {
             Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Panel_editLayout.createSequentialGroup()
                 .addGap(72, 72, 72)
-                .addComponent(ComboBox_type, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ComboBox_type, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Label_Type))
                 .addGap(31, 31, 31)
                 .addGroup(Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Label_title)
@@ -663,6 +676,7 @@ public class Library extends javax.swing.JFrame {
         jScrollPane2.setViewportView(jTree1);
 
         Button_newFolder.setText("إنشاء مجلد");
+        Button_newFolder.setToolTipText("");
         Button_newFolder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Button_newFolderActionPerformed(evt);
@@ -789,7 +803,6 @@ public class Library extends javax.swing.JFrame {
         Menu_file.add(MenuItem_delete);
         Menu_file.add(jSeparator1);
 
-        MenuItem_NewFolder.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
         MenuItem_NewFolder.setText("إنشاء مجلد");
         MenuItem_NewFolder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2378,6 +2391,7 @@ public class Library extends javax.swing.JFrame {
     private javax.swing.JButton Button_newFolder;
     private javax.swing.JComboBox<String> ComboBox_type;
     private javax.swing.JTable DocsList;
+    private javax.swing.JLabel Label_Type;
     private javax.swing.JLabel Label_author;
     private javax.swing.JLabel Label_extra;
     private javax.swing.JLabel Label_extra1;

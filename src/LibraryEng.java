@@ -299,6 +299,7 @@ public class LibraryEng extends javax.swing.JFrame {
         TextField_pages = new javax.swing.JTextField();
         TextField_extra1 = new javax.swing.JTextField();
         Button_edit = new javax.swing.JButton();
+        Label_Type = new javax.swing.JLabel();
         MenuBar = new javax.swing.JMenuBar();
         Menu_file = new javax.swing.JMenu();
         MenuItem_add = new javax.swing.JMenuItem();
@@ -316,7 +317,7 @@ public class LibraryEng extends javax.swing.JFrame {
         MenuItem_help = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("مكتبة مرجعي");
+        setTitle("Marjiei Library");
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -328,6 +329,7 @@ public class LibraryEng extends javax.swing.JFrame {
 
         Button_import.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/addIcon.png"))); // NOI18N
         Button_import.setText("Import Reference");
+        Button_import.setToolTipText("Ctrl+R");
         Button_import.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Button_importActionPerformed(evt);
@@ -336,6 +338,7 @@ public class LibraryEng extends javax.swing.JFrame {
 
         Button_delete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/deleteIcon.png"))); // NOI18N
         Button_delete.setText("Delete Reference");
+        Button_delete.setToolTipText("Ctrl+D");
         Button_delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Button_deleteActionPerformed(evt);
@@ -377,6 +380,7 @@ public class LibraryEng extends javax.swing.JFrame {
         }
 
         TextField_search.setColumns(20);
+        TextField_search.setToolTipText("Search");
         TextField_search.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TextField_searchActionPerformed(evt);
@@ -484,6 +488,7 @@ public class LibraryEng extends javax.swing.JFrame {
 
         addButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/manuallyIcon.png"))); // NOI18N
         addButton.setText("Enter");
+        addButton.setToolTipText("Crtl+M");
         addButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 addButtonMouseClicked(evt);
@@ -495,7 +500,7 @@ public class LibraryEng extends javax.swing.JFrame {
             }
         });
 
-        Type_Label.setText("ٌReference Type");
+        Type_Label.setText("Reference Type");
 
         javax.swing.GroupLayout Panel_manuallyLayout = new javax.swing.GroupLayout(Panel_manually);
         Panel_manually.setLayout(Panel_manuallyLayout);
@@ -622,6 +627,7 @@ public class LibraryEng extends javax.swing.JFrame {
 
         Button_edit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/editIcon.png"))); // NOI18N
         Button_edit.setText("Edit");
+        Button_edit.setToolTipText("Ctrl+U");
         Button_edit.setEnabled(false);
         Button_edit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -629,15 +635,20 @@ public class LibraryEng extends javax.swing.JFrame {
             }
         });
 
+        Label_Type.setText("Reference Type");
+
         javax.swing.GroupLayout Panel_editLayout = new javax.swing.GroupLayout(Panel_edit);
         Panel_edit.setLayout(Panel_editLayout);
         Panel_editLayout.setHorizontalGroup(
             Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_editLayout.createSequentialGroup()
-                .addContainerGap(23, Short.MAX_VALUE)
+                .addContainerGap(24, Short.MAX_VALUE)
                 .addGroup(Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(Button_edit)
-                    .addComponent(ComboBox_type, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(Panel_editLayout.createSequentialGroup()
+                        .addComponent(Label_Type)
+                        .addGap(18, 18, 18)
+                        .addComponent(ComboBox_type, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(Panel_editLayout.createSequentialGroup()
                         .addGroup(Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_editLayout.createSequentialGroup()
@@ -675,7 +686,9 @@ public class LibraryEng extends javax.swing.JFrame {
             Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Panel_editLayout.createSequentialGroup()
                 .addGap(75, 75, 75)
-                .addComponent(ComboBox_type, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ComboBox_type, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Label_Type))
                 .addGap(18, 18, 18)
                 .addGroup(Panel_editLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TextField_title, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -799,7 +812,6 @@ public class LibraryEng extends javax.swing.JFrame {
         Menu_file.add(MenuItem_delete);
         Menu_file.add(jSeparator1);
 
-        MenuItem_NewFolder.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
         MenuItem_NewFolder.setText("Create Folder");
         MenuItem_NewFolder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2401,6 +2413,7 @@ public class LibraryEng extends javax.swing.JFrame {
     private javax.swing.JButton Button_newFolder;
     private javax.swing.JComboBox<String> ComboBox_type;
     private javax.swing.JTable DocsList;
+    private javax.swing.JLabel Label_Type;
     private javax.swing.JLabel Label_author;
     private javax.swing.JLabel Label_extra;
     private javax.swing.JLabel Label_extra1;
